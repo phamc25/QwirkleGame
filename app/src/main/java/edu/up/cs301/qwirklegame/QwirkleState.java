@@ -27,7 +27,7 @@ public class QwirkleState extends GameState {
 	private boolean isTurn;
 	private int turnCounter;
 	private int tilesOnBoard;
-
+	private int timer;
 	
 	/**
 	 * constructor, initializing the counter value from the parameter
