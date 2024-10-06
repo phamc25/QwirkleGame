@@ -36,7 +36,7 @@ public class QwirkleState extends GameState {
 	 * 		the value to which the counter's value should be initialized
 	 */
 	public QwirkleState(int counterVal, int bag, int play, int discard, int p1,
-						int p2, int p3, int p4, boolean turn, int turnCount, int board) {
+						int p2, int p3, int p4, boolean turn, int turnCount, int board, int time) {
 		counter = counterVal;
 		bag = bagTiles;
 		play = tilesPlayed;
@@ -48,6 +48,7 @@ public class QwirkleState extends GameState {
 		turn = isTurn;
 		turnCount = turnCounter;
 		board = tilesOnBoard;
+		time = timer;
 
 	}
 	
@@ -60,25 +61,5 @@ public class QwirkleState extends GameState {
 	public QwirkleState(QwirkleState orig) {
 		// set the counter to that of the original
 		this.counter = orig.counter;
-	}
-
-	/**
-	 * getter method for the counter
-	 * 
-	 * @return
-	 * 		the value of the counter
-	 */
-	public int getCounter() {
-		return counter;
-	}
-	
-	/**
-	 * setter method for the counter
-	 * 
-	 * @param counter
-	 * 		the value to which the counter should be set
-	 */
-	public void setCounter(int counter) {
-		this.counter = counter;
 	}
 }
