@@ -67,24 +67,4 @@ public class QwirkleState extends GameState {
 		// set the counter to that of the original
 		this.counter = orig.counter;
 	}
-
-	/**
-	 * getter method for the counter
-	 * 
-	 * @return
-	 * 		the value of the counter
-	 */
-	public int getCounter() {
-		return counter;
-	}
-	
-	/**
-	 * setter method for the counter
-	 * 
-	 * @param counter
-	 * 		the value to which the counter should be set
-	 */
-	public void setCounter(int counter) {
-		this.counter = counter;
-	}
 }
