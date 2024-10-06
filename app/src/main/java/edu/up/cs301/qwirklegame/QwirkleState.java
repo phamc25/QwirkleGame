@@ -7,7 +7,12 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  * This contains the state for the Counter game. The state consist of simply
  * the value of the counter.
  * 
- * @author Steven R. Vegdahl
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
  * @version July 2013
  */
 public class QwirkleState extends GameState {
@@ -17,7 +22,9 @@ public class QwirkleState extends GameState {
 	
 	// the value of the counter
 	private int counter;
-	
+
+
+
 	/**
 	 * constructor, initializing the counter value from the parameter
 	 * 
