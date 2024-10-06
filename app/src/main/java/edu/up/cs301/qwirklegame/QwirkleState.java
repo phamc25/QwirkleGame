@@ -38,16 +38,16 @@ public class QwirkleState extends GameState {
 	public QwirkleState(int counterVal, int bag, int play, int discard, int p1,
 						int p2, int p3, int p4, boolean turn, int turnCount, int board) {
 		counter = counterVal;
-		bag = bagTiles;
-		play = tilesPlayed;
-		discard = tilesDiscarded;
-		p1 = player1Score;
-		p2 = player2Score;
-		p3 = player3Score;
-		p4 = player4Score;
-		turn = isTurn;
-		turnCount = turnCounter;
-		board = tilesOnBoard;
+		bagTiles = bag;
+		tilesPlayed = play;
+		tilesDiscarded = discard;
+		player1Score = p1;
+		player2Score = p2;
+		player3Score = p3;
+		player4Score = p4;
+		isTurn = turn;
+		turnCounter = turnCount;
+		tilesOnBoard = board;
 
 	}
 	
