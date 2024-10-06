@@ -16,10 +16,10 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  * @version July 2013
  */
 public class QwirkleState extends GameState {
-	
+
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
-	
+
 	// the value of the counter
 	private int addPoints;
 	private int bagTiles;
@@ -34,12 +34,12 @@ public class QwirkleState extends GameState {
 	private int tilesOnBoard;
 	private int drawTiles;
 	private int timer;
-	
+
 	/**
 	 * constructor, initializing the counter value from the parameter
-	 * 
-	 *
-	 * 		the value to which the counter's value should be initialized
+	 * <p>
+	 * <p>
+	 * the value to which the counter's value should be initialized
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int p1,
 						int p2, int p3, int p4, boolean turn, int turnCount, int board) {
@@ -56,35 +56,14 @@ public class QwirkleState extends GameState {
 		board = tilesOnBoard;
 
 	}
-	
+
 	/**
 	 * copy constructor; makes a copy of the original object
-	 * 
-	 * @param orig
-	 * 		the object from which the copy should be made
+	 *
+	 * @param orig the object from which the copy should be made
 	 */
 	public QwirkleState(QwirkleState orig) {
 		// set the counter to that of the original
 		this.counter = orig.counter;
-	}
-
-	/**
-	 * getter method for the counter
-	 * 
-	 * @return
-	 * 		the value of the counter
-	 */
-	public int getCounter() {
-		return counter;
-	}
-	
-	/**
-	 * setter method for the counter
-	 * 
-	 * @param counter
-	 * 		the value to which the counter should be set
-	 */
-	public void setCounter(int counter) {
-		this.counter = counter;
 	}
 }
