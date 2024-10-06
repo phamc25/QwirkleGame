@@ -21,7 +21,7 @@ public class QwirkleState extends GameState {
 	private static final long serialVersionUID = 7737393762469851826L;
 	
 	// the value of the counter
-	private int counter;
+	private int addPoints;
 	private int bagTiles;
 	private int tilesPlayed;
 	private int tilesDiscarded;
@@ -32,6 +32,8 @@ public class QwirkleState extends GameState {
 	private boolean isTurn;
 	private int turnCounter;
 	private int tilesOnBoard;
+	private int drawTiles;
+
 
 	/**
 	 * constructor, initializing the counter value from the parameter
