@@ -43,7 +43,8 @@ public class QwirkleState extends GameState {
 	 * the value to which the counter's value should be initialized
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int p1,
-						int p2, int p3, int p4, boolean turn, int turnCount, int board) {
+						int p2, int p3, int p4, int player, boolean turn,
+						int turnCount, int board, int draw, int time) {
 		addPoints = points;
 		bagTiles = bag;
 		tilesPlayed = play;
@@ -52,10 +53,12 @@ public class QwirkleState extends GameState {
 		player2Score = p2;
 		player3Score = p3;
 		player4Score = p4;
+		currPlayer = player;
 		isTurn = turn;
 		turnCounter = turnCount;
 		tilesOnBoard = board;
-
+		drawTiles = draw;
+		timer = time;
 	}
 
 	/**
