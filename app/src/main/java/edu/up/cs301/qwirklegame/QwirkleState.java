@@ -38,10 +38,22 @@ public class QwirkleState extends GameState {
 	private int timer;
 
 	/**
-	 * constructor, initializing the counter value from the parameter
-	 * <p>
-	 * <p>
-	 * the value to which the counter's value should be initialized
+	 * constructor
+	 *
+	 * @param points
+	 * @param bag
+	 * @param play
+	 * @param discard
+	 * @param p1
+	 * @param p2
+	 * @param p3
+	 * @param p4
+	 * @param player
+	 * @param turn
+	 * @param turnCount
+	 * @param board
+	 * @param draw
+	 * @param time
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int p1,
 						int p2, int p3, int p4, int player, boolean turn,
