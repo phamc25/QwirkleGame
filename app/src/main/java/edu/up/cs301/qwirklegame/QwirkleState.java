@@ -1,5 +1,6 @@
 package edu.up.cs301.qwirklegame;
 
+import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
@@ -16,10 +17,10 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  * @version July 2013
  */
 public class QwirkleState extends GameState {
-
+	
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
-
+	
 	// the value of the counter
 	private int addPoints;
 	private int bagTiles;
@@ -29,6 +30,7 @@ public class QwirkleState extends GameState {
 	private int player2Score;
 	private int player3Score;
 	private int player4Score;
+	public int currPlayer;
 	private boolean isTurn;
 	private int turnCounter;
 	private int tilesOnBoard;
@@ -64,6 +66,35 @@ public class QwirkleState extends GameState {
 	 */
 	public QwirkleState(QwirkleState orig) {
 		// set the counter to that of the original
-		this.counter = orig.counter;
+		this.addPoints = orig.addPoints;
+		this.bagTiles = orig.bagTiles;
+		this.tilesPlayed = orig.tilesPlayed;
+		this.tilesDiscarded = orig.tilesDiscarded;
+		this.player1Score = orig.player1Score;
+		this.player2Score = orig.player2Score;
+		this.player3Score = orig.player3Score;
+		this.player4Score = orig.player4Score;
+
+
 	}
+
+	protected boolean placeTile (PlaceTileAction action) {
+		return false;
+	}
+	protected boolean drawTiles (DrawTilesAction action) {
+		return false;
+	}
+	protected boolean selectTiles (SelectTilesAction action) {
+		return false;
+	}
+	protected boolean tradeTiles (TradeTilesAction action) {
+		return false;
+	}
+	protected boolean discardTiles (DiscardTilesAction action) {
+		return false;
+	}
+	protected boolean quitGame (QuitGameAction action) {
+		return true;
+	}
+
 }
