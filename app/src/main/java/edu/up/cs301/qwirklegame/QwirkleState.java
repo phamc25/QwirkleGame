@@ -3,12 +3,12 @@ package edu.up.cs301.qwirklegame;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
 /**
- * This contains the state for the Counter game. The state consist of simply
- * the value of the counter.
+ * This contains the state for the Qwirkle game.
  * 
  * @author Chloe Pham
  * @author Talia Martinez
@@ -16,15 +16,14 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  * @author De'Ante Agleham
  * @author Ryan Murray
  *
- * @version July 2013
+ * @version October 5, 2024
  */
-public class QwirkleState extends GameState implements Serializable {
+public class QwirkleState extends GameState implements Serializable  {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
 
-	// the value of the counter
-
+	// Instance variables
 	private int addPoints;
 	private int bagTiles;
 	private int tilesPlayed;
@@ -36,6 +35,7 @@ public class QwirkleState extends GameState implements Serializable {
 	private List<Tile> drawPile;
 
 
+	private int[] playersScore;
 	private int currPlayer;
 	private boolean isTurn;
 	private int turnCounter;
@@ -48,60 +48,62 @@ public class QwirkleState extends GameState implements Serializable {
 	private static final int MAX_PLAYERS = 4;
 
 	/**
-	 * constructor, initializing the counter value from the parameter
-	 * <p>
-	 * <p>
-	 * the value to which the counter's value should be initialized
+	 * constructor
+	 *
+	 * @param points
+	 * @param bag
+	 * @param play
+	 * @param discard
+	 * @param scores
+	 * @param player
+	 * @param turn
+	 * @param turnCount
+	 * @param board
+	 * @param draw
+	 * @param time
 	 */
-//	public QwirkleState(int points, int bag, int play, int discard, int p1,
-//						int p2, int p3, int p4, int player, boolean turn,
-//						int turnCount, int board, int draw, int time) {
+	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
+						int player, boolean turn, int turnCount, int board, int draw, int time) {
+		addPoints = points;
+		bagTiles = bag;
+		tilesPlayed = play;
+		tilesDiscarded = discard;
+		playersScore = scores;
+		currPlayer = player;
+		isTurn = turn;
+		turnCounter = turnCount;
+		tilesOnBoard = board;
+		drawTiles = draw;
+		timer = time;
+
+
+//	public QwirkleState() {
 //		super();
-//		this.numPlayers = MAX_PLAYERS;
+//		this.numPlayers = MAX_PLAYERS; // Set the number of players
 //
-//		addPoints = points;
-//		bagTiles = bag;
-//		tilesPlayed = play;
-//		tilesDiscarded = discard;
-//		player1Score = p1;
-//		player2Score = p2;
-//		player3Score = p3;
-//		player4Score = p4;
-//		currPlayer = player;
-//		isTurn = turn;
-//		turnCounter = turnCount;
-//		tilesOnBoard = board;
-//		drawTiles = draw;
-//		timer = time;
+//		// Initialize game variables
+//		this.bagTiles = 108; // Total number of tiles in Qwirkle
+//		this.tilesPlayed = 0;
+//		this.tilesDiscarded = 0;
+//		this.tilesOnBoard = 0;
+//		this.timer = 0;
+//
+//		// Initialize player scores
+//		this.playerScores = new int[numPlayers];
+//
+//		// Initialize player hands
+//		this.playerHands = new List<Tile>[numPlayers];
+//		for (int i = 0; i < numPlayers; i++) {
+//			playerHands[i] = new ArrayList<>();
+//		}
+//
+//		// Initialize the board
+//		this.board = new Tile[BOARD_SIZE][BOARD_SIZE];
+//
+//		// Initialize the draw pile and distribute tiles to players
+//		initializeDrawPile();
+//		dealInitialHands();
 //	}
-
-	public QwirkleState() {
-		super();
-		this.numPlayers = MAX_PLAYERS; // Set the number of players
-
-		// Initialize game variables
-		this.bagTiles = 108; // Total number of tiles in Qwirkle
-		this.tilesPlayed = 0;
-		this.tilesDiscarded = 0;
-		this.tilesOnBoard = 0;
-		this.timer = 0;
-
-		// Initialize player scores
-		this.playerScores = new int[numPlayers];
-
-		// Initialize player hands
-		this.playerHands = new List<Tile>[numPlayers];
-		for (int i = 0; i < numPlayers; i++) {
-			playerHands[i] = new ArrayList<>();
-		}
-
-		// Initialize the board
-		this.board = new Tile[BOARD_SIZE][BOARD_SIZE];
-
-		// Initialize the draw pile and distribute tiles to players
-		initializeDrawPile();
-		dealInitialHands();
-	}
 
 	/**
 	 * copy constructor; makes a copy of the original object
@@ -109,16 +111,53 @@ public class QwirkleState extends GameState implements Serializable {
 	 * @param orig the object from which the copy should be made
 	 */
 	public QwirkleState(QwirkleState orig) {
-		// set the counter to that of the original
-		super(orig);
+		// set the variables to original's variables
+		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
 		this.tilesDiscarded = orig.tilesDiscarded;
+		this.playersScore = orig.playersScore;
+		this.currPlayer = orig.currPlayer;
+		this.isTurn = orig.isTurn;
+		this.turnCounter = orig.turnCounter;
 		this.tilesOnBoard = orig.tilesOnBoard;
-		this.timer = orig.timer;
-
-		this.playerScores = orig.playerScores.clone();
 	}
 
+	protected boolean placeTile (PlaceTileAction action) {
+		return false;
+	}
+	protected boolean drawTiles (DrawTilesAction action) {
+		return false;
+	}
+	protected boolean selectTiles (SelectTilesAction action) {
+		return false;
+	}
+	protected boolean tradeTiles (TradeTilesAction action) {
+		return false;
+	}
+	protected boolean discardTiles (DiscardTilesAction action) {
+		return false;
+	}
+	protected boolean quitGame (QuitGameAction action) {
+		return true;
+	}
 
+	/**
+	 * toString method that describes the state of the game as a string
+	 */
+	public String toString(GameState currState) {
+		String state = "Current Game State: \n";	// not complete yet, a placeholder
+		state += "Tiles left in bag: " + bagTiles + "\n";
+		state += "Tiles played: " + tilesPlayed + "\n";
+		state += "Tiles discarded: " + tilesDiscarded + "\n";
+		for(int i = 0; i < playersScore.length; i++){
+			state += "Player " + i + " score: " +playersScore[i] + "\n";
+		}
+		state += "Current player: " + currPlayer + "\n";
+		state += "Is player's turn: " + isTurn + "\n";
+		state += "Turn number: " + turnCounter + "\n";
+		state += "Tiles on board: " + tilesOnBoard + "\n";
+
+		return state;
+	}
 }
