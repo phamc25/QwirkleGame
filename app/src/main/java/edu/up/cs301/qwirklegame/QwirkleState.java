@@ -5,8 +5,7 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
 /**
- * This contains the state for the Counter game. The state consist of simply
- * the value of the counter.
+ * This contains the state for the Qwirkle game.
  * 
  * @author Chloe Pham
  * @author Talia Martinez
@@ -14,22 +13,19 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  * @author De'Ante Agleham
  * @author Ryan Murray
  *
- * @version July 2013
+ * @version October 5, 2024
  */
 public class QwirkleState extends GameState {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
 
-	// the value of the counter
+	// Instance variables
 	private int addPoints;
 	private int bagTiles;
 	private int tilesPlayed;
 	private int tilesDiscarded;
-	private int player1Score;
-	private int player2Score;
-	private int player3Score;
-	private int player4Score;
+	private int[] playersScore;
 	private int currPlayer;
 	private boolean isTurn;
 	private int turnCounter;
@@ -44,10 +40,7 @@ public class QwirkleState extends GameState {
 	 * @param bag
 	 * @param play
 	 * @param discard
-	 * @param p1
-	 * @param p2
-	 * @param p3
-	 * @param p4
+	 * @param scores
 	 * @param player
 	 * @param turn
 	 * @param turnCount
@@ -55,17 +48,13 @@ public class QwirkleState extends GameState {
 	 * @param draw
 	 * @param time
 	 */
-	public QwirkleState(int points, int bag, int play, int discard, int p1,
-						int p2, int p3, int p4, int player, boolean turn,
-						int turnCount, int board, int draw, int time) {
+	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
+						int player, boolean turn, int turnCount, int board, int draw, int time) {
 		addPoints = points;
 		bagTiles = bag;
 		tilesPlayed = play;
 		tilesDiscarded = discard;
-		player1Score = p1;
-		player2Score = p2;
-		player3Score = p3;
-		player4Score = p4;
+		playersScore = scores;
 		currPlayer = player;
 		isTurn = turn;
 		turnCounter = turnCount;
@@ -80,17 +69,16 @@ public class QwirkleState extends GameState {
 	 * @param orig the object from which the copy should be made
 	 */
 	public QwirkleState(QwirkleState orig) {
-		// set the counter to that of the original
+		// set the variables to original's variables
 		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
 		this.tilesDiscarded = orig.tilesDiscarded;
-		this.player1Score = orig.player1Score;
-		this.player2Score = orig.player2Score;
-		this.player3Score = orig.player3Score;
-		this.player4Score = orig.player4Score;
-
-
+		this.playersScore = orig.playersScore;
+		this.currPlayer = orig.currPlayer;
+		this.isTurn = orig.isTurn;
+		this.turnCounter = orig.turnCounter;
+		this.tilesOnBoard = orig.tilesOnBoard;
 	}
 
 	protected boolean placeTile (PlaceTileAction action) {
@@ -112,4 +100,13 @@ public class QwirkleState extends GameState {
 		return true;
 	}
 
+	/**
+	 * toString method that describes the state of the game as a string
+	 */
+	public String toString(GameState currState) {
+		String state = "Current Game State: \n";	// not complete yet, a placeholder
+		state += "Tiles left in bag: " + bagTiles + "\n";
+
+		return state;
+	}
 }

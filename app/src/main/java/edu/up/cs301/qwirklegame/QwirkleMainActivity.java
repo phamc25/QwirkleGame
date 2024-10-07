@@ -83,7 +83,7 @@ public class QwirkleMainActivity extends GameMainActivity {
 	 */
 	@Override
 	public LocalGame createLocalGame(GameState state) {
-		if (state == null) state = new QwirkleState(0,0,0,0,0,0,0,0,0,true,0,0,0,0);
+		if (state == null) state = new QwirkleState(0,0,0,0, new int[]{0, 0, 0, 0},0,true,0,0,0,0);
 		return new QwirkleLocalGame(state);
 	}
 
