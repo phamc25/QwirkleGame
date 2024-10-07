@@ -64,8 +64,8 @@ public class QwirkleLocalGame extends LocalGame {
 			QwirkleMoveAction cma = (QwirkleMoveAction)action;
 
 			// Update the counter values based upon the action
-			int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
-			gameState.setCounter(result);
+			//int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
+			//gameState.setCounter(result);
 			
 			// denote that this was a legal/successful move
 			return true;
@@ -99,9 +99,9 @@ public class QwirkleLocalGame extends LocalGame {
 	protected String checkIfGameOver() {
 		
 		// get the value of the counter
-		int counterVal = this.gameState.getCounter();
+		//int counterVal = this.gameState.getCounter();
 		
-		if (counterVal >= TARGET_MAGNITUDE) {
+		/*if (counterVal >= TARGET_MAGNITUDE) {
 			// counter has reached target magnitude, so return message that
 			// player 0 has won.
 			return playerNames[0]+" has won.";
@@ -120,8 +120,9 @@ public class QwirkleLocalGame extends LocalGame {
 			// game is still between the two limit: return null, as the game
 			// is not yet over
 			return null;
-		}
+		}*/
 
-	}
+        return null;
+    }
 
 }// class QwirkleLocalGame

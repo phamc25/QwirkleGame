@@ -55,7 +55,7 @@ public class QwirkleState extends GameState {
 		turnCount = turnCounter;
 		board = tilesOnBoard;
 		tiles = drawTiles;
-	}
+	}							
 
 	/**
 	 * copy constructor; makes a copy of the original object
