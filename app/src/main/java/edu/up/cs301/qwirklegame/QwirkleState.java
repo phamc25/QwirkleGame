@@ -106,6 +106,15 @@ public class QwirkleState extends GameState {
 	public String toString(GameState currState) {
 		String state = "Current Game State: \n";	// not complete yet, a placeholder
 		state += "Tiles left in bag: " + bagTiles + "\n";
+		state += "Tiles played: " + tilesPlayed + "\n";
+		state += "Tiles discarded: " + tilesDiscarded + "\n";
+		for(int i = 0; i < playersScore.length; i++){
+			state += "Player " + i + " score: " +playersScore[i] + "\n";
+		}
+		state += "Current player: " + currPlayer + "\n";
+		state += "Is player's turn: " + isTurn + "\n";
+		state += "Turn number: " + turnCounter + "\n";
+		state += "Tiles on board: " + tilesOnBoard + "\n";
 
 		return state;
 	}
