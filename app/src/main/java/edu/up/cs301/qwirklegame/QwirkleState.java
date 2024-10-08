@@ -1,8 +1,5 @@
 package edu.up.cs301.qwirklegame;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -18,7 +15,7 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  *
  * @version October 5, 2024
  */
-public class QwirkleState extends GameState implements Serializable  {
+public class QwirkleState extends GameState {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
@@ -28,13 +25,6 @@ public class QwirkleState extends GameState implements Serializable  {
 	private int bagTiles;
 	private int tilesPlayed;
 	private int tilesDiscarded;
-
-	private int[] playerScores;
-	private List<Tile>[] playerHands;
-	private Tile[][] board;
-	private List<Tile> drawPile;
-
-
 	private int[] playersScore;
 	private int currPlayer;
 	private boolean isTurn;
@@ -42,6 +32,8 @@ public class QwirkleState extends GameState implements Serializable  {
 	private int tilesOnBoard;
 	private int drawTiles;
 	private int timer;
+	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag - 108
+	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 
 	private static final int BOARD_SIZE = 20;
 	private static final int HAND_SIZE = 6;
@@ -63,47 +55,32 @@ public class QwirkleState extends GameState implements Serializable  {
 	 * @param time
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
-						int player, boolean turn, int turnCount, int board, int draw, int time) {
-		addPoints = points;
-		bagTiles = bag;
-		tilesPlayed = play;
-		tilesDiscarded = discard;
-		playersScore = scores;
-		currPlayer = player;
-		isTurn = turn;
-		turnCounter = turnCount;
-		tilesOnBoard = board;
-		drawTiles = draw;
-		timer = time;
+						int player, boolean turn, int turnCount, int board, int draw,
+						int time, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
+		this.addPoints = points;
+		this.bagTiles = bag;
+		this.tilesPlayed = play;
+		this.tilesDiscarded = discard;
+		this.playersScore = scores;
+		this.currPlayer = player;
+		this.isTurn = turn;
+		this.turnCounter = turnCount;
+		this.tilesOnBoard = board;
+		this.drawTiles = draw;
+		this.timer = time;
 
+		// Array for the tiles in the bag
+		this.tilesInBag = new ArrayList<>();
+		for (QwirkleTiles tile : tileBag) {
+			this.tilesInBag.add(new QwirkleTiles(tile)); // write copy constructor for tile
+		}
 
-//	public QwirkleState() {
-//		super();
-//		this.numPlayers = MAX_PLAYERS; // Set the number of players
-//
-//		// Initialize game variables
-//		this.bagTiles = 108; // Total number of tiles in Qwirkle
-//		this.tilesPlayed = 0;
-//		this.tilesDiscarded = 0;
-//		this.tilesOnBoard = 0;
-//		this.timer = 0;
-//
-//		// Initialize player scores
-//		this.playerScores = new int[numPlayers];
-//
-//		// Initialize player hands
-//		this.playerHands = new List<Tile>[numPlayers];
-//		for (int i = 0; i < numPlayers; i++) {
-//			playerHands[i] = new ArrayList<>();
-//		}
-//
-//		// Initialize the board
-//		this.board = new Tile[BOARD_SIZE][BOARD_SIZE];
-//
-//		// Initialize the draw pile and distribute tiles to players
-//		initializeDrawPile();
-//		dealInitialHands();
-//	}
+		// Array for the tiles in the players' hands
+		this.tilesInHands = new ArrayList[numPlayers];
+		for (int i = 0; i < numPlayers; i++) {
+			this.tilesInHands[i] = new ArrayList<>();
+		}
+	}
 
 	/**
 	 * copy constructor; makes a copy of the original object
