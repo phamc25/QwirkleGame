@@ -121,13 +121,25 @@ public class QwirkleState extends GameState {
 	}
 
 	protected boolean placeTile (PlaceTileAction action) {
-		return false;
+		if (isTurn) {
+
+		}
+		else {
+			return false;
+		}
 	}
-	protected boolean selectTiles (SelectTilesAction action) {
-		return false;
+	protected boolean selectTiles (SelectTilesAction action, QwirkleTiles tile) {
+		if (isTurn) {
+			return true;
+		}
 	}
 	protected boolean discardTiles (DiscardTilesAction action) {
-		return false;
+		if (isTurn) {
+
+		}
+		else {
+			return false;
+		}
 	}
 	// they're able to quit the game whenever
 	protected boolean quitGame (QuitGameAction action) {

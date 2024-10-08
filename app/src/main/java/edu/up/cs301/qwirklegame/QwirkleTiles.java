@@ -39,4 +39,8 @@ public class QwirkleTiles {
     public Color getColor() {
         return color;
     }
+
+    public boolean isValidTile(QwirkleTiles tile) {
+        return true;
+    }
 }
