@@ -96,6 +96,7 @@ public class QwirkleState extends GameState {
 	protected boolean discardTiles (DiscardTilesAction action) {
 		return false;
 	}
+	// they're able to quit the game whenever
 	protected boolean quitGame (QuitGameAction action) {
 		return true;
 	}
