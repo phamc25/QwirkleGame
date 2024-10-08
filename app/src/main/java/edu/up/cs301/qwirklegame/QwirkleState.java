@@ -1,5 +1,9 @@
 package edu.up.cs301.qwirklegame;
 
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -53,6 +57,8 @@ public class QwirkleState extends GameState {
 	 * @param board
 	 * @param draw
 	 * @param time
+	 * @param tileBag
+	 * @param numPlayers
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
 						int player, boolean turn, int turnCount, int board, int draw,
@@ -88,7 +94,7 @@ public class QwirkleState extends GameState {
 	 * @param orig the object from which the copy should be made
 	 */
 	public QwirkleState(QwirkleState orig) {
-		// set the variables to original's variables
+		// Set the variables to original's variables
 		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
@@ -98,22 +104,46 @@ public class QwirkleState extends GameState {
 		this.isTurn = orig.isTurn;
 		this.turnCounter = orig.turnCounter;
 		this.tilesOnBoard = orig.tilesOnBoard;
+		this.drawTiles = orig.drawTiles;
+		this.timer = orig.timer;
+
+		// Array for tiles in bag for deep copy
+		this.tilesInBag = new ArrayList<>();
+		for (QwirkleTiles tile : orig.tilesInBag) {
+			this.tilesInBag.add(new QwirkleTiles(tile));
+		}
+
+		// Loop for arraylist (number of players)
+		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
+		for (int i = 0; i < orig.tilesInHands.length; i++) {
+			this.tilesInHands[i] = new ArrayList<>();
+			// Loop for tiles in players' hands
+			for (QwirkleTiles tile : orig.tilesInHands[i]) {
+				this.tilesInHands[i].add(new QwirkleTiles(tile));
+			}
+		}
 	}
 
 	protected boolean placeTile (PlaceTileAction action) {
-		return false;
+		if (isTurn) {
+
+		}
+		else {
+			return false;
+		}
 	}
-	protected boolean drawTiles (DrawTilesAction action) {
-		return false;
-	}
-	protected boolean selectTiles (SelectTilesAction action) {
-		return false;
-	}
-	protected boolean tradeTiles (TradeTilesAction action) {
-		return false;
+	protected boolean selectTiles (SelectTilesAction action, QwirkleTiles tile) {
+		if (isTurn) {
+			return true;
+		}
 	}
 	protected boolean discardTiles (DiscardTilesAction action) {
-		return false;
+		if (isTurn) {
+
+		}
+		else {
+			return false;
+		}
 	}
 	// they're able to quit the game whenever
 	protected boolean quitGame (QuitGameAction action) {
@@ -135,7 +165,6 @@ public class QwirkleState extends GameState {
 		state += "Is player's turn: " + isTurn + "\n";
 		state += "Turn number: " + turnCounter + "\n";
 		state += "Tiles on board: " + tilesOnBoard + "\n";
-
 		return state;
 	}
 }

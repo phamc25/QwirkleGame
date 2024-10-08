@@ -20,10 +20,17 @@ public class QwirkleTiles {
         RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE
     }
 
-    // constructor
+    // Constructor
     public QwirkleTiles (Shape shape, Color color) {
         this.shape = shape;
         this.color = color;
+    }
+
+    // Copy constructor for tiles
+    public QwirkleTiles(QwirkleTiles orig) {
+        this.shape = orig.shape;
+        this.color = orig.color;
+        this.bitMap = Bitmap.createBitmap(orig.bitMap);
     }
 
     public Shape getShape() {
@@ -31,5 +38,9 @@ public class QwirkleTiles {
     }
     public Color getColor() {
         return color;
+    }
+
+    public boolean isValidTile(QwirkleTiles tile) {
+        return true;
     }
 }
