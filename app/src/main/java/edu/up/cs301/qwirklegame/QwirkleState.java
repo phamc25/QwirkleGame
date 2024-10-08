@@ -106,18 +106,16 @@ public class QwirkleState extends GameState {
 		// Array for tiles in bag for deep copy
 		this.tilesInBag = new ArrayList<>();
 		for (QwirkleTiles tile : orig.tilesInBag) {
-			this.tilesInBag.add(new QwirkleTiles(tile)); // write copy constructor for tiles, pass in after
+			this.tilesInBag.add(new QwirkleTiles(tile));
 		}
 
-		// Array for the tiles in hands for deep copy
-		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
-
 		// Loop for arraylist (number of players)
+		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
 		for (int i = 0; i < orig.tilesInHands.length; i++) {
-			this.tilesInHands[i] = new ArrayList<>();	// wait for tile class completion
+			this.tilesInHands[i] = new ArrayList<>();
 			// Loop for tiles in players' hands
 			for (QwirkleTiles tile : orig.tilesInHands[i]) {
-				this.tilesInHands[i].add(new QwirkleTiles(tile));  	// write copy constructor for tiles, pass in after
+				this.tilesInHands[i].add(new QwirkleTiles(tile));
 			}
 		}
 	}
@@ -125,13 +123,7 @@ public class QwirkleState extends GameState {
 	protected boolean placeTile (PlaceTileAction action) {
 		return false;
 	}
-	protected boolean drawTiles (DrawTilesAction action) {
-		return false;
-	}
 	protected boolean selectTiles (SelectTilesAction action) {
-		return false;
-	}
-	protected boolean tradeTiles (TradeTilesAction action) {
 		return false;
 	}
 	protected boolean discardTiles (DiscardTilesAction action) {
@@ -157,6 +149,7 @@ public class QwirkleState extends GameState {
 		state += "Is player's turn: " + isTurn + "\n";
 		state += "Turn number: " + turnCounter + "\n";
 		state += "Tiles on board: " + tilesOnBoard + "\n";
+//		state += "Tiles in Player 1 Hands: "
 		return state;
 	}
 }
