@@ -1,5 +1,9 @@
 package edu.up.cs301.qwirklegame;
 
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -32,6 +36,8 @@ public class QwirkleState extends GameState {
 	private int tilesOnBoard;
 	private int drawTiles;
 	private int timer;
+	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag - 108
+	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 
 	/**
 	 * constructor
@@ -47,20 +53,35 @@ public class QwirkleState extends GameState {
 	 * @param board
 	 * @param draw
 	 * @param time
+	 * @param tileBag
+	 * @param numPlayers
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
-						int player, boolean turn, int turnCount, int board, int draw, int time) {
-		addPoints = points;
-		bagTiles = bag;
-		tilesPlayed = play;
-		tilesDiscarded = discard;
-		playersScore = scores;
-		currPlayer = player;
-		isTurn = turn;
-		turnCounter = turnCount;
-		tilesOnBoard = board;
-		drawTiles = draw;
-		timer = time;
+						int player, boolean turn, int turnCount, int board, int draw,
+						int time, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
+		this.addPoints = points;
+		this.bagTiles = bag;
+		this.tilesPlayed = play;
+		this.tilesDiscarded = discard;
+		this.playersScore = scores;
+		this.currPlayer = player;
+		this.isTurn = turn;
+		this.turnCounter = turnCount;
+		this.tilesOnBoard = board;
+		this.drawTiles = draw;
+		this.timer = time;
+
+		// Array for the tiles in the bag
+		this.tilesInBag = new ArrayList<>();
+		for (QwirkleTiles tile : tileBag) {
+			this.tilesInBag.add(new QwirkleTiles(tile)); // write copy constructor for tile
+		}
+
+		// Array for the tiles in the players' hands
+		this.tilesInHands = new ArrayList[numPlayers];
+		for (int i = 0; i < numPlayers; i++) {
+			this.tilesInHands[i] = new ArrayList<>();
+		}
 	}
 
 	/**
@@ -69,7 +90,7 @@ public class QwirkleState extends GameState {
 	 * @param orig the object from which the copy should be made
 	 */
 	public QwirkleState(QwirkleState orig) {
-		// set the variables to original's variables
+		// Set the variables to original's variables
 		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
@@ -79,6 +100,26 @@ public class QwirkleState extends GameState {
 		this.isTurn = orig.isTurn;
 		this.turnCounter = orig.turnCounter;
 		this.tilesOnBoard = orig.tilesOnBoard;
+		this.drawTiles = orig.drawTiles;
+		this.timer = orig.timer;
+
+		// Array for tiles in bag for deep copy
+		this.tilesInBag = new ArrayList<>();
+		for (QwirkleTiles tile : orig.tilesInBag) {
+			this.tilesInBag.add(new QwirkleTiles(tile)); // write copy constructor for tiles, pass in after
+		}
+
+		// Array for the tiles in hands for deep copy
+		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
+
+		// Loop for arraylist (number of players)
+		for (int i = 0; i < orig.tilesInHands.length; i++) {
+			this.tilesInHands[i] = new ArrayList<>();	// wait for tile class completion
+			// Loop for tiles in players' hands
+			for (QwirkleTiles tile : orig.tilesInHands[i]) {
+				this.tilesInHands[i].add(new QwirkleTiles(tile));  	// write copy constructor for tiles, pass in after
+			}
+		}
 	}
 
 	protected boolean placeTile (PlaceTileAction action) {
@@ -116,7 +157,6 @@ public class QwirkleState extends GameState {
 		state += "Is player's turn: " + isTurn + "\n";
 		state += "Turn number: " + turnCounter + "\n";
 		state += "Tiles on board: " + tilesOnBoard + "\n";
-
 		return state;
 	}
 }
