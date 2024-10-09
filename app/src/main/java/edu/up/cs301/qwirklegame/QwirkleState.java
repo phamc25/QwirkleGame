@@ -28,7 +28,6 @@ public class QwirkleState extends GameState {
 	private int addPoints;
 	private int bagTiles;
 	private int tilesPlayed;
-	private int tilesDiscarded;
 	private int[] playersScore;
 	private int currPlayer;
 	private boolean isTurn;
@@ -36,10 +35,11 @@ public class QwirkleState extends GameState {
 	private int tilesOnBoard;
 	private int drawTiles;
 	private int timer;
-	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag - 108
-	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 	private int currTile;
+	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag: 108
+	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 
+	// Static variables for common values
 	private static final int BOARD_SIZE = 20;
 	private static final int HAND_SIZE = 6;
 	private static final int MAX_PLAYERS = 4;
@@ -50,7 +50,6 @@ public class QwirkleState extends GameState {
 	 * @param points
 	 * @param bag
 	 * @param play
-	 * @param discard
 	 * @param scores
 	 * @param player
 	 * @param turn
@@ -61,13 +60,12 @@ public class QwirkleState extends GameState {
 	 * @param tileBag
 	 * @param numPlayers
 	 */
-	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
+	public QwirkleState(int points, int bag, int play, int[] scores,
 						int player, boolean turn, int turnCount, int board, int draw,
-						int time, ArrayList<QwirkleTiles> tileBag, int numPlayers, int cTile) {
+						int time, int cTile, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
 		this.addPoints = points;
 		this.bagTiles = bag;
 		this.tilesPlayed = play;
-		this.tilesDiscarded = discard;
 		this.playersScore = scores;
 		this.currPlayer = player;
 		this.isTurn = turn;
@@ -75,11 +73,12 @@ public class QwirkleState extends GameState {
 		this.tilesOnBoard = board;
 		this.drawTiles = draw;
 		this.timer = time;
+		this.currTile = cTile;
 
 		// Array for the tiles in the bag
 		this.tilesInBag = new ArrayList<>();
 		for (QwirkleTiles tile : tileBag) {
-			this.tilesInBag.add(new QwirkleTiles(tile)); // write copy constructor for tile
+			this.tilesInBag.add(new QwirkleTiles(tile));
 		}
 
 		// Array for the tiles in the players' hands
@@ -87,8 +86,6 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < numPlayers; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
-
-		this.currTile = cTile;
 	}
 
 	/**
@@ -101,7 +98,6 @@ public class QwirkleState extends GameState {
 		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
-		this.tilesDiscarded = orig.tilesDiscarded;
 		this.playersScore = orig.playersScore;
 		this.currPlayer = orig.currPlayer;
 		this.isTurn = orig.isTurn;
@@ -127,6 +123,9 @@ public class QwirkleState extends GameState {
 		}
 	}
 
+	/**
+	 * places selected tile onto the board
+	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		if (isTurn) {
 			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
@@ -137,26 +136,67 @@ public class QwirkleState extends GameState {
 			return false;
 		}
 	}
+
+	/**
+	 *  Selects the tile
+	 */
 	protected boolean selectTiles (SelectTilesAction action, QwirkleTiles tile) {
 		if (isTurn) {
+			tile.setSelected(true);  // Mark the tile as selected
+			currTile = tilesInHands[currPlayer].indexOf(tile);	// Set the variable to the current tile
 			return true;
 		}
+		return false;
 	}
+
+	/**
+	 *  Discards tiles that were selected
+	 */
 	protected boolean discardTiles (DiscardTilesAction action) {
 		if (isTurn) {
+			// Removes the selected tiles from the current player's hand
+			tilesInHands[currPlayer].removeAll(getSelectedTiles());
 
+			// No selected tiles, return
+			if (getSelectedTiles().isEmpty()) {
+				return false;
+			}
+
+			// Loops through the current player's hand and replaces the removed tiles
+			for(int i = 0; i < getSelectedTiles().size(); i++) {
+				if (!(tilesInBag.isEmpty())) {
+					tilesInHands[currPlayer].add(tilesInBag.remove(0));
+				}
+				else break;
+			}
+			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
-	// they're able to quit the game whenever
+
+	/**
+	 *  Quits the game when this action made
+	 */
 	protected boolean quitGame (QuitGameAction action) {
 		return true;
 	}
 
+	/**
+	 * This method returns an ArrayList of Qwirkle tile objects
+	 * that represent the selected tiles for discarding
+	 */
+	public ArrayList<QwirkleTiles> getSelectedTiles() {
+		// The ArrayList of selected tiles
+		ArrayList<QwirkleTiles> selectedTiles = new ArrayList<>();
+		for (QwirkleTiles tile : tilesInHands[currPlayer]) {
+			if (tile.getSelected()) {
+				selectedTiles.add(tile);
+			}
+		}
+		return selectedTiles;
+	}
 
-	// getter methods
+	// Getter methods
 	public int getAddPoints() {
 		return addPoints;
 	}
@@ -167,6 +207,9 @@ public class QwirkleState extends GameState {
 		return tilesOnBoard;
 	}
 
+	// Setter methods
+	public void setAddPoints(int points) { this.addPoints = points; }
+	public void setCurrPlayer(int player) { this.currPlayer = player; }
 
 
 	/**
@@ -176,7 +219,6 @@ public class QwirkleState extends GameState {
 		String state = "Current Game State: \n";	// not complete yet, a placeholder
 		state += "Tiles left in bag: " + bagTiles + "\n";
 		state += "Tiles played: " + tilesPlayed + "\n";
-		state += "Tiles discarded: " + tilesDiscarded + "\n";
 		for(int i = 0; i < playersScore.length; i++){
 			state += "Player " + i + " score: " +playersScore[i] + "\n";
 		}
@@ -187,3 +229,12 @@ public class QwirkleState extends GameState {
 		return state;
 	}
 }
+
+/**
+ * External Citation
+ *
+ * Source: PigGame code from CS371 Lab
+ * Usage: Used as a reference for instance variables and actions
+ *
+ * Date: October 5, 2024
+ */

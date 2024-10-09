@@ -47,7 +47,7 @@ public class QwirkleLocalGame extends LocalGame {
 	public QwirkleLocalGame(GameState state) {
 		// initialize the game state, with the counter value starting at 0
 		if (! (state instanceof QwirkleState)) {
-			state = new QwirkleState(0,108,0,0,new int[]{0,0,0,0},0,true,0,0,0,0,new ArrayList<>(), 4);
+			state = new QwirkleState(0,108,0,new int[]{0,0,0,0},0,true,0,0,0,0,-1,new ArrayList<>(),4);
 		}
 		this.gameState = (QwirkleState)state;
 		super.state = state;
