@@ -96,4 +96,5 @@ public abstract class GameState extends GameInfo {
     }
 
 
+    public abstract String toString(GameState currState);
 }

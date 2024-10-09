@@ -1,10 +1,8 @@
 package edu.up.cs301.qwirklegame;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
@@ -217,6 +215,7 @@ public class QwirkleState extends GameState {
 	/**
 	 * toString method that describes the state of the game as a string
 	 */
+	@Override
 	public String toString(GameState currState) {
 		String state = "Current Game State: \n";	// not complete yet, a placeholder
 		state += "Tiles left in bag: " + bagTiles + "\n";
