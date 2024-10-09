@@ -3,7 +3,7 @@ package edu.up.cs301.qwirklegame;
 import android.graphics.Bitmap;
 
 /**
- * This contains the object for Qwirkle Tiles
+ * This contains the class for Qwirkle Tiles
  *
  * @author Talia Martinez
  * @author Chloe Pham
@@ -18,7 +18,7 @@ public class QwirkleTiles {
     }
     private Shape shape;
     private Color color;
-    private Bitmap tileImage;
+    private Bitmap tileImage;  //don't do this here.  It will break network play
     private boolean isSelected;
 
     // For each color of tile

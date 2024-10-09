@@ -60,6 +60,8 @@ public class QwirkleState extends GameState {
 	 * @param tileBag
 	 * @param numPlayers
 	 */
+
+	//TODO:  default ctor should not have any parameters
 	public QwirkleState(int points, int bag, int play, int[] scores,
 						int player, boolean turn, int turnCount, int board, int draw,
 						int time, int cTile, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
@@ -77,7 +79,7 @@ public class QwirkleState extends GameState {
 
 		// Array for the tiles in the bag
 		this.tilesInBag = new ArrayList<>();
-		for (QwirkleTiles tile : tileBag) {
+		for (QwirkleTiles tile : tileBag) {  //where does tileBag come from???
 			this.tilesInBag.add(new QwirkleTiles(tile));
 		}
 
@@ -98,7 +100,7 @@ public class QwirkleState extends GameState {
 		this.addPoints = orig.addPoints;
 		this.bagTiles = orig.bagTiles;
 		this.tilesPlayed = orig.tilesPlayed;
-		this.playersScore = orig.playersScore;
+		this.playersScore = orig.playersScore;  //need to make deep copy of this
 		this.currPlayer = orig.currPlayer;
 		this.isTurn = orig.isTurn;
 		this.turnCounter = orig.turnCounter;
@@ -129,7 +131,10 @@ public class QwirkleState extends GameState {
 	protected boolean placeTile (PlaceTileAction action) {
 		if (isTurn) {
 			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
+			//TODO:  if (tile == null)
 			tilesOnBoard++;
+
+			//TODO:  put the the tile on the board in the specified location
 			return true;
 		}
 		else {
@@ -153,7 +158,7 @@ public class QwirkleState extends GameState {
 	 *  Discards tiles that were selected
 	 */
 	protected boolean discardTiles (DiscardTilesAction action) {
-		if (isTurn) {
+		if (isTurn) { //This doesn't work.  You see if the current player turn === action's player id
 			// Removes the selected tiles from the current player's hand
 			tilesInHands[currPlayer].removeAll(getSelectedTiles());
 

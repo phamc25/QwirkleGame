@@ -4,6 +4,9 @@ import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 
 public class SelectTilesAction extends GameAction {
+
+    //TODO: what tile is being selected??
+
     /**
      * constructor for GameAction
      *
