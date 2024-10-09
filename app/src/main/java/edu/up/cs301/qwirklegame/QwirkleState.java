@@ -25,17 +25,17 @@ public class QwirkleState extends GameState {
 	private static final long serialVersionUID = 7737393762469851826L;
 
 	// Instance variables
-	private int addPoints;
+	private int addPoints;	// At the end of every turn, scores is calculated to be added
 //	private int bagTiles;
 //	private int tilesPlayed;
-	private int[] playersScore;
-	private int currPlayer;
-	private boolean isTurn;
+	private int[] playersScore;	// An array to hold player's scores
+	private int currPlayer;	// An integer that represents the current player playing
+	private boolean isTurn;	// Is it the player's turn?
 //	private int turnCounter;
 //	private int tilesOnBoard;
-	private int drawTiles;
-	private int timer;
-	private int currTile;
+	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
+	private int timer;	// 2 minute timer limit for human player moves
+	private int currTile;	// Represents the current tile index for tilesInHands
 	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag: 108
 	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 
