@@ -129,7 +129,7 @@ public class QwirkleState extends GameState {
 
 	protected boolean placeTile (PlaceTileAction action) {
 		if (isTurn) {
-			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile);
+			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
 			tilesOnBoard++;
 			return true;
 		}
