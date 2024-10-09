@@ -146,6 +146,20 @@ public class QwirkleState extends GameState {
 		return true;
 	}
 
+
+	// getter methods
+	public int getAddPoints() {
+		return addPoints;
+	}
+	public int getCurrPlayer() {
+		return currPlayer;
+	}
+	public int getNumTilesOnBoard() {
+		return tilesOnBoard;
+	}
+
+
+
 	/**
 	 * toString method that describes the state of the game as a string
 	 */
