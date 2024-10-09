@@ -38,6 +38,11 @@ public class QwirkleState extends GameState {
 	private int timer;
 	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag - 108
 	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
+	private int currTile;
+
+	private static final int BOARD_SIZE = 20;
+	private static final int HAND_SIZE = 6;
+	private static final int MAX_PLAYERS = 4;
 
 	/**
 	 * constructor
@@ -58,7 +63,7 @@ public class QwirkleState extends GameState {
 	 */
 	public QwirkleState(int points, int bag, int play, int discard, int[] scores,
 						int player, boolean turn, int turnCount, int board, int draw,
-						int time, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
+						int time, ArrayList<QwirkleTiles> tileBag, int numPlayers, int cTile) {
 		this.addPoints = points;
 		this.bagTiles = bag;
 		this.tilesPlayed = play;
@@ -82,6 +87,8 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < numPlayers; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
+
+		this.currTile = cTile;
 	}
 
 	/**
@@ -122,7 +129,9 @@ public class QwirkleState extends GameState {
 
 	protected boolean placeTile (PlaceTileAction action) {
 		if (isTurn) {
-
+			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
+			tilesOnBoard++;
+			return true;
 		}
 		else {
 			return false;
@@ -175,7 +184,6 @@ public class QwirkleState extends GameState {
 		state += "Is player's turn: " + isTurn + "\n";
 		state += "Turn number: " + turnCounter + "\n";
 		state += "Tiles on board: " + tilesOnBoard + "\n";
-//		state += "Tiles in Player 1 Hands: "
 		return state;
 	}
 }
