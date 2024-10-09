@@ -127,6 +127,12 @@ public class QwirkleState extends GameState {
 		}
 	}
 
+	/**
+	 * places selected tile onto the board
+	 *
+	 * @param action
+	 * @return
+	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		if (isTurn) {
 			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
