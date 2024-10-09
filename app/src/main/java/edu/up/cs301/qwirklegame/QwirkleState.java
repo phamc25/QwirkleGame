@@ -26,13 +26,13 @@ public class QwirkleState extends GameState {
 
 	// Instance variables
 	private int addPoints;
-	private int bagTiles;
-	private int tilesPlayed;
+//	private int bagTiles;
+//	private int tilesPlayed;
 	private int[] playersScore;
 	private int currPlayer;
 	private boolean isTurn;
-	private int turnCounter;
-	private int tilesOnBoard;
+//	private int turnCounter;
+//	private int tilesOnBoard;
 	private int drawTiles;
 	private int timer;
 	private int currTile;
@@ -47,41 +47,38 @@ public class QwirkleState extends GameState {
 	/**
 	 * constructor
 	 *
-	 * @param points
-	 * @param bag
-	 * @param play
-	 * @param scores
-	 * @param player
-	 * @param turn
-	 * @param turnCount
-	 * @param board
-	 * @param draw
-	 * @param time
-	 * @param tileBag
-	 * @param numPlayers
+//	 * @param points
+//	 * @param bag
+//	 * @param play
+//	 * @param scores
+//	 * @param player
+//	 * @param turn
+//	 * @param turnCount
+//	 * @param board
+//	 * @param draw
+//	 * @param time
+//	 * @param tileBag
+//	 * @param numPlayers
 	 */
 
 	//TODO:  default ctor should not have any parameters
-	public QwirkleState(int points, int bag, int play, int[] scores,
-						int player, boolean turn, int turnCount, int board, int draw,
-						int time, int cTile, ArrayList<QwirkleTiles> tileBag, int numPlayers) {
-		this.addPoints = points;
-		this.bagTiles = bag;
-		this.tilesPlayed = play;
-		this.playersScore = scores;
-		this.currPlayer = player;
-		this.isTurn = turn;
-		this.turnCounter = turnCount;
-		this.tilesOnBoard = board;
-		this.drawTiles = draw;
-		this.timer = time;
-		this.currTile = cTile;
+	public QwirkleState() {
+		this.addPoints = 0;	// No points added to score yet
+//		this.bagTiles = bag;
+//		this.tilesPlayed = play;
+		this.playersScore = new int[4];	// Empty array of all player's scores
+		this.currPlayer = -1;	// No current player is decided yet at the beginning
+		this.isTurn = false;	// Not anyone's turn yet
+//		this.turnCounter = turnCount;
+//		this.tilesOnBoard = board;
+		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
+		this.timer = -1;	// Timer not initialized yet
+		this.currTile = -1;	// Current tile selected not initialized yet
 
-		// Array for the tiles in the bag
-		this.tilesInBag = new ArrayList<>();
-		for (QwirkleTiles tile : tileBag) {  //where does tileBag come from???
-			this.tilesInBag.add(new QwirkleTiles(tile));
-		}
+		this.tilesInBag = new ArrayList<QwirkleTiles>(108);	// Initial array of 108 tiles
+//		for (QwirkleTiles tile : tileBag) {  //where does tileBag come from???
+//			this.tilesInBag.add(new QwirkleTiles(tile));
+//		}
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
