@@ -24,18 +24,14 @@ public class QwirkleState extends GameState {
 
 	// Instance variables
 	private int addPoints;	// At the end of every turn, scores is calculated to be added
-//	private int bagTiles;
-//	private int tilesPlayed;
 	private int[] playersScore;	// An array to hold player's scores
 	private int currPlayer;	// An integer that represents the current player playing
-//	private boolean isTurn;	// Is it the player's turn?
-//	private int turnCounter;
-//	private int tilesOnBoard;
 	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
 	private int timer;	// 2 minute timer limit for human player moves
 	private int currTile;	// Represents the current tile index for tilesInHands
 	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag: 108
 	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
+	private Board board;	// Board game object of QwirkleTiles
 
 	// Static variables for common values
 	private static final int BOARD_SIZE = 20;
@@ -45,24 +41,15 @@ public class QwirkleState extends GameState {
 	/**
 	 * default constructor
 	 */
-	//TODO:  default ctor should not have any parameters
 	public QwirkleState() {
 		this.addPoints = 0;	// No points added to score yet
-//		this.bagTiles = bag;
-//		this.tilesPlayed = play;
 		this.playersScore = new int[4];	// Empty array of all player's scores
 		this.currPlayer = -1;	// No current player is decided yet at the beginning
-		this.isTurn = false;	// Not anyone's turn yet
-//		this.turnCounter = turnCount;
-//		this.tilesOnBoard = board;
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
 		this.timer = -1;	// Timer not initialized yet
 		this.currTile = -1;	// Current tile selected not initialized yet
 
-		this.tilesInBag = new ArrayList<QwirkleTiles>(108);	// Initial array of 108 tiles
-//		for (QwirkleTiles tile : tileBag) {  //where does tileBag come from???
-//			this.tilesInBag.add(new QwirkleTiles(tile));
-//		}
+		this.tilesInBag = new ArrayList<QwirkleTiles>(72);	// Initial array of 108 tiles
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
