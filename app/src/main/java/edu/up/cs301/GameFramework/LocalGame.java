@@ -412,6 +412,10 @@ public abstract class LocalGame implements Game, Tickable {
         // default behavior is to do nothing
     }
 
+    protected void endTurn(GamePlayer player) {
+
+    }
+
     // an enum-class that itemizes the game stages
     protected static enum GameStage {
         BEFORE_GAME, WAITING_FOR_NAMES, WAITING_FOR_READY, DURING_GAME, GAME_OVER, SETUP_PHASE

@@ -6,6 +6,8 @@ import edu.up.cs301.GameFramework.LocalGame;
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * A class that represents the state of a game. In our counter game, the only
  * relevant piece of information is the value of the game's counter. The
@@ -26,7 +28,8 @@ public class QwirkleLocalGame extends LocalGame {
 
 	// the game's state
 	private QwirkleState gameState;
-	
+
+
 	/**
 	 * can this player move
 	 * 
@@ -45,7 +48,7 @@ public class QwirkleLocalGame extends LocalGame {
 	public QwirkleLocalGame(GameState state) {
 		// initialize the game state, with the counter value starting at 0
 		if (! (state instanceof QwirkleState)) {
-			state = new QwirkleState(0);
+			state = new QwirkleState(0,108,0,new int[]{0,0,0,0},0,true,0,0,0,0,-1,new ArrayList<>(),4);
 		}
 		this.gameState = (QwirkleState)state;
 		super.state = state;
@@ -64,8 +67,8 @@ public class QwirkleLocalGame extends LocalGame {
 			QwirkleMoveAction cma = (QwirkleMoveAction)action;
 
 			// Update the counter values based upon the action
-			int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
-			gameState.setCounter(result);
+			//int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
+			//gameState.setCounter(result);
 			
 			// denote that this was a legal/successful move
 			return true;
@@ -99,9 +102,9 @@ public class QwirkleLocalGame extends LocalGame {
 	protected String checkIfGameOver() {
 		
 		// get the value of the counter
-		int counterVal = this.gameState.getCounter();
+		//int counterVal = this.gameState.getCounter();
 		
-		if (counterVal >= TARGET_MAGNITUDE) {
+		/*if (counterVal >= TARGET_MAGNITUDE) {
 			// counter has reached target magnitude, so return message that
 			// player 0 has won.
 			return playerNames[0]+" has won.";
@@ -120,8 +123,28 @@ public class QwirkleLocalGame extends LocalGame {
 			// game is still between the two limit: return null, as the game
 			// is not yet over
 			return null;
-		}
+		}*/
 
+        return null;
+    }
+	protected void endTurn(GamePlayer player) {
+		int playerIndex = getPlayerIndex(player);
+
+		// Refill the player's hand at the end of the turn
+		gameState.refillHand(playerIndex);
+
+		super.endTurn(player);
 	}
+
+
+	public int getPlayerIndex(GamePlayer player) {
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] == player) {
+				return i;
+			}
+		}
+		return -1; // Return -1 if the player is not found
+	}
+
 
 }// class QwirkleLocalGame
