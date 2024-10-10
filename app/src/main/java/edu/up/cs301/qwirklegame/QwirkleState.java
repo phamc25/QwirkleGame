@@ -21,6 +21,9 @@ public class QwirkleState extends GameState {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
+	private boolean isTurn;
+	private ArrayList<QwirkleTiles> bag; // Bag of tiles
+	private ArrayList<QwirkleTiles>[] playerHands; // Player hands
 
 	// Instance variables
 	private int addPoints;	// At the end of every turn, scores is calculated to be added
@@ -34,7 +37,8 @@ public class QwirkleState extends GameState {
 	private Board board;	// Board game object of QwirkleTiles
 
 	// Static variables for common values
-	private static final int BOARD_SIZE = 20;
+	private static final int BOARD_LENGTH = 25;
+	private static final int BOARD_HEIGHT = 15;
 	private static final int HAND_SIZE = 6;
 	private static final int MAX_PLAYERS = 4;
 
@@ -176,9 +180,6 @@ public class QwirkleState extends GameState {
 	public int getCurrPlayer() {
 		return currPlayer;
 	}
-	public int getNumTilesOnBoard() {
-		//return tilesOnBoard;
-	}
 
 	// Setter methods
 	public void setAddPoints(int points) { this.addPoints = points; }
@@ -201,6 +202,24 @@ public class QwirkleState extends GameState {
 		//state += "Turn number: " + turnCounter + "\n";
 		//state += "Tiles on board: " + tilesOnBoard + "\n";
 		return state;
+	}
+
+	public void drawTiles(int playerIndex, int numTiles) {
+		for (int i = 0; i < numTiles && !bag.isEmpty(); i++) {
+			int randomIndex = (int)(Math.random() * bag.size());
+			QwirkleTiles drawnTile = bag.remove(randomIndex);
+			playerHands[playerIndex].add(drawnTile);
+		}
+	}
+	public void refillHand(int playerIndex) {
+		int tilesNeeded = 6 - playerHands[playerIndex].size();
+		drawTiles(playerIndex, tilesNeeded);
+	}
+	public ArrayList<QwirkleTiles> getPlayerHand(int playerIndex) {
+		if (playerIndex >= 0 && playerIndex < playerHands.length) {
+			return playerHands[playerIndex];
+		}
+		return null; // Return null if invalid index
 	}
 }
 

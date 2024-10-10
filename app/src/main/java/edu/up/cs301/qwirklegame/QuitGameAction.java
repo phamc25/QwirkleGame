@@ -4,12 +4,15 @@ import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 
 public class QuitGameAction extends GameAction {
-    /**
-     * constructor for GameAction
-     *
-     * @param player the player who created the action
-     */
+
+    // to satisfy Serializable interface
+    private static final long serialVersionUID = 4567890123456789L;
+
     public QuitGameAction(GamePlayer player) {
         super(player);
+    }
+
+    public boolean isQuitAction() {
+        return true;
     }
 }

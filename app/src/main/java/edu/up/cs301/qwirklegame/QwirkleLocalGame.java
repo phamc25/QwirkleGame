@@ -28,7 +28,8 @@ public class QwirkleLocalGame extends LocalGame {
 
 	// the game's state
 	private QwirkleState gameState;
-	
+
+
 	/**
 	 * can this player move
 	 * 
@@ -126,5 +127,24 @@ public class QwirkleLocalGame extends LocalGame {
 
         return null;
     }
+	protected void endTurn(GamePlayer player) {
+		int playerIndex = getPlayerIndex(player);
+
+		// Refill the player's hand at the end of the turn
+		gameState.refillHand(playerIndex);
+
+		super.endTurn(player);
+	}
+
+
+	public int getPlayerIndex(GamePlayer player) {
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] == player) {
+				return i;
+			}
+		}
+		return -1; // Return -1 if the player is not found
+	}
+
 
 }// class QwirkleLocalGame
