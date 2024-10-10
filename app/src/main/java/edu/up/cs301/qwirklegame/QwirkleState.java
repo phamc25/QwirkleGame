@@ -43,22 +43,8 @@ public class QwirkleState extends GameState {
 	private static final int MAX_PLAYERS = 4;
 
 	/**
-	 * constructor
-	 *
-//	 * @param points
-//	 * @param bag
-//	 * @param play
-//	 * @param scores
-//	 * @param player
-//	 * @param turn
-//	 * @param turnCount
-//	 * @param board
-//	 * @param draw
-//	 * @param time
-//	 * @param tileBag
-//	 * @param numPlayers
+	 * default constructor
 	 */
-
 	//TODO:  default ctor should not have any parameters
 	public QwirkleState() {
 		this.addPoints = 0;	// No points added to score yet
@@ -93,13 +79,13 @@ public class QwirkleState extends GameState {
 	public QwirkleState(QwirkleState orig) {
 		// Set the variables to original's variables
 		this.addPoints = orig.addPoints;
-		this.bagTiles = orig.bagTiles;
-		this.tilesPlayed = orig.tilesPlayed;
+		//this.bagTiles = orig.bagTiles;
+		//this.tilesPlayed = orig.tilesPlayed;
 		this.playersScore = orig.playersScore;  //need to make deep copy of this
 		this.currPlayer = orig.currPlayer;
 		this.isTurn = orig.isTurn;
-		this.turnCounter = orig.turnCounter;
-		this.tilesOnBoard = orig.tilesOnBoard;
+		//this.turnCounter = orig.turnCounter;
+		//this.tilesOnBoard = orig.tilesOnBoard;
 		this.drawTiles = orig.drawTiles;
 		this.timer = orig.timer;
 
@@ -127,7 +113,7 @@ public class QwirkleState extends GameState {
 		if (isTurn) {
 			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
 			//TODO:  if (tile == null)
-			tilesOnBoard++;
+			//tilesOnBoard++;
 
 			//TODO:  put the the tile on the board in the specified location
 			return true;
@@ -204,7 +190,7 @@ public class QwirkleState extends GameState {
 		return currPlayer;
 	}
 	public int getNumTilesOnBoard() {
-		return tilesOnBoard;
+		//return tilesOnBoard;
 	}
 
 	// Setter methods
@@ -218,15 +204,15 @@ public class QwirkleState extends GameState {
 	@Override
 	public String toString(GameState currState) {
 		String state = "Current Game State: \n";	// not complete yet, a placeholder
-		state += "Tiles left in bag: " + bagTiles + "\n";
-		state += "Tiles played: " + tilesPlayed + "\n";
+		//state += "Tiles left in bag: " + bagTiles + "\n";
+		//state += "Tiles played: " + tilesPlayed + "\n";
 		for(int i = 0; i < playersScore.length; i++){
 			state += "Player " + i + " score: " +playersScore[i] + "\n";
 		}
 		state += "Current player: " + currPlayer + "\n";
 		state += "Is player's turn: " + isTurn + "\n";
-		state += "Turn number: " + turnCounter + "\n";
-		state += "Tiles on board: " + tilesOnBoard + "\n";
+		//state += "Turn number: " + turnCounter + "\n";
+		//state += "Tiles on board: " + tilesOnBoard + "\n";
 		return state;
 	}
 }
