@@ -21,9 +21,6 @@ public class QwirkleState extends GameState {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
-	private boolean isTurn;
-	private ArrayList<QwirkleTiles> bag; // Bag of tiles
-	private ArrayList<QwirkleTiles>[] playerHands; // Player hands
 
 	// Instance variables
 	private int addPoints;	// At the end of every turn, scores is calculated to be added
@@ -37,8 +34,6 @@ public class QwirkleState extends GameState {
 	private Board board;	// Board game object of QwirkleTiles
 
 	// Static variables for common values
-	private static final int BOARD_LENGTH = 25;
-	private static final int BOARD_HEIGHT = 15;
 	private static final int HAND_SIZE = 6;
 	private static final int MAX_PLAYERS = 4;
 
@@ -52,6 +47,7 @@ public class QwirkleState extends GameState {
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
 		this.timer = -1;	// Timer not initialized yet
 		this.currTile = -1;	// Current tile selected not initialized yet
+		this.board = new Board();
 
 		this.tilesInBag = new ArrayList<QwirkleTiles>(72);	// Initial array of 108 tiles
 
@@ -70,15 +66,12 @@ public class QwirkleState extends GameState {
 	public QwirkleState(QwirkleState orig) {
 		// Set the variables to original's variables
 		this.addPoints = orig.addPoints;
-		//this.bagTiles = orig.bagTiles;
-		//this.tilesPlayed = orig.tilesPlayed;
 		this.playersScore = orig.playersScore;  //need to make deep copy of this
 		this.currPlayer = orig.currPlayer;
-		this.isTurn = orig.isTurn;
-		//this.turnCounter = orig.turnCounter;
-		//this.tilesOnBoard = orig.tilesOnBoard;
 		this.drawTiles = orig.drawTiles;
 		this.timer = orig.timer;
+		this.currTile = orig.currTile;
+		this.board = new Board(orig.board);
 
 		// Array for tiles in bag for deep copy
 		this.tilesInBag = new ArrayList<>();
