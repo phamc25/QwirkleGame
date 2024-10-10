@@ -16,18 +16,18 @@ public class QwirkleTiles {
     public enum Shape {
         CLOVER, FOURSTAR, EIGHTSTAR, CIRCLE, SQUARE, DIAMOND,
     }
-    private Shape shape;
-    private Color color;
-//    private Bitmap tileImage;  //don't do this here.  It will break network play
-    private boolean isSelected;
-
     // For each color of tile
     public enum Color {
         RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE
     }
 
+    private Shape shape;
+    private Color color;
+//    private Bitmap tileImage;  //don't do this here.  It will break network play
+    private boolean isSelected;
+
     // Constructor
-    public QwirkleTiles (Shape shape, Color color, Bitmap image) {
+    public QwirkleTiles (Shape shape, Color color) {
         this.shape = shape;
         this.color = color;
         this.isSelected = false;

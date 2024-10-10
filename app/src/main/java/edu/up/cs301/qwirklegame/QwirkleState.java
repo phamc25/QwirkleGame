@@ -28,7 +28,7 @@ public class QwirkleState extends GameState {
 //	private int tilesPlayed;
 	private int[] playersScore;	// An array to hold player's scores
 	private int currPlayer;	// An integer that represents the current player playing
-	private boolean isTurn;	// Is it the player's turn?
+//	private boolean isTurn;	// Is it the player's turn?
 //	private int turnCounter;
 //	private int tilesOnBoard;
 	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
