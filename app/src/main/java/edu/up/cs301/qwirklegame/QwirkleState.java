@@ -198,19 +198,19 @@ public class QwirkleState extends GameState {
 	}
 
 	public void drawTiles(int playerIndex, int numTiles) {
-		for (int i = 0; i < numTiles && !bag.isEmpty(); i++) {
-			int randomIndex = (int)(Math.random() * bag.size());
-			QwirkleTiles drawnTile = bag.remove(randomIndex);
-			playerHands[playerIndex].add(drawnTile);
+		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
+			int randomIndex = (int)(Math.random() * tilesInBag.size());
+			QwirkleTiles drawnTile = tilesInBag.remove(randomIndex);
+			tilesInHands[playerIndex].add(drawnTile);
 		}
 	}
 	public void refillHand(int playerIndex) {
-		int tilesNeeded = 6 - playerHands[playerIndex].size();
+		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
 	}
 	public ArrayList<QwirkleTiles> getPlayerHand(int playerIndex) {
-		if (playerIndex >= 0 && playerIndex < playerHands.length) {
-			return playerHands[playerIndex];
+		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
+			return tilesInHands[playerIndex];
 		}
 		return null; // Return null if invalid index
 	}
