@@ -30,8 +30,8 @@ public class QwirkleState extends GameState {
 	private int currTile;	// Represents the current tile index for tilesInHands
 	private Board board;	// Board game object that contains a QwirkleTile[][]
 	private int[] playersScore;	// An array to hold player's scores
-	private ArrayList<QwirkleTile> tilesInBag;		// List of tiles in bag: 72
-	private ArrayList<QwirkleTile>[] tilesInHands;		// List of tiles in each player's hands
+	private ArrayList<QwirkleTile> tilesInBag;		// ArrayList of tiles in bag: 72
+	private ArrayList<QwirkleTile>[] tilesInHands;		// ArrayList of tiles in each player's hands
 
 	// Static variables for common values
 	public static final int HAND_SIZE = 6;
@@ -96,9 +96,9 @@ public class QwirkleState extends GameState {
 		}
 	}
 
-	//All action methods will assume that player can make a valid move when called
+	// All action methods will assume that player can make a valid move when called
 	/**
-	 * places selected tile onto the board
+	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		QwirkleTile tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
