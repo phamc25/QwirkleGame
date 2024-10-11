@@ -27,7 +27,6 @@ public class QwirkleState extends GameState {
 	private int pointsToAdd;	// At the end of every turn, scores is calculated to be added
 	private int currPlayer;	// An integer that represents the current player playing
 	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
-	private int timer;	// 2 minute timer limit for human player moves
 	private int currTile;	// Represents the current tile index for tilesInHands
 	private Board board;	// Board game object that contains a QwirkleTiles[][]
 	private int[] playersScore;	// An array to hold player's scores
@@ -44,9 +43,8 @@ public class QwirkleState extends GameState {
 	 */
 	public QwirkleState() {
 		this.pointsToAdd = 0;	// No points added to score yet
-		this.currPlayer = -1;	// No current player is decided yet at the beginning
+		this.currPlayer = 0;	// No current player is decided yet at the beginning
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
-		this.timer = -1;	// Timer not initialized yet
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
@@ -71,7 +69,6 @@ public class QwirkleState extends GameState {
 		this.pointsToAdd = orig.pointsToAdd;
 		this.currPlayer = orig.currPlayer;
 		this.drawTiles = orig.drawTiles;
-		this.timer = orig.timer;
 		this.currTile = orig.currTile;
 		this.board = new Board(orig.board);
 
@@ -109,15 +106,6 @@ public class QwirkleState extends GameState {
 			return false;
 		}
 		board.addToBoard(tile, action.getX(), action.getY());
-		return true;
-	}
-
-	/**
-	 *  Selects the tile
-	 */
-	protected boolean selectTiles (SelectTilesAction action, QwirkleTiles tile) {
-		tile.setSelected(true);  // Mark the tile as selected
-		currTile = tilesInHands[currPlayer].indexOf(tile);	// Set the variable to the current tile
 		return true;
 	}
 
@@ -204,8 +192,7 @@ public class QwirkleState extends GameState {
 		state += "Points to add: " + this.pointsToAdd + "\n";
 		state += "Current player: " + this.currPlayer + "\n";
 		state += "Tiles to be drawn: " + this.drawTiles + "\n";
-		state += "Current timer value: " + this.timer + "\n";
-		state += "Current tile selected: " + this.timer + "\n";
+		state += "Current tile selected: " + this.currTile + "\n";
 
 		// Loops through players' scores and print them
 		for (int i = 0; i < playersScore.length; i++) {
