@@ -4,6 +4,7 @@ package edu.up.cs301.qwirklegame;
 import java.util.ArrayList;
 
 import edu.up.cs301.GameFramework.infoMessage.GameState;
+import edu.up.cs301.GameFramework.players.GamePlayer;
 
 
 /**
@@ -23,15 +24,15 @@ public class QwirkleState extends GameState {
 	private static final long serialVersionUID = 7737393762469851826L;
 
 	// Instance variables
-	private int addPoints;	// At the end of every turn, scores is calculated to be added
-	private int[] playersScore;	// An array to hold player's scores
+	private int pointsToAdd;	// At the end of every turn, scores is calculated to be added
 	private int currPlayer;	// An integer that represents the current player playing
 	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
 	private int timer;	// 2 minute timer limit for human player moves
 	private int currTile;	// Represents the current tile index for tilesInHands
+	private Board board;	// Board game object that contains a QwirkleTiles[][]
+	private int[] playersScore;	// An array to hold player's scores
 	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag: 108
 	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
-	private Board board;	// Board game object of QwirkleTiles
 
 	// Static variables for common values
 	private static final int HAND_SIZE = 6;
@@ -41,15 +42,14 @@ public class QwirkleState extends GameState {
 	 * default constructor
 	 */
 	public QwirkleState() {
-		this.addPoints = 0;	// No points added to score yet
-		this.playersScore = new int[4];	// Empty array of all player's scores
+		this.pointsToAdd = 0;	// No points added to score yet
 		this.currPlayer = -1;	// No current player is decided yet at the beginning
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
 		this.timer = -1;	// Timer not initialized yet
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
-
-		this.tilesInBag = new ArrayList<QwirkleTiles>(72);	// Initial array of 108 tiles
+		this.playersScore = new int[4];	// Empty array of all player's scores
+		this.tilesInBag = new ArrayList<QwirkleTiles>(72);	// Initial array of 72 tiles
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
@@ -65,13 +65,16 @@ public class QwirkleState extends GameState {
 	 */
 	public QwirkleState(QwirkleState orig) {
 		// Set the variables to original's variables
-		this.addPoints = orig.addPoints;
-		this.playersScore = orig.playersScore;  //need to make deep copy of this
+		this.pointsToAdd = orig.pointsToAdd;
 		this.currPlayer = orig.currPlayer;
 		this.drawTiles = orig.drawTiles;
 		this.timer = orig.timer;
 		this.currTile = orig.currTile;
 		this.board = new Board(orig.board);
+
+		// Deep copy for int array? *Don't use with object references, not deep copy*
+		this.playersScore = new int[orig.playersScore.length];
+		System.arraycopy(orig.playersScore, 0, this.playersScore, 0, orig.playersScore.length);
 
 		// Array for tiles in bag for deep copy
 		this.tilesInBag = new ArrayList<>();
@@ -79,13 +82,15 @@ public class QwirkleState extends GameState {
 			this.tilesInBag.add(new QwirkleTiles(tile));
 		}
 
+		// Since each player only needs to know their own hand, how do we adjust this to only show each player's own hand?
+
 		// Loop for arraylist (number of players)
 		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
 		for (int i = 0; i < orig.tilesInHands.length; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 			// Loop for tiles in players' hands
 			for (QwirkleTiles tile : orig.tilesInHands[i]) {
-				this.tilesInHands[i].add(new QwirkleTiles(tile));
+				this.tilesInHands[i] = new ArrayList<>(orig.tilesInHands[i]);
 			}
 		}
 	}
@@ -94,7 +99,7 @@ public class QwirkleState extends GameState {
 	 * places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-		if (isTurn) {
+		if (currPlayer == ?) {
 			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
 			//TODO:  if (tile == null)
 			//tilesOnBoard++;
@@ -168,34 +173,15 @@ public class QwirkleState extends GameState {
 
 	// Getter methods
 	public int getAddPoints() {
-		return addPoints;
+		return pointsToAdd;
 	}
 	public int getCurrPlayer() {
 		return currPlayer;
 	}
 
 	// Setter methods
-	public void setAddPoints(int points) { this.addPoints = points; }
+	public void setAddPoints(int points) { this.pointsToAdd = points; }
 	public void setCurrPlayer(int player) { this.currPlayer = player; }
-
-
-	/**
-	 * toString method that describes the state of the game as a string
-	 */
-	@Override
-	public String toString(GameState currState) {
-		String state = "Current Game State: \n";	// not complete yet, a placeholder
-		//state += "Tiles left in bag: " + bagTiles + "\n";
-		//state += "Tiles played: " + tilesPlayed + "\n";
-		for(int i = 0; i < playersScore.length; i++){
-			state += "Player " + i + " score: " +playersScore[i] + "\n";
-		}
-		state += "Current player: " + currPlayer + "\n";
-		state += "Is player's turn: " + isTurn + "\n";
-		//state += "Turn number: " + turnCounter + "\n";
-		//state += "Tiles on board: " + tilesOnBoard + "\n";
-		return state;
-	}
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
@@ -214,6 +200,37 @@ public class QwirkleState extends GameState {
 		}
 		return null; // Return null if invalid index
 	}
+
+	/**
+	 * toString method that describes the state of the game as a string
+	 */
+	@Override
+	public String toString(GameState currState) {
+		String state = "Current Game State: \n";
+		state += "Points to add: " + this.pointsToAdd + "\n";
+		state += "Current player: " + this.currPlayer + "\n";
+		state += "Tiles to be drawn: " + this.drawTiles + "\n";
+		state += "Current timer value: " + this.timer + "\n";
+		state += "Current tile selected: " + this.timer + "\n";
+
+		// Loops through players' scores and print them
+		for (int i = 0; i < playersScore.length; i++) {
+			state += "Player " + i + " score: " + playersScore[i] + "\n";
+		}
+
+		state += "Number of tiles in bag: " + this.tilesInBag.size() + "\n";
+
+		// Loop through the array of arraylists and print out the tiles in each
+		// player's hand
+		for (int i = 0; i < tilesInHands.length; i++) {
+			state += "Player " + i + " tiles: ";	// Prints player
+			for (int j = 0; j < tilesInHands[i].size(); j++) {
+				QwirkleTiles tile = tilesInHands[i].get(j);
+				state += tile.getColor() + " " + tile.getShape() + ", ";	// Prints out the hand
+			}
+		}
+		return state;
+	}
 }
 
 /**
@@ -224,3 +241,15 @@ public class QwirkleState extends GameState {
  *
  * Date: October 5, 2024
  */
+
+/**
+ * External Citation
+ *
+ * Problem: How can we deep copy an array?
+ * Source: https://howtodoinjava.com/java/array/java-array-clone-shallow-copy/
+ * Usage: Deep copied an int array for playersScore
+ *
+ * Date: October 11, 2024
+ */
+
+
