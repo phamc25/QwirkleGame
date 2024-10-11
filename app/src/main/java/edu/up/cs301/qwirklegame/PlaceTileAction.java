@@ -9,13 +9,13 @@ public class PlaceTileAction extends GameAction {
     private static final long serialVersionUID = 9876543210123456L;
 
     // The tile being placed
-    private QwirkleTiles placedTile;
+    private QwirkleTile placedTile;
 
     // The position on the board where the tile is being placed
     private int x;
     private int y;
 
-    public PlaceTileAction(GamePlayer player, QwirkleTiles tile, int x, int y) {
+    public PlaceTileAction(GamePlayer player, QwirkleTile tile, int x, int y) {
         super(player);
         this.placedTile = tile;
         this.x = x;
@@ -23,7 +23,7 @@ public class PlaceTileAction extends GameAction {
     }
 
 
-    public QwirkleTiles getPlacedTile() {
+    public QwirkleTile getPlacedTile() {
         return placedTile;
     }
 

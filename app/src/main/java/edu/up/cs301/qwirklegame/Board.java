@@ -1,17 +1,17 @@
 package edu.up.cs301.qwirklegame;
 
 public class Board {
-    private QwirkleTiles[][] boardArray; // Takes a double array of Qwirkle tiles
+    private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
-    public static final int length = 15;
-    public static final int width = 20;
+    public static final int LENGTH = 15;
+    public static final int WIDTH = 20;
 
     /**
      *  Constructor
      */
     public Board() {
-        this.boardArray = new QwirkleTiles[length][width];
+        this.boardArray = new QwirkleTile[LENGTH][WIDTH];
     }
 
     /**
@@ -25,16 +25,16 @@ public class Board {
      * Method for deep copying array
      * @return A QwirkleTiles double array
      */
-    public QwirkleTiles[][] copyBoard() {
+    public QwirkleTile[][] copyBoard() {
         // Create a new double array of QwirkleTiles for the copied array
-        QwirkleTiles[][] copy = new QwirkleTiles[length][width];
+        QwirkleTile[][] copy = new QwirkleTile[LENGTH][WIDTH];
 
         // Loop through the original board to copy into the copy array
         for (int i = 0; i < boardArray.length; i++) {
             //not needed?  copy[i] = new QwirkleTiles[this.boardArray[i].length];
             for (int j = 0; j < boardArray[i].length; j++) {
                 //TODO skip null cells
-                copy[i][j] = new QwirkleTiles(this.boardArray[i][j]);
+                copy[i][j] = new QwirkleTile(this.boardArray[i][j]);
             }
         }
         return copy;
@@ -43,7 +43,7 @@ public class Board {
     /**
      *  Getters for variables
      */
-    public QwirkleTiles[][] getBoard() {
+    public QwirkleTile[][] getBoard() {
         return this.boardArray;
     }
 
@@ -54,7 +54,7 @@ public class Board {
      * @param x x position of tile placement
      * @param y y position of tile placement
      */
-    public void addToBoard(QwirkleTiles tile, int x, int y){
+    public void addToBoard(QwirkleTile tile, int x, int y){
         if(boardArray[x][y] == null) {
             boardArray[x][y] = tile;
         }

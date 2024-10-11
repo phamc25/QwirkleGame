@@ -11,18 +11,18 @@ public class DiscardTilesAction extends GameAction {
     private static final long serialVersionUID = 8927349827349823L;
 
     // List of tiles to discard
-    private ArrayList<QwirkleTiles> tilesToDiscard;
+    private ArrayList<QwirkleTile> tilesToDiscard;
     private QwirkleLocalGame localGame;
 
-    public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTiles> tilesToDiscard) {
+    public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
         super(player);
         this.tilesToDiscard = tilesToDiscard;
     }
-    public ArrayList<QwirkleTiles> getTilesToDiscard() {
+    public ArrayList<QwirkleTile> getTilesToDiscard() {
         return tilesToDiscard;
     }
 
-    public void setTilesToDiscard(ArrayList<QwirkleTiles> tilesToDiscard) {
+    public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
         this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
     }
 
@@ -33,7 +33,7 @@ public class DiscardTilesAction extends GameAction {
         int playerIndex = localGame.getPlayerIndex(player);
 
         // Remove discarded tiles from the player's hand
-        for (QwirkleTiles tile : tilesToDiscard) {
+        for (QwirkleTile tile : tilesToDiscard) {
             state.getPlayerHand(playerIndex).remove(tile);
         }
 

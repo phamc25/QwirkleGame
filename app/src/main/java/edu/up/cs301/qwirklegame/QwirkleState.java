@@ -4,7 +4,6 @@ package edu.up.cs301.qwirklegame;
 import java.util.ArrayList;
 
 import edu.up.cs301.GameFramework.infoMessage.GameState;
-import edu.up.cs301.GameFramework.players.GamePlayer;
 
 
 /**
@@ -30,8 +29,8 @@ public class QwirkleState extends GameState {
 	private int currTile;	// Represents the current tile index for tilesInHands
 	private Board board;	// Board game object that contains a QwirkleTiles[][]
 	private int[] playersScore;	// An array to hold player's scores
-	private ArrayList<QwirkleTiles> tilesInBag;		// List of tiles in bag: 108
-	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
+	private ArrayList<QwirkleTile> tilesInBag;		// List of tiles in bag: 108
+	private ArrayList<QwirkleTile>[] tilesInHands;		// List of tiles in each player's hands
 
 	// Static variables for common values
 	public static final int HAND_SIZE = 6;
@@ -48,7 +47,7 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTiles>(72);	// Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(72);	// Initial array of 72 tiles
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
@@ -78,8 +77,8 @@ public class QwirkleState extends GameState {
 
 		// Array for tiles in bag for deep copy
 		this.tilesInBag = new ArrayList<>();
-		for (QwirkleTiles tile : orig.tilesInBag) {
-			this.tilesInBag.add(new QwirkleTiles(tile));
+		for (QwirkleTile tile : orig.tilesInBag) {
+			this.tilesInBag.add(new QwirkleTile(tile));
 		}
 
 		// Since each player only needs to know their own hand, how do we adjust this to only show each player's own hand?
@@ -89,7 +88,7 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < orig.tilesInHands.length; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 			// Loop for tiles in players' hands
-			for (QwirkleTiles tile : orig.tilesInHands[i]) {
+			for (QwirkleTile tile : orig.tilesInHands[i]) {
 				this.tilesInHands[i] = new ArrayList<>(orig.tilesInHands[i]);
 			}
 		}
@@ -101,7 +100,7 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
 
-		QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
+		QwirkleTile tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
 		if (tile ==  null){
 			return false;
 		}
@@ -142,10 +141,10 @@ public class QwirkleState extends GameState {
 	 * This method returns an ArrayList of Qwirkle tile objects
 	 * that represent the selected tiles for discarding
 	 */
-	public ArrayList<QwirkleTiles> getSelectedTiles() {
+	public ArrayList<QwirkleTile> getSelectedTiles() {
 		// The ArrayList of selected tiles
-		ArrayList<QwirkleTiles> selectedTiles = new ArrayList<>();
-		for (QwirkleTiles tile : tilesInHands[currPlayer]) {
+		ArrayList<QwirkleTile> selectedTiles = new ArrayList<>();
+		for (QwirkleTile tile : tilesInHands[currPlayer]) {
 			if (tile.getSelected()) {
 				selectedTiles.add(tile);
 			}
@@ -168,7 +167,7 @@ public class QwirkleState extends GameState {
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
 			int randomIndex = (int)(Math.random() * tilesInBag.size());
-			QwirkleTiles drawnTile = tilesInBag.remove(randomIndex);
+			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
 			tilesInHands[playerIndex].add(drawnTile);
 		}
 	}
@@ -176,7 +175,7 @@ public class QwirkleState extends GameState {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
 	}
-	public ArrayList<QwirkleTiles> getPlayerHand(int playerIndex) {
+	public ArrayList<QwirkleTile> getPlayerHand(int playerIndex) {
 		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
 			return tilesInHands[playerIndex];
 		}
@@ -206,7 +205,7 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < tilesInHands.length; i++) {
 			state += "Player " + i + " tiles: ";	// Prints player
 			for (int j = 0; j < tilesInHands[i].size(); j++) {
-				QwirkleTiles tile = tilesInHands[i].get(j);
+				QwirkleTile tile = tilesInHands[i].get(j);
 				state += tile.getColor() + " " + tile.getShape() + ", ";	// Prints out the hand
 			}
 		}
