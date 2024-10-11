@@ -31,11 +31,10 @@ public class QwirkleLocalGame extends LocalGame {
 
 
 	/**
-	 * can this player move
-	 * 
-	 * @return
-	 * 		true, because all player are always allowed to move at all times,
-	 * 		as this is a fully asynchronous game
+	 * Check if player can move
+	 *
+	 * @param playerIdx
+	 * 		the player's player-number (ID)
 	 */
 	@Override
 	protected boolean canMove(int playerIdx) {

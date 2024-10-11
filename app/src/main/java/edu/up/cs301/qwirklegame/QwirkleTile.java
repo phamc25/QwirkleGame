@@ -23,14 +23,21 @@ public class QwirkleTile {
     private Color color;
     private boolean isSelected;
 
-    // Constructor
+    /**
+     * Constructor
+     *
+     * @param shape shape of tile
+     * @param color color of tile
+     */
     public QwirkleTile(Shape shape, Color color) {
         this.shape = shape;
         this.color = color;
         this.isSelected = false;
     }
 
-    // Copy constructor for tiles
+    /**
+     * Copy constructor
+     */
     public QwirkleTile(QwirkleTile orig) {
         this.shape = orig.shape;
         this.color = orig.color;
