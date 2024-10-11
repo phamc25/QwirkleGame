@@ -43,8 +43,16 @@ public class Board {
         return this.boardArray;
     }
 
-    //was unsure how to edit the board, so i added this
-    public void setBoard(QwirkleTiles tile, int x, int y){
-        boardArray[x][y] = tile;
+    /**
+     * Adds a tile to empty spot on board
+     *
+     * @param tile tile to be added
+     * @param x x position of tile placement
+     * @param y y position of tile placement
+     */
+    public void addToBoard(QwirkleTiles tile, int x, int y){
+        if(boardArray[x][y] == null) {
+            boardArray[x][y] = tile;
+        }
     }
 }

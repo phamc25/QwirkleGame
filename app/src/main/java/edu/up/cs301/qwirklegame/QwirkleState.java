@@ -99,7 +99,7 @@ public class QwirkleState extends GameState {
 		if (tile ==  null){
 			return false;
 		}
-		board.setBoard(tile, action.getX(), action.getY());
+		board.addToBoard(tile, action.getX(), action.getY());
 		return true;
 	}
 
