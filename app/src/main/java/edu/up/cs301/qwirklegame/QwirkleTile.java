@@ -19,6 +19,7 @@ public class QwirkleTile {
         RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE
     }
 
+    // instance vars
     private Shape shape;
     private Color color;
     private boolean isSelected;

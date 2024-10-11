@@ -12,6 +12,7 @@ public class QuitGameAction extends GameAction {
         super(player);
     }
 
+    // can always quit the game
     public boolean isQuitAction() {
         return true;
     }

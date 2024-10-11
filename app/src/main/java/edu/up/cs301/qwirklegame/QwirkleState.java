@@ -135,6 +135,7 @@ public class QwirkleState extends GameState {
 	 *  Quits the game when this action made
 	 */
 	protected boolean quitGame (QuitGameAction action) {
+		// can quit at any time
 		return true;
 	}
 
@@ -142,6 +143,7 @@ public class QwirkleState extends GameState {
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
+		// can end their turn at any time
 		return true;
 	}
 

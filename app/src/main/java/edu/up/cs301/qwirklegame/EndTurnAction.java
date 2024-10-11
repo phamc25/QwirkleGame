@@ -17,6 +17,7 @@ public class EndTurnAction extends GameAction {
         super(player);
     }
 
+    // can always skip turn
     public boolean isEndTurn(){
         return true;
     }

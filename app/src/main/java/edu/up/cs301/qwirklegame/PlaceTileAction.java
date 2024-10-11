@@ -15,6 +15,7 @@ public class PlaceTileAction extends GameAction {
     private int x;
     private int y;
 
+    // setting vars to parameters passed
     public PlaceTileAction(GamePlayer player, QwirkleTile tile, int x, int y) {
         super(player);
         this.placedTile = tile;
@@ -27,10 +28,10 @@ public class PlaceTileAction extends GameAction {
         return placedTile;
     }
 
+    // getter methods
     public int getX() {
         return x;
     }
-
     public int getY() {
         return y;
     }
