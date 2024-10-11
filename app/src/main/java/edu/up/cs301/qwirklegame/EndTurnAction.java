@@ -16,4 +16,8 @@ public class EndTurnAction extends GameAction {
     public EndTurnAction(GamePlayer player) {
         super(player);
     }
+
+    public boolean isEndTurn(){
+        return true;
+    }
 }
