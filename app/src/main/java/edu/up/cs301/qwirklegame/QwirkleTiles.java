@@ -23,7 +23,6 @@ public class QwirkleTiles {
 
     private Shape shape;
     private Color color;
-//    private Bitmap tileImage;  //don't do this here.  It will break network play
     private boolean isSelected;
 
     // Constructor
@@ -31,7 +30,6 @@ public class QwirkleTiles {
         this.shape = shape;
         this.color = color;
         this.isSelected = false;
-//        this.tileImage = image;
     }
 
     // Copy constructor for tiles
@@ -39,7 +37,6 @@ public class QwirkleTiles {
         this.shape = orig.shape;
         this.color = orig.color;
         this.isSelected = orig.isSelected;
-//        this.tileImage = Bitmap.createBitmap(orig.tileImage);
     }
 
     // Getters for tile attributes

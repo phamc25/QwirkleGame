@@ -18,7 +18,7 @@ public class Board {
      *  Copy constructor (Deep copy)
      */
     public Board(Board orig) {
-        this.boardArray = copyBoard();
+        this.boardArray = orig.copyBoard();
     }
 
     /**
@@ -36,9 +36,15 @@ public class Board {
                 copy[i][j] = this.boardArray[i][j];
             }
         }
+        return copy;
     }
 
     public QwirkleTiles[][] getBoard() {
         return this.boardArray;
+    }
+
+    //was unsure how to edit the board, so i added this
+    public void setBoard(QwirkleTiles tile, int x, int y){
+        boardArray[x][y] = tile;
     }
 }

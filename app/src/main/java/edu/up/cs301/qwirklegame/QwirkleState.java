@@ -90,58 +90,48 @@ public class QwirkleState extends GameState {
 		}
 	}
 
+	//All action methods will assume that player can make a valid move when called
 	/**
 	 * places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-		if (isTurn) {
-			QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
-			//TODO:  if (tile == null)
-			//tilesOnBoard++;
-
-			//TODO:  put the the tile on the board in the specified location
-			return true;
-		}
-		else {
+		QwirkleTiles tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
+		if (tile ==  null){
 			return false;
 		}
+		board.setBoard(tile, action.getX(), action.getY());
+		return true;
 	}
 
 	/**
 	 *  Selects the tile
 	 */
 	protected boolean selectTiles (SelectTilesAction action, QwirkleTiles tile) {
-		if (isTurn) {
-			tile.setSelected(true);  // Mark the tile as selected
-			currTile = tilesInHands[currPlayer].indexOf(tile);	// Set the variable to the current tile
-			return true;
-		}
-		return false;
+		tile.setSelected(true);  // Mark the tile as selected
+		currTile = tilesInHands[currPlayer].indexOf(tile);	// Set the variable to the current tile
+		return true;
 	}
 
 	/**
 	 *  Discards tiles that were selected
 	 */
 	protected boolean discardTiles (DiscardTilesAction action) {
-		if (isTurn) { //This doesn't work.  You see if the current player turn === action's player id
-			// Removes the selected tiles from the current player's hand
-			tilesInHands[currPlayer].removeAll(getSelectedTiles());
+		// Removes the selected tiles from the current player's hand
+		tilesInHands[currPlayer].removeAll(getSelectedTiles());
 
-			// No selected tiles, return
-			if (getSelectedTiles().isEmpty()) {
-				return false;
-			}
-
-			// Loops through the current player's hand and replaces the removed tiles
-			for(int i = 0; i < getSelectedTiles().size(); i++) {
-				if (!(tilesInBag.isEmpty())) {
-					tilesInHands[currPlayer].add(tilesInBag.remove(0));
-				}
-				else break;
-			}
-			return true;
+		// No selected tiles, return
+		if (getSelectedTiles().isEmpty()) {
+			return false;
 		}
-		return false;
+
+		// Loops through the current player's hand and replaces the removed tiles
+		for(int i = 0; i < getSelectedTiles().size(); i++) {
+			if (!(tilesInBag.isEmpty())) {
+				tilesInHands[currPlayer].add(tilesInBag.remove(0));
+			}
+			else break;
+		}
+		return true;
 	}
 
 	/**
@@ -191,7 +181,7 @@ public class QwirkleState extends GameState {
 			state += "Player " + i + " score: " +playersScore[i] + "\n";
 		}
 		state += "Current player: " + currPlayer + "\n";
-		state += "Is player's turn: " + isTurn + "\n";
+		state += "Is player " + currPlayer + " turn." + "\n";
 		//state += "Turn number: " + turnCounter + "\n";
 		//state += "Tiles on board: " + tilesOnBoard + "\n";
 		return state;
