@@ -31,8 +31,9 @@ public class Board {
 
         // Loop through the original board to copy into the copy array
         for (int i = 0; i < boardArray.length; i++) {
-            copy[i] = new QwirkleTiles[this.boardArray[i].length];
+            //not needed?  copy[i] = new QwirkleTiles[this.boardArray[i].length];
             for (int j = 0; j < boardArray[i].length; j++) {
+                //TODO skip null cells
                 copy[i][j] = new QwirkleTiles(this.boardArray[i][j]);
             }
         }

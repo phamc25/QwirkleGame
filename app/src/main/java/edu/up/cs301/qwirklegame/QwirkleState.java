@@ -35,11 +35,12 @@ public class QwirkleState extends GameState {
 	private ArrayList<QwirkleTiles>[] tilesInHands;		// List of tiles in each player's hands
 
 	// Static variables for common values
-	private static final int HAND_SIZE = 6;
-	private static final int MAX_PLAYERS = 4;
+	public static final int HAND_SIZE = 6;
+	public static final int MAX_PLAYERS = 4;
 
 	/**
 	 * default constructor
+	 * inits the game to match the starting state
 	 */
 	public QwirkleState() {
 		this.pointsToAdd = 0;	// No points added to score yet
@@ -56,6 +57,8 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < numPlayers; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
+
+		//TODO:  generate all 72 tiles and put them in the bag
 	}
 
 	/**
