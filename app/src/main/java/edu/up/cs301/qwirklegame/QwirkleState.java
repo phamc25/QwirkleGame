@@ -48,7 +48,6 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
-
 		this.tilesInBag = new ArrayList<QwirkleTile>(72);	// Initial array of 72 tiles
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
@@ -102,7 +101,6 @@ public class QwirkleState extends GameState {
 	 * places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-
 		QwirkleTile tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
 		if (tile ==  null){
 			return false;
@@ -137,6 +135,13 @@ public class QwirkleState extends GameState {
 	 *  Quits the game when this action made
 	 */
 	protected boolean quitGame (QuitGameAction action) {
+		return true;
+	}
+
+	/**
+	 * Ends your turn when action is made
+	 */
+	protected boolean endTurn (EndTurnAction action) {
 		return true;
 	}
 
