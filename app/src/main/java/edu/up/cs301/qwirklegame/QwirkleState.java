@@ -176,24 +176,6 @@ public class QwirkleState extends GameState {
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
 	public void setCurrPlayer(int player) { this.currPlayer = player; }
-  
-	/**
-	 * toString method that describes the state of the game as a string
-	 */
-	@Override
-	public String toString(GameState currState) {
-		String state = "Current Game State: \n";	// not complete yet, a placeholder
-		//state += "Tiles left in bag: " + bagTiles + "\n";
-		//state += "Tiles played: " + tilesPlayed + "\n";
-		for(int i = 0; i < playersScore.length; i++){
-			state += "Player " + i + " score: " +playersScore[i] + "\n";
-		}
-		state += "Current player: " + currPlayer + "\n";
-		state += "Is player " + currPlayer + " turn." + "\n";
-		//state += "Turn number: " + turnCounter + "\n";
-		//state += "Tiles on board: " + tilesOnBoard + "\n";
-		return state;
-	}
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
