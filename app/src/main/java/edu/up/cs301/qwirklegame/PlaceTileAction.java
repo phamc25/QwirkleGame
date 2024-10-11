@@ -3,6 +3,17 @@ package edu.up.cs301.qwirklegame;
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 
+/**
+ * Place tile Action
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
+ */
+
 public class PlaceTileAction extends GameAction {
 
     // to satisfy Serializable interface

@@ -1,5 +1,16 @@
 package edu.up.cs301.qwirklegame;
 
+/**
+ * Board Class
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
+ */
+
 public class Board {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 

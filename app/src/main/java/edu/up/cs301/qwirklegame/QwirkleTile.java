@@ -5,6 +5,9 @@ package edu.up.cs301.qwirklegame;
  *
  * @author Talia Martinez
  * @author Chloe Pham
+ * @author Tyler Crosbie
+ * @author De'ante Agleham
+ * @author Ryan Murray
  *
  * @version October 5, 2024
  */

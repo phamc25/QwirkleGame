@@ -12,6 +12,7 @@ import edu.up.cs301.GameFramework.utilities.Tickable;
  * @author Steven R. Vegdahl
  * @author Andrew M. Nuxoll
  * @version September 2013
+ *
  */
 public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickable {
 	

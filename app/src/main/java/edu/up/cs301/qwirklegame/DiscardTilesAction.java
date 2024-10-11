@@ -4,6 +4,16 @@ import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 import java.util.ArrayList;
 
+/**
+ * Discard Action
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ */
+
 public class DiscardTilesAction extends GameAction {
 
 
