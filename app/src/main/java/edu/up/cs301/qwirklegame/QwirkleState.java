@@ -2,6 +2,7 @@ package edu.up.cs301.qwirklegame;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -27,9 +28,9 @@ public class QwirkleState extends GameState {
 	private int currPlayer;	// An integer that represents the current player playing
 	private int drawTiles;	// The # of tiles that need to be drawn at the end of turn
 	private int currTile;	// Represents the current tile index for tilesInHands
-	private Board board;	// Board game object that contains a QwirkleTiles[][]
+	private Board board;	// Board game object that contains a QwirkleTile[][]
 	private int[] playersScore;	// An array to hold player's scores
-	private ArrayList<QwirkleTile> tilesInBag;		// List of tiles in bag: 108
+	private ArrayList<QwirkleTile> tilesInBag;		// List of tiles in bag: 72
 	private ArrayList<QwirkleTile>[] tilesInHands;		// List of tiles in each player's hands
 
 	// Static variables for common values
@@ -47,15 +48,20 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
+
 		this.tilesInBag = new ArrayList<QwirkleTile>(72);	// Initial array of 72 tiles
+
+		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
+		for (QwirkleTile.Color color : QwirkleTile.Color.values())
+			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
+				for (int i = 0; i < 2; i++)
+					this.tilesInBag.add(new QwirkleTile(shape, color));
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
-
-		//TODO:  generate all 72 tiles and put them in the bag
 	}
 
 	/**
@@ -71,17 +77,14 @@ public class QwirkleState extends GameState {
 		this.currTile = orig.currTile;
 		this.board = new Board(orig.board);
 
-		// Deep copy for int array? *Don't use with object references, not deep copy*
-		this.playersScore = new int[orig.playersScore.length];
-		System.arraycopy(orig.playersScore, 0, this.playersScore, 0, orig.playersScore.length);
+		// Deep copy for int array
+		this.playersScore = Arrays.copyOf(orig.playersScore, orig.playersScore.length);
 
 		// Array for tiles in bag for deep copy
 		this.tilesInBag = new ArrayList<>();
 		for (QwirkleTile tile : orig.tilesInBag) {
 			this.tilesInBag.add(new QwirkleTile(tile));
 		}
-
-		// Since each player only needs to know their own hand, how do we adjust this to only show each player's own hand?
 
 		// Loop for arraylist (number of players)
 		this.tilesInHands = new ArrayList[orig.tilesInHands.length];
@@ -228,6 +231,26 @@ public class QwirkleState extends GameState {
  * Problem: How can we deep copy an array?
  * Source: https://howtodoinjava.com/java/array/java-array-clone-shallow-copy/
  * Usage: Deep copied an int array for playersScore
+ *
+ * Date: October 11, 2024
+ */
+
+/**
+ * External Citation
+ *
+ * Problem: How can we get values from enums?
+ * Source: https://www.baeldung.com/java-enum-iteration
+ * Usage: Initializing all 72 tiles in the bag
+ *
+ * Date: October 11, 2024
+ */
+
+/**
+ * External Citation
+ *
+ * Problem: How can we use copyOf to copy an array?
+ * Source: https://www.geeksforgeeks.org/arrays-copyof-in-java-with-examples/
+ * Usage: Deep copying the players score array
  *
  * Date: October 11, 2024
  */

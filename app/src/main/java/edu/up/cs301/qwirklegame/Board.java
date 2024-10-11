@@ -23,19 +23,18 @@ public class Board {
 
     /**
      * Method for deep copying array
-     * @return A QwirkleTiles double array
+     * @return A QwirkleTile double array
      */
     public QwirkleTile[][] copyBoard() {
-        // Create a new double array of QwirkleTiles for the copied array
+        // Create a new double array of QwirkleTile for the copied array
         QwirkleTile[][] copy = new QwirkleTile[LENGTH][WIDTH];
 
         // Loop through the original board to copy into the copy array
         for (int i = 0; i < boardArray.length; i++) {
-            //not needed?  copy[i] = new QwirkleTiles[this.boardArray[i].length];
+            //not needed?  copy[i] = new QwirkleTile[this.boardArray[i].length];
             for (int j = 0; j < boardArray[i].length; j++) {
-                if(this.boardArray[i][j] != null) {
-                    copy[i][j] = new QwirkleTile(this.boardArray[i][j]);
-                }
+                //TODO skip null cells
+                copy[i][j] = new QwirkleTile(this.boardArray[i][j]);
             }
         }
         return copy;
