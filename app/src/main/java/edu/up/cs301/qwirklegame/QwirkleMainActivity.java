@@ -83,7 +83,7 @@ public class QwirkleMainActivity extends GameMainActivity {
 	 */
 	@Override
 	public LocalGame createLocalGame(GameState state) {
-		if (state == null) state = new QwirkleState(0,0,0,new int[]{0, 0, 0, 0},0,true,0,0,0,0,-1,new ArrayList<>(),4);
+		if (state == null) state = new QwirkleState(); //based on context if the state is null, it will use a default constructor to start a new game
 		return new QwirkleLocalGame(state);
 	}
 

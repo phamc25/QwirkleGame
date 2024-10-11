@@ -18,7 +18,7 @@ public class Board {
      *  Copy constructor (Deep copy)
      */
     public Board(Board orig) {
-        this.boardArray = copyBoard();
+        this.boardArray = orig.copyBoard();
     }
 
     /**
@@ -45,5 +45,18 @@ public class Board {
      */
     public QwirkleTiles[][] getBoard() {
         return this.boardArray;
+    }
+
+    /**
+     * Adds a tile to empty spot on board
+     *
+     * @param tile tile to be added
+     * @param x x position of tile placement
+     * @param y y position of tile placement
+     */
+    public void addToBoard(QwirkleTiles tile, int x, int y){
+        if(boardArray[x][y] == null) {
+            boardArray[x][y] = tile;
+        }
     }
 }
