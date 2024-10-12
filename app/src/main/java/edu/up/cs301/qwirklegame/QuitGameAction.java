@@ -27,4 +27,5 @@ public class QuitGameAction extends GameAction {
     public boolean isQuitAction() {
         return true;
     }
+
 }

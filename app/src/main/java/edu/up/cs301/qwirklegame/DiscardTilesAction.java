@@ -22,34 +22,24 @@ public class DiscardTilesAction extends GameAction {
 
     // List of tiles to discard
     private ArrayList<QwirkleTile> tilesToDiscard;
-    private QwirkleLocalGame localGame;
 
     public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
         super(player);
         this.tilesToDiscard = tilesToDiscard;
     }
+    // Gets the tiles the player has chosen to discard
     public ArrayList<QwirkleTile> getTilesToDiscard() {
         return tilesToDiscard;
     }
 
+    //Sets a new list of tiles to discard
     public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
         this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
     }
 
+    // Checks if there are tiles to discard
     public boolean hasTilesToDiscard() {
         return !tilesToDiscard.isEmpty();
     }
-    public boolean applyAction(QwirkleState state, GamePlayer player) {
-        int playerIndex = localGame.getPlayerIndex(player);
 
-        // Remove discarded tiles from the player's hand
-        for (QwirkleTile tile : tilesToDiscard) {
-            state.getPlayerHand(playerIndex).remove(tile);
-        }
-
-        // Draw the same number of tiles from the bag
-        state.drawTiles(playerIndex, tilesToDiscard.size());
-
-        return true;
-    }
 }
