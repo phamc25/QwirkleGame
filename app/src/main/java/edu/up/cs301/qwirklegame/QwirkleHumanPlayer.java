@@ -75,15 +75,18 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// Construct the action and send it to the game
 		GameAction action = null;
-		if (button.getId() == R.id.plusButton) {
-			// plus button: create "increment" action
-			action = new QwirkleMoveAction(this, true);
-		}
-		else if (button.getId() == R.id.minusButton) {
-			// minus button: create "decrement" action
-			action = new QwirkleMoveAction(this, false);
-		}
-		else {
+//		if (button.getId() == R.id.plusButton) {
+//			// plus button: create "increment" action
+//			action = new QwirkleMoveAction(this, true);
+//		}
+//		else if (button.getId() == R.id.minusButton) {
+//			// minus button: create "decrement" action
+//			action = new QwirkleMoveAction(this, false);
+//		}
+		if (button.getId() == R.id.endTurnButton) {
+			action = new EndTurnAction(state, action.getPlayer());
+
+		} else {
 			// something else was pressed: ignore
 			return;
 		}

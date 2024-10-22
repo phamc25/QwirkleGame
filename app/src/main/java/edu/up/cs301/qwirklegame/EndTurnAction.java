@@ -24,8 +24,12 @@ public class EndTurnAction extends GameAction {
      *
      * @param player the player who created the action
      */
-    public EndTurnAction(GamePlayer player) {
+    public EndTurnAction(QwirkleState state, GamePlayer player) {
         super(player);
+        int playerIndex = state.getCurrPlayer();
+
+        int nextPlayer = (playerIndex + 1) % QwirkleState.MAX_PLAYERS;
+        state.setCurrPlayer(nextPlayer);
     }
 
     // can always skip turn
