@@ -1,9 +1,11 @@
 package edu.up.cs301.qwirklegame;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
@@ -168,6 +170,9 @@ public class QwirkleState extends GameState {
 	}
 	public int getCurrPlayer() {
 		return currPlayer;
+	}
+	public int getNumTilesOnBoard() {
+		//return tilesOnBoard;
 	}
 
 	// Setter methods
