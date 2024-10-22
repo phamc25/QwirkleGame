@@ -83,7 +83,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 //			// minus button: create "decrement" action
 //			action = new QwirkleMoveAction(this, false);
 //		}
-		if (button.getId() == R.id.endTurnButton) {
+		if (button.getId() == R.id.end_button) {
 			action = new EndTurnAction(state, action.getPlayer());
 
 		} else {
@@ -126,10 +126,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		activity.setContentView(R.layout.counter_human_player);
 		
 		// make this object the listener for both the '+' and '-' 'buttons
-		Button plusButton = (Button) activity.findViewById(R.id.plusButton);
-		plusButton.setOnClickListener(this);
-		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
-		minusButton.setOnClickListener(this);
+//		Button plusButton = (Button) activity.findViewById(R.id.plusButton);
+//		plusButton.setOnClickListener(this);
+//		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
+//		minusButton.setOnClickListener(this);
+		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
+		endTurnButton.setOnClickListener(this);
 
 		// remember the field that we update to display the counter's value
 		this.counterValueTextView =
