@@ -133,9 +133,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
 		endTurnButton.setOnClickListener(this);
 
-		// remember the field that we update to display the counter's value
-		this.counterValueTextView =
-				(TextView) activity.findViewById(R.id.counterValueTextView);
+//		// remember the field that we update to display the counter's value
+//		this.counterValueTextView =
+//				(TextView) activity.findViewById(R.id.counterValueTextView);
 		
 		// if we have a game state, "simulate" that we have just received
 		// the state from the game so that the GUI values are updated
