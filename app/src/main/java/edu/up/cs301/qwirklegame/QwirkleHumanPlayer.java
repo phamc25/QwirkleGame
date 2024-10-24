@@ -27,7 +27,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	/* instance variables */
 	
 	// The TextView the displays the current counter value
-	private TextView counterValueTextView;
+	private TextView testResultsTextView;
 	
 	// the most recent game state, as given to us by the QwirkleLocalGame
 	private QwirkleState state;
@@ -51,7 +51,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * 		the top object in the GUI's view heirarchy
 	 */
 	public View getTopView() {
-		return myActivity.findViewById(R.id.top_gui_layout);
+		return myActivity.findViewById(R.id.edit_text_file);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (game == null) return;
 
 		// Construct the action and send it to the game
-		GameAction action = null;
+		// GameAction action = null;
 //		if (button.getId() == R.id.plusButton) {
 //			// plus button: create "increment" action
 //			action = new QwirkleMoveAction(this, true);
@@ -83,15 +83,15 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 //			// minus button: create "decrement" action
 //			action = new QwirkleMoveAction(this, false);
 //		}
-		if (button.getId() == R.id.end_button) {
-			action = new EndTurnAction(state, action.getPlayer());
+		// if (button.getId() == R.id.end_button) {
+		//	action = new EndTurnAction(state, action.getPlayer());
 
-		} else {
+		//} else {
 			// something else was pressed: ignore
 			return;
-		}
+		//}
 		
-		game.sendAction(action); // send action to the game
+		//game.sendAction(action); // send action to the game
 	}// onClick
 	
 	/**
@@ -123,15 +123,18 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.myActivity = activity;
 		
 	    // Load the layout resource for our GUI
-		activity.setContentView(R.layout.counter_human_player);
-		
-		// make this object the listener for both the '+' and '-' 'buttons
-//		Button plusButton = (Button) activity.findViewById(R.id.plusButton);
-//		plusButton.setOnClickListener(this);
+		activity.setContentView(R.layout.edit_text);
+
+		// intitialize testResultsTextView
+		testResultsTextView = activity.findViewById(R.id.editTextTextMultiLine);
+
+		// make this object the listener
+		Button editText = (Button) activity.findViewById(R.id.run_test);
+		editText.setOnClickListener(this);
 //		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
 //		minusButton.setOnClickListener(this);
-		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
-		endTurnButton.setOnClickListener(this);
+//		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
+//		endTurnButton.setOnClickListener(this);
 
 		// remember the field that we update to display the counter's value
 		//this.counterValueTextView =
@@ -139,9 +142,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		
 		// if we have a game state, "simulate" that we have just received
 		// the state from the game so that the GUI values are updated
-		if (state != null) {
+		//if (state != null) {
 			receiveInfo(state);
-		}
+		//}
 	}
 
 }// class QwirkleHumanPlayer
