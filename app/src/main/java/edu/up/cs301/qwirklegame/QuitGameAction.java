@@ -25,7 +25,11 @@ public class QuitGameAction extends GameAction {
 
     // can always quit the game
     public boolean isQuitAction() {
+
         return true;
+    }
+    public void quitGame() {
+        GamePlayer player = this.getPlayer();
     }
 
 }

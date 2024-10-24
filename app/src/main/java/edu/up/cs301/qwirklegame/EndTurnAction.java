@@ -24,11 +24,11 @@ public class EndTurnAction extends GameAction {
      *
      * @param player the player who created the action
      */
-    public EndTurnAction(QwirkleState state, GamePlayer player) {
+    public EndTurnAction(QwirkleState state, GamePlayer player, int players) {
         super(player);
         int playerIndex = state.getCurrPlayer();
 
-        int nextPlayer = (playerIndex + 1) % QwirkleState.MAX_PLAYERS;
+        int nextPlayer = (playerIndex + 1) % players;
         state.setCurrPlayer(nextPlayer);
     }
 
