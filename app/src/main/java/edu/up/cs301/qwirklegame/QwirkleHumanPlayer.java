@@ -51,7 +51,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * 		the top object in the GUI's view heirarchy
 	 */
 	public View getTopView() {
-		return myActivity.findViewById(R.id.top_gui_layout);
+		return myActivity.findViewById(R.id.edit_text_file);
 	}
 	
 	/**
@@ -133,8 +133,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		editText.setOnClickListener(this);
 //		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
 //		minusButton.setOnClickListener(this);
-		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
-		endTurnButton.setOnClickListener(this);
+//		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
+//		endTurnButton.setOnClickListener(this);
 
 		// remember the field that we update to display the counter's value
 		//this.counterValueTextView =

@@ -171,9 +171,9 @@ public class QwirkleState extends GameState {
 	public int getCurrPlayer() {
 		return currPlayer;
 	}
-	public int getNumTilesOnBoard() {
-		//return tilesOnBoard;
-	}
+//	public int getNumTilesOnBoard() {
+//		return tilesOnBoard;
+//	}
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
