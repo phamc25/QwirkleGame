@@ -6,6 +6,7 @@ import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -73,6 +74,17 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// if we are not yet connected to a game, ignore
 		if (game == null) return;
 
+		// clearing any previous text
+		testResultsTextView.setText("");
+
+		// making a new QwirkleState w default constructor
+		QwirkleState firstInstance = new QwirkleState();
+
+		// deep copy of firstInstance for player1
+		QwirkleState firstCopy = new QwirkleState(firstInstance);
+
+		//
+
 		// Construct the action and send it to the game
 		// GameAction action = null;
 //		if (button.getId() == R.id.plusButton) {
@@ -89,7 +101,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		//} else {
 			// something else was pressed: ignore
 			return;
-		//}
+			//}
 		
 		//game.sendAction(action); // send action to the game
 	}// onClick
@@ -131,6 +143,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// make this object the listener
 		Button editText = (Button) activity.findViewById(R.id.run_test);
 		editText.setOnClickListener(this);
+
 //		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
 //		minusButton.setOnClickListener(this);
 //		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
