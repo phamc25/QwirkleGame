@@ -8,6 +8,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
+/**
+ *    For CS371 Lab activities
+ */
+
 public class QwirkleBitmaps extends SurfaceView{
 
         private Bitmap tileBlueCirc;
