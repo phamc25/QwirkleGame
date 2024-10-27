@@ -50,7 +50,10 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTile>(13);	// Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(13); // Initial array of 72 tiles
+
+		// TODO: figure out how to set numplayers in a different way that isn't hardcoding
+		numPlayers = 2;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
@@ -100,7 +103,7 @@ public class QwirkleState extends GameState {
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
-		for (int i = 0; i < numPlayers; i++) {
+		for (int i = 0; i < tilesInHands.length; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
 	}
@@ -225,7 +228,8 @@ public class QwirkleState extends GameState {
 //			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
 			QwirkleTile drawnTile = tilesInBag.get(i);
 			tilesInBag.remove(i);
-			tilesInHands[playerIndex]
+			//tilesInHands[] = numPlayers;
+			tilesInHands[playerIndex].add(drawnTile);
 		}
 	}
 	public void refillHand(int playerIndex) {

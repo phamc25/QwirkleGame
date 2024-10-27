@@ -90,9 +90,10 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		int currPID = firstInstance.getCurrPlayer();
 		firstInstance.drawTiles(currPID, 6);
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
-		QwirkleTile firstTile = hand.get(0);
-		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
-		firstInstance.placeTile(pta);
+		// QwirkleTile firstTile = hand.get(0);
+		//PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
+		//firstInstance.placeTile(pta);
+
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
 //			int index = firstCopy.getPlayerHand();
