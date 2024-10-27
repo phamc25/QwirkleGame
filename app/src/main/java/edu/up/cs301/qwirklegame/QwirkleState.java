@@ -231,6 +231,16 @@ public class QwirkleState extends GameState {
 		state += "Tiles to be drawn: " + this.drawTiles + "\n";
 		state += "Current tile selected: " + this.currTile + "\n";
 
+		// Loops through the board array and prints the number of QwirkleTiles in the board
+		int tiles = 0;
+		for (int i = 0; i < board.getBoard().length; i++) {
+			for (int j = 0; j < board.getBoard()[i].length; j++) {
+				if (board.getBoard()[i][j] != null)
+					tiles++;
+			}
+		}
+		state += "Number of tiles on board: " + tiles + "\n";
+
 		// Loops through players' scores and print them
 		for (int i = 0; i < playersScore.length; i++) {
 			state += "Player " + i + " score: " + playersScore[i] + "\n";
@@ -246,6 +256,7 @@ public class QwirkleState extends GameState {
 				QwirkleTile tile = tilesInHands[i].get(j);
 				state += tile.getColor() + " " + tile.getShape() + ", ";	// Prints out the hand
 			}
+			state+= "\n";
 		}
 		return state;
 	}

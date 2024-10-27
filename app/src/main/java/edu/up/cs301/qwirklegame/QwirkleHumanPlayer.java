@@ -92,7 +92,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
 		QwirkleTile firstTile = hand.get(0);
 		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
-		firstInstance.placeTile(pta);
+//		firstInstance.placeTile(pta);
 
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
