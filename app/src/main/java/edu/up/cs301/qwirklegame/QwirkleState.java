@@ -50,13 +50,53 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[4];	// Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTile>(72);	// Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(13);	// Initial array of 72 tiles
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
 			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
-				for (int i = 0; i < 2; i++)
-					this.tilesInBag.add(new QwirkleTile(shape, color));
+//				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < 1; i++){
+					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.RED)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.GREEN)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.CLOVER) && color.equals(QwirkleTile.Color.ORANGE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.SQUARE) && color.equals(QwirkleTile.Color.RED)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.BLUE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.SQUARE) && color.equals(QwirkleTile.Color.ORANGE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.BLUE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.RED)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.CLOVER) && color.equals(QwirkleTile.Color.BLUE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.FOURSTAR) && color.equals(QwirkleTile.Color.ORANGE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.YELLOW)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.DIAMOND) && color.equals(QwirkleTile.Color.ORANGE)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.YELLOW)) {
+						this.tilesInBag.add(new QwirkleTile(shape, color));
+					}
+				}
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
@@ -181,9 +221,11 @@ public class QwirkleState extends GameState {
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
-			int randomIndex = (int)(Math.random() * tilesInBag.size());
-			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
-			tilesInHands[playerIndex].add(drawnTile);
+//			int randomIndex = (int)(Math.random() * tilesInBag.size());
+//			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
+			QwirkleTile drawnTile = tilesInBag.get(i);
+			tilesInBag.remove(i);
+			tilesInHands[playerIndex]
 		}
 	}
 	public void refillHand(int playerIndex) {
