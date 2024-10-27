@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import java.util.ArrayList;
+
 /**
  * A GUI of a counter-player. The GUI displays the current value of the counter,
  * and allows the human player to press the '+' and '-' buttons in order to
@@ -82,8 +84,33 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// deep copy of firstInstance for player1
 		QwirkleState firstCopy = new QwirkleState(firstInstance);
+		// method calls, faux gameplay
+		firstInstance.setNumPlayers(2);
 
-		//
+		int currPID = firstInstance.getCurrPlayer();
+		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
+		QwirkleTile firstTile = hand.get(0);
+		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
+		firstInstance.placeTile(pta);
+		//testResultsTextView.setText("Two players begin the game");
+		//for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
+			//int index = firstCopy.getPlayerHand();
+		//}
+		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
+
+		// checking
+		QwirkleState secondInstance = new QwirkleState();
+
+		// deepcopy for checking
+		QwirkleState secondCopy = new QwirkleState(secondInstance);
+
+		String firstString = firstCopy.toString();
+		String secondString = secondCopy.toString();
+
+		testResultsTextView.append(firstString + secondString);
+
+
+
 
 		// Construct the action and send it to the game
 		// GameAction action = null;
