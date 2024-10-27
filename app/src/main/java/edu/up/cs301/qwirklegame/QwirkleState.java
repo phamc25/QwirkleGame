@@ -79,7 +79,7 @@ public class QwirkleState extends GameState {
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
-		for (int i = 0; i < tilesInHands.length; i++) {
+		for (int i = 0; i < numPlayers; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
 	}
@@ -122,9 +122,10 @@ public class QwirkleState extends GameState {
 	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-		QwirkleTile tile = tilesInHands[currPlayer].remove(currTile); //need to add tile to board
-		if (tile ==  null){
-			return false;
+		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+		QwirkleTile tile = playerHand.remove(currTile); //need to add tile to board
+		if (tile ==  null || currTile < 0 || currTile >= playerHand.size()) {
+			return false; // invalid index or empty hand
 		}
 		board.addToBoard(tile, action.getX(), action.getY());
 		return true;
@@ -242,7 +243,13 @@ public class QwirkleState extends GameState {
 		state += "Number of tiles on board: " + tiles + "\n";
 
 		// Loops through players' scores and print them
+		int topScore = 0;
+		int winner = 0;
 		for (int i = 0; i < playersScore.length; i++) {
+			if (playersScore[i] > topScore) {
+				topScore = playersScore[i];
+				winner = i;
+			}
 			state += "Player " + i + " score: " + playersScore[i] + "\n";
 		}
 
@@ -258,6 +265,8 @@ public class QwirkleState extends GameState {
 			}
 			state+= "\n";
 		}
+
+		state += "Game winner: Player " + winner + " with " + topScore + " points!";
 		return state;
 	}
 }
