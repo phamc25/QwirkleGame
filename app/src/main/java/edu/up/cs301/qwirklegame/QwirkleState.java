@@ -56,50 +56,26 @@ public class QwirkleState extends GameState {
 		numPlayers = 2;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
-		for (QwirkleTile.Color color : QwirkleTile.Color.values())
-			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
+		//TODO: re add after Proj E
+//		for (QwirkleTile.Color color : QwirkleTile.Color.values())
+//			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
 //				for (int i = 0; i < 2; i++) {
-				for (int i = 0; i < 1; i++){
-					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.RED)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.GREEN)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.CLOVER) && color.equals(QwirkleTile.Color.ORANGE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.SQUARE) && color.equals(QwirkleTile.Color.RED)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.BLUE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.SQUARE) && color.equals(QwirkleTile.Color.ORANGE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.BLUE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.RED)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.CLOVER) && color.equals(QwirkleTile.Color.BLUE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.FOURSTAR) && color.equals(QwirkleTile.Color.ORANGE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.CIRCLE) && color.equals(QwirkleTile.Color.YELLOW)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.DIAMOND) && color.equals(QwirkleTile.Color.ORANGE)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-					if (shape.equals(QwirkleTile.Shape.EIGHTSTAR) && color.equals(QwirkleTile.Color.YELLOW)) {
-						this.tilesInBag.add(new QwirkleTile(shape, color));
-					}
-				}
+//					this.tilesInBag.add(new QwirkleTile(shape,color));
+//				}
+		//TODO: Remove after ProjE
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.RED));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.GREEN));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CLOVER,QwirkleTile.Color.ORANGE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.SQUARE,QwirkleTile.Color.RED));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.BLUE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.SQUARE,QwirkleTile.Color.ORANGE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.BLUE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.RED));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CLOVER,QwirkleTile.Color.BLUE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.FOURSTAR,QwirkleTile.Color.ORANGE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.YELLOW));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.DIAMOND,QwirkleTile.Color.ORANGE));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.YELLOW));
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
@@ -224,10 +200,11 @@ public class QwirkleState extends GameState {
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
+			//TODO: restore after Proj E
 //			int randomIndex = (int)(Math.random() * tilesInBag.size());
 //			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
-			QwirkleTile drawnTile = tilesInBag.get(i);
-			tilesInBag.remove(i);
+			QwirkleTile drawnTile = tilesInBag.get(0);
+			tilesInBag.remove(0);
 			//tilesInHands[] = numPlayers;
 			tilesInHands[playerIndex].add(drawnTile);
 		}

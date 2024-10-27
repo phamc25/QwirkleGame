@@ -85,14 +85,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// deep copy of firstInstance for player1
 		QwirkleState firstCopy = new QwirkleState(firstInstance);
 		// method calls, faux gameplay
-		firstInstance.setNumPlayers(2);
 
 		int currPID = firstInstance.getCurrPlayer();
 		firstInstance.drawTiles(currPID, 6);
+		firstInstance.drawTiles(currPID+1, 6);
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
-		// QwirkleTile firstTile = hand.get(0);
-		//PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
-		//firstInstance.placeTile(pta);
+		QwirkleTile firstTile = hand.get(0);
+		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
+		firstInstance.placeTile(pta);
 
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
