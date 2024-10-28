@@ -2,11 +2,9 @@ package edu.up.cs301.qwirklegame;
 
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -95,12 +93,20 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
 
 		// Get the first tile and place it on the board (Red circle)
-		QwirkleTile firstTile = hand.get(0);
+		QwirkleTile redCircle = hand.get(0);
 		firstInstance.setCurrTile(0);
-		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
-		firstInstance.placeTile(pta);
+		PlaceTileAction pta1 = new PlaceTileAction(this, redCircle, 0, 0);
+		firstInstance.placeTile(pta1);
+		testResultsTextView.append("Player 1 placed a red circle tile \n");
 
 		// Gets the second tile and places it on the board ()
+		QwirkleTile redSquare = hand.get(2);
+		firstInstance.setCurrTile(2);
+		PlaceTileAction pta2 = new PlaceTileAction(this, redSquare, 1, 0);
+		firstInstance.placeTile(pta2);
+		testResultsTextView.append("Player 1 placed a red square tile next to it \n");
+
+		// Player 1 ends turn
 
 
 //		testResultsTextView.setText("Two players begin the game");
