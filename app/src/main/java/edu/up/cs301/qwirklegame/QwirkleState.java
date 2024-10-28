@@ -52,7 +52,7 @@ public class QwirkleState extends GameState {
 		this.playersScore = new int[4];	// Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(13); // Initial array of 72 tiles
 
-		// TODO: figure out how to set numplayers in a different way that isn't hardcoding
+		// TODO: figure out how to set numPlayers in a different way that isn't hardcoding
 		numPlayers = 2;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
@@ -166,6 +166,7 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean endTurn (EndTurnAction action) {
 		// can end their turn at any time
+		refillHand(currPlayer);
 		return true;
 	}
 
