@@ -266,7 +266,7 @@ public class QwirkleState extends GameState {
 			state+= "\n";
 		}
 
-		state += "Game winner: Player " + winner + " with " + topScore + " points!";
+		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;
 	}
 }
