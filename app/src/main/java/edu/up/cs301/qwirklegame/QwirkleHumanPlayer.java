@@ -2,11 +2,9 @@ package edu.up.cs301.qwirklegame;
 
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -88,27 +86,28 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// method calls, faux gameplay
 
-		// player 1 draws tiles
+		// Get the current player and draw tiles for both players
 		int currPID = firstInstance.getCurrPlayer();
 		firstInstance.drawTiles(currPID, 6);
 		firstInstance.drawTiles(currPID+1, 6);
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
 
-		// player one plays a tile
-		QwirkleTile firstTile = hand.get(0);
-		QwirkleTile secondTile = hand.get(3);
-		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
-		//PlaceTileAction pta2 = new PlaceTileAction(this, secondTile, 0, 5);
-		// place red circle
+		// Get the first tile and place it on the board (Red circle)
+		QwirkleTile redCircle = hand.get(0);
 		firstInstance.setCurrTile(0);
-		firstInstance.placeTile(pta);
-		// place red square
-		//firstInstance.setCurrTile(3);
-		//firstInstance.placeTile(pta2);
+		PlaceTileAction pta1 = new PlaceTileAction(this, redCircle, 0, 0);
+		firstInstance.placeTile(pta1);
+		testResultsTextView.append("Player 1 placed a red circle tile \n");
 
-		// ends their turn
-		EndTurnAction endturnPlayer1 = new EndTurnAction(firstInstance, this, 2);
-		firstInstance.endTurn(endturnPlayer1);
+		// Gets the second tile and places it on the board ()
+		QwirkleTile redSquare = hand.get(2);
+		firstInstance.setCurrTile(2);
+		PlaceTileAction pta2 = new PlaceTileAction(this, redSquare, 1, 0);
+		firstInstance.placeTile(pta2);
+		testResultsTextView.append("Player 1 placed a red square tile next to it \n");
+
+		// Player 1 ends turn
+
 
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
@@ -117,14 +116,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
 
 		// checking
-		QwirkleState secondInstance = new QwirkleState(firstInstance);
+		QwirkleState secondInstance = new QwirkleState();
 
 		// deepcopy for checking
 		QwirkleState secondCopy = new QwirkleState(secondInstance);
 
 		// Appending both game state instance toStrings to textview
 		testResultsTextView.append(firstInstance.toString(firstCopy) + "\n");
-		testResultsTextView.append(secondInstance.toString(secondCopy));
+		testResultsTextView.append(firstInstance.toString(secondCopy));
 
 		// Construct the action and send it to the game
 		// GameAction action = null;
