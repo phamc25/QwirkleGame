@@ -19,12 +19,9 @@ import java.util.ArrayList;
  */
 public class QwirkleLocalGame extends LocalGame {
 
-	// When a counter game is played, any number of players. The first player
-	// is trying to get the counter value to TARGET_MAGNITUDE; the second player,
-	// if present, is trying to get the counter to -TARGET_MAGNITUDE. The
-	// remaining players are neither winners nor losers, but can interfere by
-	// modifying the counter.
-	public static final int TARGET_MAGNITUDE = 10;
+	// The first player to get to 0 tiles in their hand, gets 6 points added to their score.
+	// This ends the game
+	public static final int FINAL_ADD_POINTS = 6;
 
 	// the game's state
 	private QwirkleState gameState;
@@ -99,7 +96,32 @@ public class QwirkleLocalGame extends LocalGame {
 	 */
 	@Override
 	protected String checkIfGameOver() {
-		
+		int currPlayer = gameState.getCurrPlayer();	// Current player
+
+		// Get the number of tiles in the player's hand
+		int numTiles = this.gameState.getPlayerHand(currPlayer).size();
+
+		// Check if the length of the player's hand has reached 0
+		if (numTiles == 0) {
+			// Add 6 points to their score
+			int[] playersScore = gameState.getPlayersScore();
+			gameState.setPlayersScore(currPlayer, playersScore[currPlayer] + FINAL_ADD_POINTS);
+
+			int winningPlayer = 0;
+			// Loop through the array and find the player with the biggest score
+			for (int i = 1; i < playersScore.length; i++) {
+				if (playersScore[i] > playersScore[winningPlayer]) {
+					winningPlayer = i;
+				}
+			}
+			// Return the winning player
+			return playerNames[winningPlayer] + "has won.";
+		}
+		// If no player hand has reached 0, the game is not over
+		else {
+			return null;
+		}
+
 		// get the value of the counter
 		//int counterVal = this.gameState.getCounter();
 		
@@ -124,7 +146,6 @@ public class QwirkleLocalGame extends LocalGame {
 			return null;
 		}*/
 
-        return null;
     }
 	protected void endTurn(GamePlayer player) {
 		int playerIndex = getPlayerIndex(player);
