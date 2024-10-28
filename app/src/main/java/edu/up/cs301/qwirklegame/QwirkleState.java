@@ -198,6 +198,7 @@ public class QwirkleState extends GameState {
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
 	public void setCurrPlayer(int player) { this.currPlayer = player; }
+	public void setCurrTile(int tile) { this.currTile = tile; }
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
