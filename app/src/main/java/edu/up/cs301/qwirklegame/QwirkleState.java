@@ -167,6 +167,7 @@ public class QwirkleState extends GameState {
 	protected boolean endTurn (EndTurnAction action) {
 		// can end their turn at any time
 		refillHand(currPlayer);
+		this.currPlayer = 1-currPlayer;
 		return true;
 	}
 

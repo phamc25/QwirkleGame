@@ -28,8 +28,8 @@ public class EndTurnAction extends GameAction {
         super(player);
         int playerIndex = state.getCurrPlayer();
 
-        int nextPlayer = (playerIndex + 1) % players;
-        state.setCurrPlayer(nextPlayer);
+//        int nextPlayer = (playerIndex + 1) % players;
+//        state.setCurrPlayer(nextPlayer);
     }
 
     // can always skip turn
