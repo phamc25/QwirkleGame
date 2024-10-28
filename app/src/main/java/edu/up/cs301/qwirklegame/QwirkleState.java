@@ -267,8 +267,8 @@ public class QwirkleState extends GameState {
 			state+= "\n";
 		}
 
-		state += "Player 0 plays 3 tiles, scoring 9 points!";
-		state += "Player 1 discards 4 tiles";
+//		state += "Player 0 plays 3 tiles, scoring 9 points!";
+//		state += "Player 1 discards 4 tiles";
 
 		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;

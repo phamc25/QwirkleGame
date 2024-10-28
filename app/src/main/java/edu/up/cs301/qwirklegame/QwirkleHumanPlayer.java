@@ -86,16 +86,22 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		QwirkleState firstCopy = new QwirkleState(firstInstance);
 		// method calls, faux gameplay
 
+		// Get the current player and draw tiles for both players
 		int currPID = firstInstance.getCurrPlayer();
 		firstInstance.drawTiles(currPID, 6);
+		firstInstance.drawTiles(1 - currPID, 6);
 
-		// Set the tiles in player hand
+		// Set the tiles in player 0 hand
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
 
+		// Get the first tile and place it on the board (Red circle)
 		QwirkleTile firstTile = hand.get(0);
-		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
 		firstInstance.setCurrTile(0);
+		PlaceTileAction pta = new PlaceTileAction(this, firstTile, 0, 0);
 		firstInstance.placeTile(pta);
+
+		// Gets the second tile and places it on the board ()
+
 
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
@@ -104,14 +110,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
 
 		// checking
-		QwirkleState secondInstance = new QwirkleState(firstInstance);
+		QwirkleState secondInstance = new QwirkleState();
 
 		// deepcopy for checking
 		QwirkleState secondCopy = new QwirkleState(secondInstance);
 
 		// Appending both game state instance toStrings to textview
 		testResultsTextView.append(firstInstance.toString(firstCopy) + "\n");
-		testResultsTextView.append(secondInstance.toString(secondCopy));
+		testResultsTextView.append(firstInstance.toString(secondCopy));
 
 		// Construct the action and send it to the game
 		// GameAction action = null;
