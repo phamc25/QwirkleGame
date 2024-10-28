@@ -95,16 +95,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// Get the first tile and place it on the board (Red circle)
 		QwirkleTile redCircle = hand.get(0);
 		firstInstance.setCurrTile(0);
-		PlaceTileAction pta1 = new PlaceTileAction(this, redCircle, 0, 0);
-		firstInstance.placeTile(pta1);
-		testResultsTextView.append("Player 1 placed a red circle tile \n");
+		firstInstance.placeTile(new PlaceTileAction(this, redCircle, 0, 0));
+		testResultsTextView.append("Player 1 placed a red circle tile at 0,0 \n");
 
-		// Gets the second tile and places it on the board ()
+		// Gets the second tile and places it on the board (Red square)
 		QwirkleTile redSquare = hand.get(2);
 		firstInstance.setCurrTile(2);
-		PlaceTileAction pta2 = new PlaceTileAction(this, redSquare, 1, 0);
-		firstInstance.placeTile(pta2);
-		testResultsTextView.append("Player 1 placed a red square tile next to it \n");
+		firstInstance.placeTile(new PlaceTileAction(this, redSquare, 1, 0));
+		testResultsTextView.append("Player 1 placed a red square tile next to it at 1,0 \n");
 
 		// Player 1 ends turn
 
