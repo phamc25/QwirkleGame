@@ -76,6 +76,7 @@ public class QwirkleState extends GameState {
 		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.YELLOW));
 		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.DIAMOND,QwirkleTile.Color.ORANGE));
 		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.YELLOW));
+		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.ORANGE));
 
 		// Array for the tiles in the players' hands
 		this.tilesInHands = new ArrayList[numPlayers];
@@ -144,12 +145,12 @@ public class QwirkleState extends GameState {
 		}
 
 		// Loops through the current player's hand and replaces the removed tiles
-		for(int i = 0; i < getSelectedTiles().size(); i++) {
-			if (!(tilesInBag.isEmpty())) {
-				tilesInHands[currPlayer].add(tilesInBag.remove(0));
-			}
-			else break;
-		}
+//		for(int i = 0; i < getSelectedTiles().size(); i++) {
+//			if (!(tilesInBag.isEmpty())) {
+//				tilesInHands[currPlayer].add(tilesInBag.remove(0));
+//			}
+//			else break;
+//		}
 		return true;
 	}
 
