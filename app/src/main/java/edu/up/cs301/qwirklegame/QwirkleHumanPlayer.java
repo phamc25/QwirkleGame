@@ -105,6 +105,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		testResultsTextView.append("Player 1 placed a red square tile next to it at 1,0 \n");
 
 		// Player 1 ends turn
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
 
 
 //		testResultsTextView.setText("Two players begin the game");
@@ -113,6 +114,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 //		}
 		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
 
+		testResultsTextView.append("\n");
 		// checking
 		QwirkleState secondInstance = new QwirkleState();
 
