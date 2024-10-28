@@ -191,6 +191,7 @@ public class QwirkleState extends GameState {
 	}
 
 	// Getter methods
+	public int[] getPlayersScore() { return playersScore; }
 	public int getAddPoints() {
 		return pointsToAdd;
 	}

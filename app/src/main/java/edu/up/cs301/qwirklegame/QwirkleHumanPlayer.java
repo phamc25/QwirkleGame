@@ -88,29 +88,36 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// Get the current player and draw tiles for both players
 		int currPID = firstInstance.getCurrPlayer();
 		firstInstance.drawTiles(currPID, 6);
-		firstInstance.drawTiles(currPID+1, 6);
-		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
-		ArrayList<QwirkleTile> hand2 = firstInstance.getPlayerHand(1 - currPID);
+		firstInstance.drawTiles(1 - currPID, 6);
 
-		// Get the first tile and place it on the board (Red circle)
-		QwirkleTile redCircle = hand.get(0);
+		// Both hands for players
+		ArrayList<QwirkleTile> hand0 = firstInstance.getPlayerHand(currPID);
+		ArrayList<QwirkleTile> hand1 = firstInstance.getPlayerHand(1 - currPID);
+
+		// Both scores for players
+		int[] playersScore = firstInstance.getPlayersScore();
+
+		// Player 0 gets the first tile and place it on the board (Red circle)
+		QwirkleTile redCircle = hand0.get(0);
 		firstInstance.setCurrTile(0);
 		firstInstance.placeTile(new PlaceTileAction(this, redCircle, 0, 0));
-		testResultsTextView.append("Player 1 placed a RED CIRCLE tile at 0,0 \n");
+		testResultsTextView.append("Player 0 placed a RED CIRCLE tile at 0,0 \n");
 
-		// Player 1 ends turn
+		// Player 0 ends turn
+		playersScore[firstInstance.getCurrPlayer()] += 1;	// 1 point for player 1
 		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 1 ended their turn. A YELLOW EIGHTSTAR was added to their hand \n");
+		testResultsTextView.append("Player 0 ended their turn and got +1 point. A YELLOW EIGHTSTAR was added to their hand \n");
 
-		// Player 2 turn start
-		hand2.get(1).setSelected(true);
-		ArrayList<QwirkleTile> selected = firstInstance.getSelectedTiles(hand2);
-		firstInstance.discardTiles(new DiscardTilesAction(this, selected), hand2);
-		testResultsTextView.append("Player 2 discarded a RED EIGHTSTAR tile \n");
+		// Player 1 turn start
+		hand1.get(1).setSelected(true);
+		ArrayList<QwirkleTile> selected = firstInstance.getSelectedTiles(hand1);
+		firstInstance.discardTiles(new DiscardTilesAction(this, selected), hand1);
+		testResultsTextView.append("Player 1 discarded a RED EIGHTSTAR tile \n");
 
-		// Player 2 ends their turn
+		// Player 1 ends their turn
+		playersScore[firstInstance.getCurrPlayer()] += 0;	// 0 points for player 2
 		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 2 ended their turn. An ORANGE CIRCLE was added to their hand \n");
+		testResultsTextView.append("Player 1 ended their turn and got no points. An ORANGE CIRCLE was added to their hand \n");
 
 
 		testResultsTextView.append("\n");
