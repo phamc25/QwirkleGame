@@ -83,7 +83,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// deep copy of firstInstance for player1
 		QwirkleState firstCopy = new QwirkleState(firstInstance);
 
-
 		// method calls, faux gameplay
 
 		// Get the current player and draw tiles for both players
@@ -91,38 +90,34 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		firstInstance.drawTiles(currPID, 6);
 		firstInstance.drawTiles(currPID+1, 6);
 		ArrayList<QwirkleTile> hand = firstInstance.getPlayerHand(currPID);
+		ArrayList<QwirkleTile> hand2 = firstInstance.getPlayerHand(1 - currPID);
 
 		// Get the first tile and place it on the board (Red circle)
 		QwirkleTile redCircle = hand.get(0);
 		firstInstance.setCurrTile(0);
 		firstInstance.placeTile(new PlaceTileAction(this, redCircle, 0, 0));
-		testResultsTextView.append("Player 1 placed a red circle tile at 0,0 \n");
-
-		// Gets the second tile and places it on the board (Red square)
-//		QwirkleTile redSquare = hand.get(2);
-//		firstInstance.setCurrTile(2);
-//		firstInstance.placeTile(new PlaceTileAction(this, redSquare, 1, 0));
-//		testResultsTextView.append("Player 1 placed a red square tile next to it at 1,0 \n");
+		testResultsTextView.append("Player 1 placed a RED CIRCLE tile at 0,0 \n");
 
 		// Player 1 ends turn
 		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 1 ended their turn. A YELLOW EIGHTSTAR was added to their hand \n");
 
-		//Player 2 turn start
-		hand.get(1).setSelected(true);
-		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
+		// Player 2 turn start
+		hand2.get(1).setSelected(true);
+		ArrayList<QwirkleTile> selected = firstInstance.getSelectedTiles(hand2);
+		firstInstance.discardTiles(new DiscardTilesAction(this, selected), hand2);
+		testResultsTextView.append("Player 2 discarded a RED EIGHTSTAR tile \n");
 
-//		testResultsTextView.setText("Two players begin the game");
-//		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
-//			int index = firstCopy.getPlayerHand();
-//		}
-		firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
+		// Player 2 ends their turn
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 2 ended their turn. An ORANGE CIRCLE was added to their hand \n");
+
 
 		testResultsTextView.append("\n");
-		// checking
-		QwirkleState secondInstance = new QwirkleState();
 
-		// deepcopy for checking
-		QwirkleState secondCopy = new QwirkleState(secondInstance);
+		// Second game state for checking
+		QwirkleState secondInstance = new QwirkleState();
+		QwirkleState secondCopy = new QwirkleState(secondInstance);	// Deep copy
 
 		// Appending both game state instance toStrings to textview
 		testResultsTextView.append(firstInstance.toString(firstCopy) + "\n");

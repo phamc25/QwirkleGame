@@ -25,10 +25,10 @@ public class DiscardTilesAction extends GameAction {
 
     public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
         super(player);
-        this.tilesToDiscard = tilesToDiscard;
+        this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
     }
-    // Gets the tiles the player has chosen to discard
-    public ArrayList<QwirkleTile> getTilesToDiscard() {
+
+    public ArrayList<QwirkleTile> getSelectedTiles() {
         return tilesToDiscard;
     }
 

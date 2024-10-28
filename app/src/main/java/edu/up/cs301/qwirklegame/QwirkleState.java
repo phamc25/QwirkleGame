@@ -49,7 +49,7 @@ public class QwirkleState extends GameState {
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
-		this.playersScore = new int[4];	// Empty array of all player's scores
+		this.playersScore = new int[2];	// Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(13); // Initial array of 72 tiles
 
 		// TODO: figure out how to set numPlayers in a different way that isn't hardcoding
@@ -135,14 +135,17 @@ public class QwirkleState extends GameState {
 	/**
 	 *  Discards tiles that were selected
 	 */
-	protected boolean discardTiles (DiscardTilesAction action) {
-		// Removes the selected tiles from the current player's hand
-		tilesInHands[currPlayer].removeAll(getSelectedTiles());
+	protected boolean discardTiles (DiscardTilesAction action, ArrayList<QwirkleTile> hand) {
+		// Gets the selected tiles from the action
+		ArrayList<QwirkleTile> selectedTiles = getSelectedTiles(hand);
 
 		// No selected tiles, return
-		if (getSelectedTiles().isEmpty()) {
+		if (selectedTiles.isEmpty()) {
 			return false;
 		}
+
+		// Removes the selected tiles from the current player's hand
+		hand.removeAll(selectedTiles);
 
 		// Loops through the current player's hand and replaces the removed tiles
 //		for(int i = 0; i < getSelectedTiles().size(); i++) {
@@ -152,6 +155,21 @@ public class QwirkleState extends GameState {
 //			else break;
 //		}
 		return true;
+	}
+
+	/**
+	 * This method returns an ArrayList of Qwirkle tile objects
+	 * that represent the selected tiles for discarding
+	 */
+	public ArrayList<QwirkleTile> getSelectedTiles(ArrayList<QwirkleTile> hand) {
+		// The ArrayList of selected tiles
+		ArrayList<QwirkleTile> selectedTiles = new ArrayList<>();
+		for (QwirkleTile tile : hand) {
+			if (tile.getSelected()) {
+				selectedTiles.add(tile);
+			}
+		}
+		return selectedTiles;
 	}
 
 	/**
@@ -170,21 +188,6 @@ public class QwirkleState extends GameState {
 		refillHand(currPlayer);
 		this.currPlayer = 1-currPlayer;
 		return true;
-	}
-
-	/**
-	 * This method returns an ArrayList of Qwirkle tile objects
-	 * that represent the selected tiles for discarding
-	 */
-	public ArrayList<QwirkleTile> getSelectedTiles() {
-		// The ArrayList of selected tiles
-		ArrayList<QwirkleTile> selectedTiles = new ArrayList<>();
-		for (QwirkleTile tile : tilesInHands[currPlayer]) {
-			if (tile.getSelected()) {
-				selectedTiles.add(tile);
-			}
-		}
-		return selectedTiles;
 	}
 
 	// Getter methods
