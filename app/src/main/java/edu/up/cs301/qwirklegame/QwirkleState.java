@@ -145,6 +145,7 @@ public class QwirkleState extends GameState {
 		}
 
 		// Removes the selected tiles from the current player's hand
+        tilesInBag.addAll(selectedTiles);
 		hand.removeAll(selectedTiles);
 
 		// Loops through the current player's hand and replaces the removed tiles
