@@ -186,7 +186,9 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean endTurn (EndTurnAction action) {
 		// can end their turn at any time
-		refillHand(currPlayer);
+		int toRefill = 6 - tilesInHands[currPlayer].size();
+		drawTiles(currPlayer, toRefill);
+
 		this.currPlayer = 1-currPlayer;
 		return true;
 	}
@@ -274,9 +276,6 @@ public class QwirkleState extends GameState {
 			}
 			state+= "\n";
 		}
-
-//		state += "Player 0 plays 3 tiles, scoring 9 points!";
-//		state += "Player 1 discards 4 tiles";
 
 		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;

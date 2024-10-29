@@ -184,12 +184,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		playersScore[firstInstance.getCurrPlayer()] += 1;
 		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
 		testResultsTextView.append("Player 1 ended their turn and got 1 point. A NO TILES were added to their hand \n");
-
-//		testResultsTextView.setText("Two players begin the game");
-//		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
-//			int index = firstCopy.getPlayerHand();
-//		}
-		//firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
+		testResultsTextView.append("Player 1 has no more tiles, the game ends.");
 
 		testResultsTextView.append("\n");
 
