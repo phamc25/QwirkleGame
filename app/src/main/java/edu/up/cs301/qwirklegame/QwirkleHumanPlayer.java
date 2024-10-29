@@ -120,6 +120,13 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		testResultsTextView.append("Player 1 ended their turn and got no points. An ORANGE CIRCLE was added to their hand \n");
 
 
+
+//		testResultsTextView.setText("Two players begin the game");
+//		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
+//			int index = firstCopy.getPlayerHand();
+//		}
+		//firstInstance.discardTiles(new DiscardTilesAction(this, firstInstance.getSelectedTiles()));
+
 		testResultsTextView.append("\n");
 
 		// Second game state for checking
