@@ -119,6 +119,21 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
 		testResultsTextView.append("Player 1 ended their turn and got no points. An ORANGE CIRCLE was added to their hand \n");
 
+		// Player 0 turn start
+		QwirkleTile redSquare = hand0.get(2);
+		QwirkleTile orangeSquare = hand0.get(3);
+		firstInstance.setCurrTile(2);
+		firstInstance.placeTile(new PlaceTileAction(this,redSquare,1,0));
+		testResultsTextView.append("Player 0 placed a RED SQUARE tile at 1,0 \n");
+		firstInstance.setCurrTile(3);
+		firstInstance.placeTile(new PlaceTileAction(this,orangeSquare,1,1));
+		testResultsTextView.append("Player 0 placed a ORANGE SQUARE tile at 1,1 \n");
+		playersScore[firstInstance.getCurrPlayer()] += 2;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 0 ended their turn and got 2 points. A RED EIGHTSTAR was added to their hand \n");
+
+		// Player 1 turn start
+
 
 		testResultsTextView.append("\n");
 
