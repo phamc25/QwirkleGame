@@ -34,7 +34,7 @@ public class PlaceTileAction extends GameAction {
         this.y = y;
     }
 
-
+    // get the placed tile
     public QwirkleTile getPlacedTile() {
         return placedTile;
     }

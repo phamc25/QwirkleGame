@@ -234,8 +234,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// make this object the listener
 		Button editText = (Button) activity.findViewById(R.id.run_test);
 		editText.setOnClickListener(this);
-			receiveInfo(state);
-		//}
+        if (state != null) {
+            receiveInfo(state);
+        }
 	}
 
 }// class QwirkleHumanPlayer
