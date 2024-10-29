@@ -146,10 +146,44 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		firstInstance.placeTile(new PlaceTileAction(this, orangeFStar,2,1));
 		testResultsTextView.append("Player 1 placed a ORANGE FOURSTAR tile at 2,1 \n");
 		playersScore[firstInstance.getCurrPlayer()] += 3;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
 		testResultsTextView.append("Player 1 ended their turn and got 3 points. A NO TILES were added to their hand \n");
 
+		// Player 0 turn start
+		QwirkleTile orangeClover = hand0.get(1);
+		firstInstance.setCurrTile(1);
+		firstInstance.placeTile(new PlaceTileAction(this,orangeClover,4,1));
+		testResultsTextView.append("Player 0 placed a ORANGE CLOVER tile at 4,1 \n");
+		playersScore[firstInstance.getCurrPlayer()] += 1;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 0 ended their turn and got 1 point. A NO TILES were added to their hand \n");
 
+		// Player 1 turn start
+		QwirkleTile blueClover = hand1.get(1);
+		firstInstance.setCurrTile(1);
+		firstInstance.placeTile(new PlaceTileAction(this,blueClover,4,2));
+		testResultsTextView.append("Player 1 placed a BLUE CLOVER tile at 4,2 \n");
+		playersScore[firstInstance.getCurrPlayer()] += 1;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 1 ended their turn and got 1 point. A NO TILES were added to their hand \n");
 
+		// Player 0 turn start
+		QwirkleTile greenCircle = hand0.get(0);
+		firstInstance.setCurrTile(0);
+		firstInstance.placeTile(new PlaceTileAction(this,greenCircle,0,2));
+		testResultsTextView.append("Player 0 placed a GREEN CIRCLE tile at 0,2 \n");
+		playersScore[firstInstance.getCurrPlayer()] += 1;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 0 ended their turn and got 1 point. A NO TILES were added to their hand \n");
+
+		// Player 1 turn start
+		QwirkleTile blueCircle = hand0.get(0);
+		firstInstance.setCurrTile(0);
+		firstInstance.placeTile(new PlaceTileAction(this,blueCircle,0,3));
+		testResultsTextView.append("Player 1 placed a BLUE CIRCLE tile at 0,3 \n");
+		playersScore[firstInstance.getCurrPlayer()] += 1;
+		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
+		testResultsTextView.append("Player 1 ended their turn and got 1 point. A NO TILES were added to their hand \n");
 
 //		testResultsTextView.setText("Two players begin the game");
 //		for (int i = 0; i < firstInstance.getSelectedTiles().size(); i++) {
