@@ -177,7 +177,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		testResultsTextView.append("Player 0 ended their turn and got 1 point. A NO TILES were added to their hand \n");
 
 		// Player 1 turn start
-		QwirkleTile blueCircle = hand0.get(0);
+		QwirkleTile blueCircle = hand1.get(0);
 		firstInstance.setCurrTile(0);
 		firstInstance.placeTile(new PlaceTileAction(this,blueCircle,0,3));
 		testResultsTextView.append("Player 1 placed a BLUE CIRCLE tile at 0,3 \n");
