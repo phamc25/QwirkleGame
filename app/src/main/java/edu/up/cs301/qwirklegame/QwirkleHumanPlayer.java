@@ -136,12 +136,15 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		QwirkleTile orangeFStar = hand1.get(2);
 		QwirkleTile orangeDiamond = hand1.get(4);
 		QwirkleTile orangeCircle = hand1.get(5);
-		firstInstance.placeTile(new PlaceTileAction(this, orangeFStar,2,1));
-		testResultsTextView.append("Player 1 placed a ORANGE FOURSTAR tile at 2,1 \n");
-		firstInstance.placeTile(new PlaceTileAction(this, orangeDiamond,3,1));
-		testResultsTextView.append("Player 1 placed a ORANGE DIAMOND tile at 3,1 \n");
+		firstInstance.setCurrTile(5);
 		firstInstance.placeTile(new PlaceTileAction(this, orangeCircle,0,1));
 		testResultsTextView.append("Player 1 placed a ORANGE CIRCLE tile at 0,1 \n");
+		firstInstance.setCurrTile(4);
+		firstInstance.placeTile(new PlaceTileAction(this, orangeDiamond,3,1));
+		testResultsTextView.append("Player 1 placed a ORANGE DIAMOND tile at 3,1 \n");
+		firstInstance.setCurrTile(2);
+		firstInstance.placeTile(new PlaceTileAction(this, orangeFStar,2,1));
+		testResultsTextView.append("Player 1 placed a ORANGE FOURSTAR tile at 2,1 \n");
 		playersScore[firstInstance.getCurrPlayer()] += 3;
 		testResultsTextView.append("Player 1 ended their turn and got 3 points. A NO TILES were added to their hand \n");
 
