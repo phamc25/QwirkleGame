@@ -56,27 +56,11 @@ public class QwirkleState extends GameState {
 
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
-		//TODO: re add after Proj E
-//		for (QwirkleTile.Color color : QwirkleTile.Color.values())
-//			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
-//				for (int i = 0; i < 2; i++) {
-//					this.tilesInBag.add(new QwirkleTile(shape,color));
-//				}
-		//TODO: Remove after ProjE
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.RED));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.GREEN));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CLOVER,QwirkleTile.Color.ORANGE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.SQUARE,QwirkleTile.Color.RED));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.BLUE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.SQUARE,QwirkleTile.Color.ORANGE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.BLUE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.RED));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CLOVER,QwirkleTile.Color.BLUE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.FOURSTAR,QwirkleTile.Color.ORANGE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.YELLOW));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.DIAMOND,QwirkleTile.Color.ORANGE));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.YELLOW));
-		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.ORANGE));
+		for (QwirkleTile.Color color : QwirkleTile.Color.values())
+			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
+				for (int i = 0; i < 1; i++) {
+					this.tilesInBag.add(new QwirkleTile(shape,color));
+				}
 
 		setupTileLists(this.numPlayers);
 	}
