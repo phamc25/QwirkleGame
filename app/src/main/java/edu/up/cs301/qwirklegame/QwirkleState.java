@@ -161,17 +161,10 @@ public class QwirkleState extends GameState {
 			return false;
 		}
 
-		// Removes the selected tiles from the current player's hand
+		// Removes the selected tiles from the current player's hand and into the bag
         tilesInBag.addAll(selectedTiles);
 		hand.removeAll(selectedTiles);
 
-		// Loops through the current player's hand and replaces the removed tiles
-//		for(int i = 0; i < getSelectedTiles().size(); i++) {
-//			if (!(tilesInBag.isEmpty())) {
-//				tilesInHands[currPlayer].add(tilesInBag.remove(0));
-//			}
-//			else break;
-//		}
 		return true;
 	}
 
@@ -255,9 +248,10 @@ public class QwirkleState extends GameState {
 	@Override
 	public String toString(GameState currState) {
 		String state = "Current Game State: \n";
-		state += "Points to add: " + this.pointsToAdd + "\n";
+		// TODO: Commented out for Proj #E, manual hard-code for faux game
+//		state += "Points to add: " + this.pointsToAdd + "\n";
 		state += "Current player: " + this.currPlayer + "\n";
-		state += "Tiles to be drawn: " + this.drawTiles + "\n";
+//		state += "Tiles to be drawn: " + this.drawTiles + "\n";
 		state += "Current tile selected: " + this.currTile + "\n";
 
 		// Loops through the board array and prints the number of QwirkleTiles in the board
