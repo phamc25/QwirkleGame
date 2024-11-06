@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
+import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
@@ -44,6 +45,7 @@ public class QwirkleState extends GameState {
 	 * inits the game to match the starting state
 	 */
 	public QwirkleState() {
+		this.numPlayers = 2;
 		this.pointsToAdd = 0;	// No points added to score yet
 		this.currPlayer = 0;	// No current player is decided yet at the beginning
 		this.drawTiles = 6;	// Each player needs to draw 6 tiles at the beginning
@@ -52,8 +54,6 @@ public class QwirkleState extends GameState {
 		this.playersScore = new int[2];	// Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(13); // Initial array of 72 tiles
 
-		// TODO: figure out how to set numPlayers in a different way that isn't hardcoding
-		numPlayers = 2;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		//TODO: re add after Proj E
@@ -78,11 +78,28 @@ public class QwirkleState extends GameState {
 		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.EIGHTSTAR,QwirkleTile.Color.YELLOW));
 		this.tilesInBag.add(new QwirkleTile(QwirkleTile.Shape.CIRCLE,QwirkleTile.Color.ORANGE));
 
+		setupTileLists(this.numPlayers);
+	}
+
+	/** helper method for ctors to initialize the tiles lists */
+	private void setupTileLists(int numPl) {
 		// Array for the tiles in the players' hands
-		this.tilesInHands = new ArrayList[numPlayers];
-		for (int i = 0; i < numPlayers; i++) {
+		this.tilesInHands = new ArrayList[numPl];
+		for (int i = 0; i < numPl; i++) {
 			this.tilesInHands[i] = new ArrayList<>();
 		}
+	}
+
+	/**
+	 * Nuxoll's probably bad idea for finding out how many players there are right away
+	 */
+	public QwirkleState(GameConfig config) {
+		this();
+		this.numPlayers = config.getNumPlayers();
+		if (this.numPlayers != 2) { //not the default
+			setupTileLists(this.numPlayers);
+		}
+
 	}
 
 	/**
