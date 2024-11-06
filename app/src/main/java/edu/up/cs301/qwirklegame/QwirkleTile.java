@@ -48,6 +48,18 @@ public class QwirkleTile {
         this.isSelected = orig.isSelected;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof QwirkleTile) {
+            QwirkleTile other = (QwirkleTile)obj;
+            if (this.color != other.color) return false;
+            if (this.shape != other.shape) return false;
+
+            return true;
+
+        }
+    }
+
     // Getters for tile attributes
     public Shape getShape() {
         return shape;
