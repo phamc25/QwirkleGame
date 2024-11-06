@@ -53,7 +53,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * 		the top object in the GUI's view heirarchy
 	 */
 	public View getTopView() {
-		return myActivity.findViewById(R.id.edit_text_file);
+		return myActivity.findViewById(R.id.main);
 	}
 	
 	/**
@@ -247,14 +247,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.myActivity = activity;
 		
 	    // Load the layout resource for our GUI
-		activity.setContentView(R.layout.edit_text);
+		activity.setContentView(R.layout.counter_human_player);
 
 		// intitialize testResultsTextView
 		testResultsTextView = activity.findViewById(R.id.editTextTextMultiLine);
 
 		// make this object the listener
 		Button editText = (Button) activity.findViewById(R.id.run_test);
-		editText.setOnClickListener(this);
+//		editText.setOnClickListener(this);
 
 //		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
 //		minusButton.setOnClickListener(this);
