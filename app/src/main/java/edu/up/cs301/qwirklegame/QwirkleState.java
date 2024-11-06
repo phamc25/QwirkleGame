@@ -243,6 +243,111 @@ public class QwirkleState extends GameState {
 	}
 
 	/**
+	 * helper method for isValid
+	 *
+	 * changes an x,y coordinate by one step in a given dir
+	 * TODO: finish
+	 */
+	public void takeStep(int x, int y, String dir) {
+		int xIndex;
+		int yIndex;
+		if (dir == "north") {
+
+
+		}
+	}
+
+	/**
+	 * helper method for isValid
+	 *
+	 * checks to see if a place on the board is not empty
+	 * TODO: finish
+	 */
+	public boolean notEmpty(int x, int y) {
+
+		if ( != null) {
+
+		}
+	}
+
+	/**
+	 * isValid
+	 *
+	 * @return true if the given tile can be legally placed in the given position
+	 * TODO: finish translating nux's pseudocode
+	 */
+	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
+		String[] dirs = {"north", "south", "east", "west"};
+
+		//for each direction
+		for(String dir : dirs ) {
+			int currX = candX;
+			int currY = candY;
+			int currColor = 0;
+			int currShape = 0;
+			takeStep(currX, currY, dir);
+			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
+			row.add(toPlace);
+			while(notEmpty(currX, currY)) {
+				QwirkleTile inLineTile = new QwirkleTile(null, null);
+				PlaceTileAction pta = new PlaceTileAction(this, inLineTile, currX, currY);
+				inLineTile = pta.getPlacedTile();
+				row.add(inLineTile);
+
+				//if both are None then this is the first neighbor,
+				//set curr shape and color
+				if ((currShape == 0) && (currColor == 0)) {
+					currShape = inLineTile.getShape().ordinal();
+					currColor = inLineTile.getColor().ordinal();
+				}
+				//case: mismatching color
+				else if ((currColor != 0) && (inLineTile.getColor().ordinal() != currColor)) {
+					//Does the shape still match?
+					if ((currShape != 0) && (inLineTile.getShape().ordinal() == currShape)) {
+						currColor = 0;  //ok, enforce the shape and ignore
+						//colors from now on
+					}
+					else {
+						return false;
+					}
+				}
+
+				//case mismatching shape
+				else if ((currShape != 0) && (inLineTile.getShape().ordinal() != currShape)) {
+					//Does the color still match?
+					if ((currColor != 0) && (inLineTile.getColor().ordinal() == currColor)) {
+						currColor = 0;  //enforce color but not shape
+						continue;
+					}
+					else {
+						return false;
+					}
+				}
+
+				takeStep(currX, currY, dir);
+
+			}//while
+
+			//check for duplicates in the 'row' arraylist
+			for(int i < ) {
+				for(..) {
+					if (t1.equals(t2)) {
+						return false
+					}
+
+				}
+			}
+
+
+			//no mismatches found
+			return true;
+
+		}
+
+	}
+
+
+	/**
 	 * toString method that describes the state of the game as a string
 	 */
 	@Override
@@ -331,5 +436,14 @@ public class QwirkleState extends GameState {
  *
  * Date: October 11, 2024
  */
+/**
+ * External Citation
+ *
+ * Problem: How can we check if the player made a valid move?
+ * Source: Professor Nuxoll office hours
+ *
+ * Date: November 4, 2024
+ */
+
 
 

@@ -15,7 +15,7 @@ package edu.up.cs301.qwirklegame;
 public class QwirkleTile {
     // Declaring for each shape of tile
     public enum Shape {
-        CLOVER, FOURSTAR, EIGHTSTAR, CIRCLE, SQUARE, DIAMOND,
+        CLOVER, FOURSTAR, EIGHTSTAR, CIRCLE, SQUARE, DIAMOND
     }
     // For each color of tile
     public enum Color {
@@ -48,16 +48,16 @@ public class QwirkleTile {
         this.isSelected = orig.isSelected;
     }
 
+    // for checking if a tile is a duplicate
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof QwirkleTile) {
             QwirkleTile other = (QwirkleTile)obj;
-            if (this.color != other.color) return false;
-            if (this.shape != other.shape) return false;
-
+            if (this.color != other.color) { return false; }
+            if (this.shape != other.shape) { return false; }
             return true;
-
         }
+        return false;
     }
 
     // Getters for tile attributes
