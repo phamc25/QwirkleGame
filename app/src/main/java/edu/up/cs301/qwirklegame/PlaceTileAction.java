@@ -49,4 +49,5 @@ public class PlaceTileAction extends GameAction {
 
     public QwirkleTile.Color getColor() {return placedTile.getColor();}
     public QwirkleTile.Shape getShape() {return placedTile.getShape();}
+
 }
