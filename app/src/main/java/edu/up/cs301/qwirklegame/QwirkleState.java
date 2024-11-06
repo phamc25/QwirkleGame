@@ -329,6 +329,9 @@ public class QwirkleState extends GameState {
 		}
 
 	}
+	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+		return true;
+	}
 
 
 	/**
