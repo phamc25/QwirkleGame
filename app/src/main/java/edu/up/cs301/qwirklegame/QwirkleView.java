@@ -24,7 +24,11 @@ public class QwirkleView extends SurfaceView{
 //        private Bitmap tileRedDia;
 //        private Bitmap tileRedSquare;
 
+        // Array of bitmaps? 36 is a bit much
         private Bitmap[] tiles;
+
+        // Variables for drawing grid
+        private float cellSize, offsetX, offsetY;
 
         private Paint black;
         private Paint darkGreenPaint;
@@ -32,6 +36,8 @@ public class QwirkleView extends SurfaceView{
 
         private int numColumns = 27;
         private int numRows = 15;
+
+        private Board board;    // Board class
 
         public QwirkleView(Context context, AttributeSet attrs) {
 
@@ -65,17 +71,17 @@ public class QwirkleView extends SurfaceView{
         }
 
     /**
-     * Helper method to draw the grid-lines on the Qwirkle board
+     * Helper method to draw the grid lines on the Qwirkle board
      * @param canvas
      */
     public void drawBoard(Canvas canvas) {
             // The cell size is the smallest ratio between these to fit the defined row and columns
             // all in the board
-            float cellSize = Math.min(getWidth() / (float) numColumns, getHeight() / (float) numRows);
+            cellSize = Math.min(getWidth() / (float) numColumns, (getHeight() - 20) / (float) numRows);
 
             // The length for the side of the centered grid
-            float offsetX = (getWidth() - numColumns * cellSize) / 2;
-            float offsetY = (getHeight() - numRows * cellSize) / 2;
+            offsetX = (getWidth() - numColumns * cellSize) / 2;
+            offsetY = (getHeight() - numRows * cellSize) / 2;
 
             // Loop through the rows and draws the lines
             for (int i = 0; i <= numRows; i++) {
@@ -116,5 +122,16 @@ public class QwirkleView extends SurfaceView{
 
             canvas.drawText("Player 4", 30, 325, black);
             canvas.drawText("Score: 0", 30, 360, black);
+        }
+
+        // Setters
+
+    /**
+     * Sets the board and then redraws
+     * @param board
+     */
+    public void setBoard(Board board) {
+            this.board = board;
+            invalidate();
         }
     }
