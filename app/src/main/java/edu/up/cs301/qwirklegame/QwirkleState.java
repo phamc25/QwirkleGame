@@ -330,7 +330,6 @@ public class QwirkleState extends GameState {
 
 	}
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
-		String direction = "";
 		int yChan = 0;
 		int xChan = 0;
 		for (int i = 0; i < 4; i++) {
@@ -344,12 +343,12 @@ public class QwirkleState extends GameState {
 				} else if (i == 3) {
 					xChan = -j;
 				}
-				if (!notEmpty(candX + xChan, candY + yChan)) {
+				if (board.getBoard()[xChan][yChan] == null) {
 					return false;
-				}
-				yChan = 0;
-				xChan = 0;
+
 			}
+			yChan = 0;
+			xChan = 0;
 		}
 		return true;
 
