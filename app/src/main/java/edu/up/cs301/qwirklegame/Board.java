@@ -70,4 +70,11 @@ public class Board {
             boardArray[x][y] = tile;
         }
     }
+
+    public boolean notEmpty(int x, int y) {
+        if (boardArray[x][y] != null) {
+            return true;
+        }
+        return false;
+    }
 }

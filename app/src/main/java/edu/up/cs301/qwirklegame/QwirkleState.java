@@ -247,12 +247,12 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-	public boolean notEmpty(int x, int y) {
+	//public boolean notEmpty(int x, int y) {
 
-		if ( != null) {
+		//if ( != null) {
 
-		}
-	}
+		//}
+	//}
 
 	/**
 	 * isValid
@@ -264,7 +264,7 @@ public class QwirkleState extends GameState {
 		String[] dirs = {"north", "south", "east", "west"};
 
 		//for each direction
-		for(String dir : dirs ) {
+		for (String dir : dirs) {
 			int currX = candX;
 			int currY = candY;
 			int currColor = 0;
@@ -272,9 +272,11 @@ public class QwirkleState extends GameState {
 			takeStep(currX, currY, dir);
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
-			while(notEmpty(currX, currY)) {
+			while (board.notEmpty(currX, currY)) {
+				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
+
 				QwirkleTile inLineTile = new QwirkleTile(null, null);
-				PlaceTileAction pta = new PlaceTileAction(this, inLineTile, currX, currY);
+				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY);
 				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 
@@ -290,8 +292,7 @@ public class QwirkleState extends GameState {
 					if ((currShape != 0) && (inLineTile.getShape().ordinal() == currShape)) {
 						currColor = 0;  //ok, enforce the shape and ignore
 						//colors from now on
-					}
-					else {
+					} else {
 						return false;
 					}
 				}
@@ -302,8 +303,7 @@ public class QwirkleState extends GameState {
 					if ((currColor != 0) && (inLineTile.getColor().ordinal() == currColor)) {
 						currColor = 0;  //enforce color but not shape
 						continue;
-					}
-					else {
+					} else {
 						return false;
 					}
 				}
@@ -313,22 +313,22 @@ public class QwirkleState extends GameState {
 			}//while
 
 			//check for duplicates in the 'row' arraylist
-			for(int i < ) {
-				for(..) {
+			for (int i = 0; i < row.size(); i++) {
+				for (int j = 1; j < row.size(); j++) {
+					QwirkleTile t1 = row.get(i);
+					QwirkleTile t2 = row.get(j);
 					if (t1.equals(t2)) {
-						return false
+						return false;
 					}
 
 				}
 			}
-
-
-			//no mismatches found
-			return true;
-
 		}
-
+		//no mismatches found
+		return true;
 	}
+
+
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
 		return true;
 	}

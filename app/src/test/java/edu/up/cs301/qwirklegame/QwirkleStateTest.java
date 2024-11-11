@@ -8,6 +8,10 @@ public class QwirkleStateTest {
 
     @Test
     public void getPlayersScore() {
+        QwirkleState qwirkleState = new QwirkleState();
+        qwirkleState.setPlayersScore(0, 5);
+        int[] playerScore = qwirkleState.getPlayersScore();
+        assertTrue(playerScore[0] == 5);
 
     }
 
