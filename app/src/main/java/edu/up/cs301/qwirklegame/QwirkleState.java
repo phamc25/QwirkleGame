@@ -233,11 +233,19 @@ public class QwirkleState extends GameState {
 	 * TODO: finish
 	 */
 	public void takeStep(int x, int y, String dir) {
-		int xIndex;
-		int yIndex;
+		int xIndex = x;
+		int yIndex = y;
 		if (dir == "north") {
-
-
+			yIndex++;
+		}
+		if (dir == "south") {
+			yIndex = yIndex - 1;
+		}
+		if (dir == "east") {
+			xIndex++;
+		}
+		if (dir == "west") {
+			xIndex = xIndex - 1;
 		}
 	}
 
@@ -247,12 +255,12 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-	public boolean notEmpty(int x, int y) {
-
-		if ( != null) {
-
-		}
-	}
+//	public boolean notEmpty(int x, int y) {
+//
+//		if ( != null) {
+//
+//		}
+//	}
 
 	/**
 	 * isValid
@@ -272,7 +280,7 @@ public class QwirkleState extends GameState {
 			takeStep(currX, currY, dir);
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
-			while(notEmpty(currX, currY)) {
+			while(board.notEmpty(currX, currY)) {
 				QwirkleTile inLineTile = new QwirkleTile(null, null);
 				PlaceTileAction pta = new PlaceTileAction(this, inLineTile, currX, currY);
 				inLineTile = pta.getPlacedTile();
