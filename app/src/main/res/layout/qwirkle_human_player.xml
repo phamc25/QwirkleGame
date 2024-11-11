@@ -65,7 +65,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_1"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_blue_4star" />
 
             <ImageButton
@@ -74,7 +74,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_2"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_orange_circle" />
 
             <ImageButton
@@ -83,7 +83,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_3"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_red_circle" />
 
             <ImageButton
@@ -92,7 +92,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_4"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_red_clover" />
 
             <ImageButton
@@ -101,7 +101,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_5"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_yellow_diamond" />
 
             <ImageButton
@@ -110,7 +110,7 @@
                 android:layout_height="90dp"
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_6"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/tile_green_square" />
 
         </LinearLayout>

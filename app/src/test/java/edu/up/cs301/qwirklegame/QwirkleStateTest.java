@@ -43,6 +43,9 @@ public class QwirkleStateTest {
 
     @Test
     public void setPlayersScore() {
+        QwirkleState q1 = new QwirkleState();
+        q1.setPlayersScore(0,27);
+        assertEquals(27, q1.getPlayersScore()[0]);
     }
 
     @Test
