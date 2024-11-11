@@ -247,11 +247,11 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-	public boolean notEmpty(int x, int y) {
-
-		if ( != null) {
-
-		}
+//	public boolean notEmpty(int x, int y) {
+//
+//		if ( != null) {
+//
+//		}
 	}
 
 	/**
@@ -330,7 +330,29 @@ public class QwirkleState extends GameState {
 
 	}
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+		String direction = "";
+		int yChan = 0;
+		int xChan = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i == 0) {
+					yChan = j;
+				} else if (i == 1) {
+					yChan = -j;
+				} else if (i == 2) {
+					xChan = j;
+				} else if (i == 3) {
+					xChan = -j;
+				}
+				if (!notEmpty(candX + xChan, candY + yChan)) {
+					return false;
+				}
+				yChan = 0;
+				xChan = 0;
+			}
+		}
 		return true;
+
 	}
 
 
