@@ -247,7 +247,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.myActivity = activity;
 		
 	    // Load the layout resource for our GUI
-		activity.setContentView(R.layout.counter_human_player);
+		activity.setContentView(R.layout.qwirkle_human_player);
 
 		// intitialize testResultsTextView
 		testResultsTextView = activity.findViewById(R.id.editTextTextMultiLine);

@@ -292,7 +292,8 @@ public class QwirkleState extends GameState {
 					if ((currShape != 0) && (inLineTile.getShape().ordinal() == currShape)) {
 						currColor = 0;  //ok, enforce the shape and ignore
 						//colors from now on
-					} else {
+					}
+                    else {
 						return false;
 					}
 				}
@@ -303,7 +304,8 @@ public class QwirkleState extends GameState {
 					if ((currColor != 0) && (inLineTile.getColor().ordinal() == currColor)) {
 						currColor = 0;  //enforce color but not shape
 						continue;
-					} else {
+					}
+					else {
 						return false;
 					}
 				}
@@ -330,7 +332,29 @@ public class QwirkleState extends GameState {
 
 
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+		String direction = "";
+		int yChan = 0;
+		int xChan = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i == 0) {
+					yChan = j;
+				} else if (i == 1) {
+					yChan = -j;
+				} else if (i == 2) {
+					xChan = j;
+				} else if (i == 3) {
+					xChan = -j;
+				}
+				if (!notEmpty(candX + xChan, candY + yChan)) {
+					return false;
+				}
+				yChan = 0;
+				xChan = 0;
+			}
+		}
 		return true;
+
 	}
 
 

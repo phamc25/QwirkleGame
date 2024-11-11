@@ -1,5 +1,11 @@
 <resources>
 
     <string name="app_name">Qwirkle Game</string>
+    <string name="tile_1">Tile 1</string>
+    <string name="tile_2">Tile 2</string>
+    <string name="tile_3">Tile 3</string>
+    <string name="tile_4">Tile 4</string>
+    <string name="tile_5">Tile 5</string>
+    <string name="tile_6">Tile 6</string>
 
 </resources>

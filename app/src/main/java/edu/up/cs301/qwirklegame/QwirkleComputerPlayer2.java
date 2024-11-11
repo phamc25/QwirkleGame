@@ -5,7 +5,6 @@ import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -123,7 +122,7 @@ public class QwirkleComputerPlayer2 extends QwirkleComputerPlayer1 {
 		this.guiHandler = new Handler();
 		
 		// Load the layout resource for the our GUI's configuration
-		activityForGui.setContentView(R.layout.counter_human_player);
+		activityForGui.setContentView(R.layout.qwirkle_human_player);
 
 
 		// remember who our text view is, for updating the counter value
