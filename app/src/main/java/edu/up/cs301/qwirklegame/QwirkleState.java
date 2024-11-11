@@ -206,12 +206,8 @@ public class QwirkleState extends GameState {
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
-			//TODO: restore after Proj E
-//			int randomIndex = (int)(Math.random() * tilesInBag.size());
-//			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
-			QwirkleTile drawnTile = tilesInBag.get(0);
-			tilesInBag.remove(0);
-			//tilesInHands[] = numPlayers;
+			int randomIndex = (int)(Math.random() * tilesInBag.size());
+			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
 			tilesInHands[playerIndex].add(drawnTile);
 		}
 	}
@@ -346,7 +342,7 @@ public class QwirkleState extends GameState {
 				} else if (i == 3) {
 					xChan = -j;
 				}
-				if (!notEmpty(candX + xChan, candY + yChan)) {
+				if (!board.notEmpty(candX + xChan, candY + yChan)) {
 					return false;
 				}
 				yChan = 0;
