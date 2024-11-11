@@ -233,19 +233,17 @@ public class QwirkleState extends GameState {
 	 * TODO: finish
 	 */
 	public void takeStep(int x, int y, String dir) {
-		int xIndex = x;
-		int yIndex = y;
 		if (dir == "north") {
-			yIndex++;
+			y++;
 		}
 		if (dir == "south") {
-			yIndex = yIndex - 1;
+			y = y - 1;
 		}
 		if (dir == "east") {
-			xIndex++;
+			x++;
 		}
 		if (dir == "west") {
-			xIndex = xIndex - 1;
+			x = x - 1;
 		}
 	}
 
