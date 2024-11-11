@@ -23,6 +23,7 @@ public class QwirkleView extends SurfaceView{
 //        private Bitmap tileRedClo;
 //        private Bitmap tileRedDia;
 //        private Bitmap tileRedSquare;
+        private BoardModel playerModel;
 
         // Array of bitmaps? 36 is a bit much
         private Bitmap[] tiles;
@@ -69,6 +70,11 @@ public class QwirkleView extends SurfaceView{
             setBackgroundColor(0xFFDDDDDD);
 
         }
+
+    // returns the initialized drawing model
+    public BoardModel getModel() {
+        return this.playerModel;
+    }
 
     /**
      * Helper method to draw the grid lines on the Qwirkle board
