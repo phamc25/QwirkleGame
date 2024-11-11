@@ -4,6 +4,8 @@ import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
+
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * @author Andrew M. Nuxoll
  * @version July 2013
  */
-public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListener {
+public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListener, View.OnTouchListener{
 
 	/* instance variables */
 	
@@ -36,14 +38,22 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	
 	// the android activity that we are running
 	private GameMainActivity myActivity;
+
+	// for accessing/updating the model
+	private BoardModel boardModel;
+
+	// accessing/drawing the view
+	private QwirkleView qwirkleView;
 	
 	/**
 	 * constructor
 	 * @param name
 	 * 		the player's name
 	 */
-	public QwirkleHumanPlayer(String name) {
+	public QwirkleHumanPlayer (String name, QwirkleView initView) {
 		super(name);
+		this.qwirkleView = initView;
+		this.boardModel = initView.getModel();
 	}
 
 	/**
@@ -199,7 +209,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// Construct the action and send it to the game
 		// GameAction action = null;
-//		if (button.getId() == R.id.plusButton) {
+		if (button.getId() == R.id.tile1) {
+
+		}
 //			// plus button: create "increment" action
 //			action = new QwirkleMoveAction(this, true);
 //		}
@@ -272,5 +284,17 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		//}
 	}
 
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		float xLocation = motionEvent.getX();
+		float yLocation = motionEvent.getY();
+
+		//save those coordinates
+		boardModel.xLoc = xLocation;
+		boardModel.yLoc = yLocation;
+
+
+		return false;
+	}
 }// class QwirkleHumanPlayer
 

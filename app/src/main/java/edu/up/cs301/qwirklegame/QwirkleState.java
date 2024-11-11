@@ -206,12 +206,8 @@ public class QwirkleState extends GameState {
 
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
-			//TODO: restore after Proj E
-//			int randomIndex = (int)(Math.random() * tilesInBag.size());
-//			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
-			QwirkleTile drawnTile = tilesInBag.get(0);
-			tilesInBag.remove(0);
-			//tilesInHands[] = numPlayers;
+			int randomIndex = (int)(Math.random() * tilesInBag.size());
+			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
 			tilesInHands[playerIndex].add(drawnTile);
 		}
 	}
@@ -253,12 +249,12 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-//	public boolean notEmpty(int x, int y) {
-//
-//		if ( != null) {
-//
-//		}
-//	}
+	//public boolean notEmpty(int x, int y) {
+
+		//if ( != null) {
+
+		//}
+	//}
 
 	/**
 	 * isValid
@@ -270,7 +266,7 @@ public class QwirkleState extends GameState {
 		String[] dirs = {"north", "south", "east", "west"};
 
 		//for each direction
-		for(String dir : dirs ) {
+		for (String dir : dirs) {
 			int currX = candX;
 			int currY = candY;
 			int currColor = 0;
@@ -278,9 +274,11 @@ public class QwirkleState extends GameState {
 			takeStep(currX, currY, dir);
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
-			while(board.notEmpty(currX, currY)) {
+			while (board.notEmpty(currX, currY)) {
+				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
+
 				QwirkleTile inLineTile = new QwirkleTile(null, null);
-				PlaceTileAction pta = new PlaceTileAction(this, inLineTile, currX, currY);
+				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY);
 				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 
@@ -319,22 +317,22 @@ public class QwirkleState extends GameState {
 			}//while
 
 			//check for duplicates in the 'row' arraylist
-			for(int i < ) {
-				for(..) {
+			for (int i = 0; i < row.size(); i++) {
+				for (int j = 1; j < row.size(); j++) {
+					QwirkleTile t1 = row.get(i);
+					QwirkleTile t2 = row.get(j);
 					if (t1.equals(t2)) {
-						return false
+						return false;
 					}
 
 				}
 			}
-
-
-			//no mismatches found
-			return true;
-
 		}
-
+		//no mismatches found
+		return true;
 	}
+
+
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
 		String direction = "";
 		int yChan = 0;
@@ -350,7 +348,7 @@ public class QwirkleState extends GameState {
 				} else if (i == 3) {
 					xChan = -j;
 				}
-				if (!notEmpty(candX + xChan, candY + yChan)) {
+				if (!board.notEmpty(candX + xChan, candY + yChan)) {
 					return false;
 				}
 				yChan = 0;
