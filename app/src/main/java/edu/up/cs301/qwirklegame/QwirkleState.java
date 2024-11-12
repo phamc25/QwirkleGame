@@ -381,9 +381,10 @@ public class QwirkleState extends GameState {
 				if (!board.notEmpty(candX + xChan, candY + yChan)) {
 					return false;
 
+				}
+				yChan = 0;
+				xChan = 0;
 			}
-			yChan = 0;
-			xChan = 0;
 		}
 		return true;
 
@@ -438,7 +439,6 @@ public class QwirkleState extends GameState {
 		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;
 	}
-
 }
 
 /**
