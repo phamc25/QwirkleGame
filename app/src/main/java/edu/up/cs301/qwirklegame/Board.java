@@ -59,16 +59,6 @@ public class Board {
     }
 
     /**
-     * Checks if place on the board is not empty
-     */
-    public boolean notEmpty(int x, int y){
-        if(boardArray[x][y] != null){
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Adds a tile to empty spot on board
      *
      * @param tile tile to be added
@@ -81,6 +71,13 @@ public class Board {
         }
     }
 
+    /**
+     * Check if spot on board is empty
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean notEmpty(int x, int y) {
         if (boardArray[x][y] != null) {
             return true;

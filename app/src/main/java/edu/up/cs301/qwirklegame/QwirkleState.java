@@ -204,7 +204,6 @@ public class QwirkleState extends GameState {
 	public int[] getPlayersScore() {
 		return playersScore;
 	}
-
 	public int getAddPoints() {
 		return pointsToAdd;
 	}
@@ -216,6 +215,12 @@ public class QwirkleState extends GameState {
 		return board;
 	}
 	public int getCurrTile() { return currTile; }
+	public ArrayList<QwirkleTile> getPlayerHand(int playerIndex) {
+		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
+			return tilesInHands[playerIndex];
+		}
+		return null; // Return null if invalid index
+	}
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
@@ -227,7 +232,11 @@ public class QwirkleState extends GameState {
 		this.currTile = curr;
 	}
 
-	// Draw tiles method
+	/**
+	 * Draws tiles to set player's hand
+	 * @param playerIndex
+	 * @param numTiles
+	 */
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
 			int randomIndex = (int)(Math.random() * tilesInBag.size());
@@ -251,15 +260,13 @@ public class QwirkleState extends GameState {
 		}
 	}
 
+	/**
+	 * Refills empty spots of specified player's hand
+	 * @param playerIndex
+	 */
 	public void refillHand(int playerIndex) {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
-	}
-	public ArrayList<QwirkleTile> getPlayerHand(int playerIndex) {
-		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
-			return tilesInHands[playerIndex];
-		}
-		return null; // Return null if invalid index
 	}
 
 	/**
@@ -380,7 +387,14 @@ public class QwirkleState extends GameState {
 		return true;
 	}
 
-
+	/**
+	 * Checks if Quirkle has been achieved (colors/shapes match up)
+	 *
+	 * @param toPlace
+	 * @param candX
+	 * @param candY
+	 * @return
+	 */
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
 		int yChan = 0;
 		int xChan = 0;
