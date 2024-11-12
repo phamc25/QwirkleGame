@@ -58,24 +58,22 @@ public class QwirkleLocalGame extends LocalGame {
 	@Override
 	protected boolean makeMove(GameAction action) {
 		Log.i("action", action.getClass().toString());
-		
+
+		// If action is an EndTurnAction
 		if (action instanceof EndTurnAction) {
-		
 			// cast so that we Java knows it's a EndTurnAction
 			EndTurnAction ea = (EndTurnAction) action;
+			return this.gameState.endTurn(ea);
 
-			// Update the counter values based upon the action
-			//int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
-			//gameState.setCounter(result);
-//			gameState.setCurrPlayer(gameState.getCurrPlayer() + 1);
-			
-			// denote that this was a legal/successful move
-			return true;
 		}
-//		if (action instanceof PlaceTileAction) {
-//			PlaceTileAction place = (PlaceTileAction) action;
-//
-//		}
+		// Else if it is a PlaceTileAction
+		else if (action instanceof PlaceTileAction) {
+			// cast so that we Java knows it's a EndTurnAction
+			PlaceTileAction place = (PlaceTileAction) action;
+			// Update the current tile so the game state knows
+			gameState.setCurrTile(place.getSelectedTileIndex());
+			return this.gameState.placeTile(place);
+		}
 		else {
 			// denote that this was an illegal move
 			return false;

@@ -130,11 +130,11 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-		QwirkleTile tile = playerHand.get(currTile); //need to add tile to board
-		if (tile ==  null || currTile < 0 || currTile >= playerHand.size()) {
-			return false; // invalid index or empty hand
-		}
-		board.addToBoard(tile, action.getX(), action.getY());
+
+		//TODO: confirm that the to-be-placed tile is in the player's hand
+
+		//place the tile now
+		board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
 
 		// Set the tile to null in the hand
 		playerHand.set(currTile, null);
@@ -208,18 +208,20 @@ public class QwirkleState extends GameState {
 	public int getCurrPlayer() {
 		return currPlayer;
 	}
-	public int getCurrTile() { return currTile; }
 	public int getTilesLeft() { return tilesInBag.size(); }
 	public Board getBoard() {
 		return board;
 	}
+	public int getCurrTile() { return currTile; }
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
 	public void setCurrPlayer(int player) { this.currPlayer = player; }
-	public void setCurrTile(int tile) { this.currTile = tile; }
 	public void setPlayersScore(int player, int score) {
 		this.playersScore[player] = score;
+	}
+	public void setCurrTile(int curr) {
+		this.currTile = curr;
 	}
 
 	// Draw tiles method
@@ -307,7 +309,7 @@ public class QwirkleState extends GameState {
 				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
 
 				QwirkleTile inLineTile = new QwirkleTile(null, null);
-				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY);
+				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
 				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 
@@ -399,7 +401,6 @@ public class QwirkleState extends GameState {
 //		state += "Points to add: " + this.pointsToAdd + "\n";
 		state += "Current player: " + this.currPlayer + "\n";
 //		state += "Tiles to be drawn: " + this.drawTiles + "\n";
-		state += "Current tile selected: " + this.currTile + "\n";
 
 		// Loops through the board array and prints the number of QwirkleTiles in the board
 		int tiles = 0;
@@ -438,6 +439,7 @@ public class QwirkleState extends GameState {
 		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;
 	}
+
 }
 
 /**

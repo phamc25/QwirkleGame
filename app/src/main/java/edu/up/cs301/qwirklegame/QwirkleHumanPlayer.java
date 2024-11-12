@@ -47,6 +47,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// the android activity that we are running
 	private GameMainActivity myActivity;
 
+
 	// Tile IDs for the tile ImageButtons
 	private static final int[] TILE_IDS = {
 			R.id.tile1, R.id.tile2, R.id.tile3,
@@ -69,9 +70,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 	// An instance of the QwirkleView (so we can add a tile to the board view)
 	private QwirkleView qwirkleView;
-
-	// The currently selected tile index in the tile
-	private int selectedTileIndex = -1;
 
 	/**
 	 * constructor
@@ -104,8 +102,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	}
 
 	/**
-	 * this method gets called when the user clicks the '+' or '-' button. It
-	 * creates a new QwirkleMoveAction to return to the parent activity.
+	 * this method gets called when the user clicks end turn or discard mode or confirm
 	 * 
 	 * @param button
 	 * 		the button that was clicked
@@ -120,29 +117,28 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			return;
 		}
 
-		GameAction action = null;
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
 
 			// Create a new end turn action and then update the display
-			state.endTurn(new EndTurnAction(state, this, state.getNumPlayers()));
-			updateDisplay();
+			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
+//			updateDisplay();
+			game.sendAction(end); // send action to the game
 		}
 		else {
 			// Else these are the tile image buttons
 			// Check if it's a tile button
 			for (int i = 0; i < TILE_IDS.length; i++) {
 				if (button.getId() == TILE_IDS[i]) {
-					selectedTileIndex = i; // Store selected tile index
-					notifyBoardView();	// Let the board know what tile it is!
+//					selectedTileIndex = i; // Store selected tile index
 					state.setCurrTile(i);	// Set the current tile index
+					notifyBoardView();	// Let the board know what tile it is!
 					return;  // Exit after handling tile
 				}
 			}
 			// Not a tile or recognized button
 			return;
 		}
-		game.sendAction(action); // send action to the game
 	}// onClick
 
 	/**
@@ -160,22 +156,14 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (this.playerNum != state.getCurrPlayer()) {
 			return;
 		}
-		GameAction action = null;
 		if (state != null) {
 			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
-			PlaceTileAction place = new PlaceTileAction(this, state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile()) , x, y);
-//			game.sendAction(place);
-			// Attempt to place the tile using the action
-			if (state.placeTile(place)) {  // Check if the placement is valid and successful
-				// Update the hand display after the tile has been placed
-				updateHandDisplay();
-				updateDisplay();
+			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
 
-				// TODO: Remove later, this is for checking the tiles in the board for placement
-				checkBoardState(state.getBoard().getTiles());
-			}
+			// Send the PlaceTileAction to the game
+			game.sendAction(place);
 		}
-		game.sendAction(action);
 	}
 	
 	/**
@@ -192,6 +180,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
 		updateDisplay();
+		updateHandDisplay();
 	}
 	
 	/**
@@ -243,9 +232,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 */
 	private void notifyBoardView() {
 		// Checking for hand bounds
-		if (selectedTileIndex >= 0 && selectedTileIndex < tileButtons.length) {
+		if (state.getCurrTile() >= 0 && state.getCurrTile() < tileButtons.length) {
 			// Get the tile
-			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(selectedTileIndex);
+			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			// Set the selected tile
 			qwirkleView.setSelectedTile(getTileImageFile(tile));
 		}
@@ -289,11 +278,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		for (int row = 0; row < boardTiles.length; row++) {
 			for (int col = 0; col < boardTiles[row].length; col++) {
 				QwirkleTile tile = boardTiles[row][col];
-				if (tile != null) {
-					System.out.println("Tile at (" + row + ", " + col + "): " + tile);
-				} else {
-					System.out.println("No tile at (" + row + ", " + col + ")");
-				}
+//				if (tile != null) {
+//					System.out.println("Tile at (" + row + ", " + col + "): " + tile);
+//				} else {
+//					System.out.println("No tile at (" + row + ", " + col + ")");
+//				}
 			}
 		}
 	}
