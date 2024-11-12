@@ -266,11 +266,17 @@ public class QwirkleState extends GameState {
 	 * TODO: finish
 	 */
 	public void takeStep(int x, int y, String dir) {
-		int xIndex;
-		int yIndex;
 		if (dir == "north") {
-
-
+			y++;
+		}
+		else if (dir == "south") {
+			y--;
+		}
+		else if (dir == "east") {
+			x++;
+		}
+		else if (dir == "west") {
+			x--;
 		}
 	}
 
@@ -282,9 +288,6 @@ public class QwirkleState extends GameState {
 	 */
 //	public boolean notEmpty(int x, int y) {
 //
-//		if ( != null) {
-//
-//		}
 //	}
 
 	/**

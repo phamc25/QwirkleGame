@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import java.util.ArrayList;
+
 import edu.up.cs301.GameFramework.players.GameComputerPlayer;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.GameFramework.utilities.Tickable;
@@ -27,8 +29,8 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
         super(name);
         
         // start the timer, ticking 20 times per second
-        getTimer().setInterval(50);
-        getTimer().start();
+        //getTimer().setInterval(50);
+        //getTimer().start();
     }
     
     /**
@@ -41,19 +43,59 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
 	protected void receiveInfo(GameInfo info) {
 		// Do nothing, as we ignore all state in deciding our next move. It
 		// depends totally on the timer and random numbers.
+		if (info instanceof QwirkleState) {
+			QwirkleState gameState = new QwirkleState((QwirkleState) info);
+			if (gameState.getCurrPlayer() == this.playerNum) {
+				// x and y for list of possible moves
+				int possX;
+				int possY;
+				for (int i = 0; i < gameState.getBoard().ROWS; i++) {
+					for (int j = 0; i < gameState.getBoard().COLUMNS; j++) {
+						// if we come across a space that has a tile, save the index
+						if (gameState.getBoard().notEmpty(i, j)) {
+							possX = i;
+							possY = j;
+							for (int k = 0; k < gameState.getPlayerHand(this.playerNum).size(); k++) {
+								// getting the computer's hand
+								ArrayList<QwirkleTile> compHand = gameState.getPlayerHand(this.playerNum);
+								QwirkleTile curr = compHand.get(k);
+								String[] dirs = {"north", "south", "east", "west"};
+								for (String dir : dirs) {
+									// seeing if the adjacent spaces to a tile on the board is a valid move
+									gameState.takeStep(possX, possY, dir);
+									if (gameState.isValid(curr, possX, possY)) {
+										// let the human player think we're thinking
+										sleep(2000);
+										PlaceTileAction pta = new PlaceTileAction(this, curr, possX,
+												possY, gameState.getCurrTile());
+										gameState.placeTile(pta);
+										// "thinking" some more
+										sleep(2000);
+										EndTurnAction eta = new EndTurnAction(gameState, this,
+												gameState.getNumPlayers());
+										gameState.endTurn(eta);
+										//break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
-	/**
-	 * callback method: the timer ticked
-	 */
-	protected void timerTicked() {
-		// 5% of the time, increment or decrement the counter
-		if (Math.random() >= 0.05) return; // do nothing 95% of the time
-
-		// "flip a coin" to determine whether to increment or decrement
-		boolean move = Math.random() >= 0.5;
-		
-		// send the move-action to the game
-		game.sendAction(new QwirkleMoveAction(this, move));
-	}
+//	/**
+//	 * callback method: the timer ticked
+//	 */
+//	protected void timerTicked() {
+//		// 5% of the time, increment or decrement the counter
+//		if (Math.random() >= 0.05) return; // do nothing 95% of the time
+//
+//		// "flip a coin" to determine whether to increment or decrement
+//		boolean move = Math.random() >= 0.5;
+//
+//		// send the move-action to the game
+//		game.sendAction(new QwirkleMoveAction(this, move));
+//	}
 }
