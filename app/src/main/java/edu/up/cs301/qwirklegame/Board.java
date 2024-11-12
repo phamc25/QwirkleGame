@@ -15,8 +15,8 @@ public class Board {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
-    public static final int ROWS = 13;
-    public static final int COLUMNS = 25;
+    public static final int ROWS = 11;
+    public static final int COLUMNS = 21;
 
     /**
      *  Constructor
