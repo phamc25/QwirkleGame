@@ -52,7 +52,7 @@ public class QwirkleState extends GameState {
 		this.currTile = -1;	// Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[2];	// Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTile>(13); // Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
 
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
@@ -63,6 +63,11 @@ public class QwirkleState extends GameState {
 				}
 
 		setupTileLists(this.numPlayers);
+
+		// Draw 6 tiles initially
+		for (int i = 0; i < numPlayers; i++) {
+			drawTiles(i, HAND_SIZE);
+		}
 	}
 
 	/** helper method for ctors to initialize the tiles lists */
@@ -125,11 +130,14 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-		QwirkleTile tile = playerHand.remove(currTile); //need to add tile to board
+		QwirkleTile tile = playerHand.get(currTile); //need to add tile to board
 		if (tile ==  null || currTile < 0 || currTile >= playerHand.size()) {
 			return false; // invalid index or empty hand
 		}
 		board.addToBoard(tile, action.getX(), action.getY());
+
+		// Set the tile to null in the hand
+		playerHand.set(currTile, null);
 		return true;
 	}
 
@@ -179,11 +187,16 @@ public class QwirkleState extends GameState {
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
+		int nullTiles = 0;
 		// can end their turn at any time
-		int toRefill = 6 - tilesInHands[currPlayer].size();
-		drawTiles(currPlayer, toRefill);
+		for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
+			if (tilesInHands[currPlayer].get(i) == null) {
+				nullTiles++;
+			}
+		}
+		drawTiles(currPlayer, nullTiles);
 
-		this.currPlayer = 1-currPlayer;
+		this.currPlayer = 1 - currPlayer;
 		return true;
 	}
 
@@ -195,6 +208,11 @@ public class QwirkleState extends GameState {
 	public int getCurrPlayer() {
 		return currPlayer;
 	}
+	public int getCurrTile() { return currTile; }
+	public int getTilesLeft() { return tilesInBag.size(); }
+	public Board getBoard() {
+		return board;
+	}
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
@@ -204,13 +222,30 @@ public class QwirkleState extends GameState {
 		this.playersScore[player] = score;
 	}
 
+	// Draw tiles method
 	public void drawTiles(int playerIndex, int numTiles) {
 		for (int i = 0; i < numTiles && !tilesInBag.isEmpty(); i++) {
 			int randomIndex = (int)(Math.random() * tilesInBag.size());
-			QwirkleTile drawnTile = tilesInBag.remove(randomIndex);
-			tilesInHands[playerIndex].add(drawnTile);
+			QwirkleTile drawnTile = tilesInBag.remove(randomIndex); // Remove tile only once
+
+			// Find the first null index in the player's hand
+			ArrayList<QwirkleTile> playerHand = tilesInHands[playerIndex];
+			boolean tileAdded = false;
+			for (int j = 0; j < playerHand.size(); j++) {
+				if (playerHand.get(j) == null) {
+					playerHand.set(j, drawnTile); // Set the tile at the null position
+					tileAdded = true;
+					break; // Exit the loop after placing the tile
+				}
+			}
+
+			// If no null spot is found, add the tile at the end
+			if (!tileAdded) {
+				playerHand.add(drawnTile);
+			}
 		}
 	}
+
 	public void refillHand(int playerIndex) {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
@@ -243,12 +278,12 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-	//public boolean notEmpty(int x, int y) {
-
-		//if ( != null) {
-
-		//}
-	//}
+//	public boolean notEmpty(int x, int y) {
+//
+//		if ( != null) {
+//
+//		}
+//	}
 
 	/**
 	 * isValid
@@ -368,9 +403,9 @@ public class QwirkleState extends GameState {
 
 		// Loops through the board array and prints the number of QwirkleTiles in the board
 		int tiles = 0;
-		for (int i = 0; i < board.getBoard().length; i++) {
-			for (int j = 0; j < board.getBoard()[i].length; j++) {
-				if (board.getBoard()[i][j] != null)
+		for (int i = 0; i < board.getTiles().length; i++) {
+			for (int j = 0; j < board.getTiles()[i].length; j++) {
+				if (board.getTiles()[i][j] != null)
 					tiles++;
 			}
 		}

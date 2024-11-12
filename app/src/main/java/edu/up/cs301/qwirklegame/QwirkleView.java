@@ -1,79 +1,94 @@
 package edu.up.cs301.qwirklegame;
 
+import static edu.up.cs301.qwirklegame.Board.COLUMNS;
+import static edu.up.cs301.qwirklegame.Board.ROWS;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *    For CS371 Lab activities
+ * This contains the board for the QwirkleHumanPlayer. It takes the current tile that was selected from
+ * the QwirkleHumanPlayer and if the player taps the screen in the grid, it draws it inside of the cell
+ *
+ * This class also draws the board grid and the other player scores on the SurfaceView
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
+ * @version November 11, 2024
  */
 
-public class QwirkleView extends SurfaceView{
+public class QwirkleView extends SurfaceView implements View.OnTouchListener {
+        // Custom listener interface for tile touch events
+        public interface OnTileTouchListener {
+            void onTileTouched(int x, int y); // Pass tile coordinates
+        }
 
-//        private Bitmap tileBlueCirc;
-//        private Bitmap tileOrangeCirc;
-//        private Bitmap tileRedCirc;
-//        private Bitmap tileRed4Star;
-//        private Bitmap tileRed8Star;
-//        private Bitmap tileRedClo;
-//        private Bitmap tileRedDia;
-//        private Bitmap tileRedSquare;
-        private BoardModel playerModel;
+        // Current bitmap for the current tile
+        private Bitmap currTileBitmap;
 
-        // Array of bitmaps? 36 is a bit much
-        private Bitmap[] tiles;
+        // List to track all touched positions
+        private List<BoardModel> placedTiles = new ArrayList<>();
+
+        // Make the interface
+        private OnTileTouchListener tileTouchListener;
 
         // Variables for drawing grid
         private float cellSize, offsetX, offsetY;
 
+        // Paints
         private Paint black;
-        private Paint darkGreenPaint;
         private Paint gridPaint;
-
-        private int numColumns = 27;
-        private int numRows = 15;
-
-        private Board board;    // Board class
 
         public QwirkleView(Context context, AttributeSet attrs) {
 
             super(context, attrs);
             setWillNotDraw(false);
-
-            darkGreenPaint = new Paint();
-            darkGreenPaint.setColor(0xFF119722);
-            darkGreenPaint.setStyle(Paint.Style.STROKE);
-
-            black = new Paint();
-            black.setColor(0xFF000000);
-            black.setStyle(Paint.Style.STROKE);
+            setOnTouchListener(this);
 
             gridPaint = new Paint();
             gridPaint.setColor(Color.BLACK);
             gridPaint.setStrokeWidth(2);
 
-            // Initialize bitmaps
-//            tileBlueCirc = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_blue_circle), 50, 50, false);
-//            tileOrangeCirc = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_orange_circle), 50, 50, false);
-//            tileRedCirc = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_circle), 50, 50, false);
-//            tileRed4Star = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_4star), 50, 50, false);
-//            tileRed8Star = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_8star), 50, 50, false);
-//            tileRedClo = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_clover), 50, 50, false);
-//            tileRedDia = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_diamond), 50, 50, false);
-//            tileRedSquare = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.tile_red_square), 50, 50, false);
+            black = new Paint();
+            black.setColor(Color.BLACK);
 
             setBackgroundColor(0xFFDDDDDD);
-
         }
 
-    // returns the initialized drawing model
-    public BoardModel getModel() {
-        return this.playerModel;
+    /**
+     * // This method allows QwirkleHumanPlayer to set the selected tile
+     * @param imageResource
+     */
+    public void setSelectedTile(int imageResource) {
+        // Load the bitmap from the resource ID
+        currTileBitmap = BitmapFactory.decodeResource(getResources(), imageResource);
+
+        // Redraw the view to display the new tile
+        invalidate();
+    }
+
+    /**
+     * To set the custom tile touch listener
+     * @param listener
+     */
+    public void setOnTileTouchListener(OnTileTouchListener listener) {
+        this.tileTouchListener = listener;
     }
 
     /**
@@ -83,23 +98,23 @@ public class QwirkleView extends SurfaceView{
     public void drawBoard(Canvas canvas) {
             // The cell size is the smallest ratio between these to fit the defined row and columns
             // all in the board
-            cellSize = Math.min(getWidth() / (float) numColumns, (getHeight() - 20) / (float) numRows);
+            cellSize = Math.min(getWidth() / (float) COLUMNS, (getHeight() - 20) / (float) ROWS);
 
             // The length for the side of the centered grid
-            offsetX = (getWidth() - numColumns * cellSize) / 2;
-            offsetY = (getHeight() - numRows * cellSize) / 2;
+            offsetX = (getWidth() - COLUMNS * cellSize) / 2;
+            offsetY = (getHeight() - ROWS * cellSize) / 2;
 
             // Loop through the rows and draws the lines
-            for (int i = 0; i <= numRows; i++) {
+            for (int i = 0; i <= ROWS; i++) {
                 // Y coordinate calculation. i * cellSize = each line for each cell row. + offSetY for centering
                 float y = offsetY + (i * cellSize);
-                canvas.drawLine(offsetX, y, offsetX + (numColumns * cellSize), y, gridPaint);
+                canvas.drawLine(offsetX, y, offsetX + (COLUMNS * cellSize), y, gridPaint);
             }
             // Loop through the columns and draws its lines
-            for (int j = 0; j <= numColumns; j++) {
+            for (int j = 0; j <= COLUMNS; j++) {
                 // X coordinate calculation. j * cellSize = each line for each cell col. + offSetX for centering
                 float x = offsetX + (j * cellSize);
-                canvas.drawLine(x, offsetY, x, offsetY + (numRows * cellSize), gridPaint);
+                canvas.drawLine(x, offsetY, x, offsetY + (ROWS * cellSize), gridPaint);
             }
         }
 
@@ -110,15 +125,7 @@ public class QwirkleView extends SurfaceView{
             // Drawing the grid board
             drawBoard(canvas);
 
-//            canvas.drawBitmap(tileBlueCirc, 920, 350, darkGreenPaint);
-//            canvas.drawBitmap(tileOrangeCirc, 970, 350, darkGreenPaint);
-//            canvas.drawBitmap(tileRedCirc, 1020, 350, darkGreenPaint);
-//            canvas.drawBitmap(tileRed4Star, 1020, 300, darkGreenPaint);
-//            canvas.drawBitmap(tileRed8Star, 1020, 250, darkGreenPaint);
-//            canvas.drawBitmap(tileRedSquare, 1020, 400, darkGreenPaint);
-//            canvas.drawBitmap(tileRedDia, 1020, 450, darkGreenPaint);
-//            canvas.drawBitmap(tileRedClo, 1020, 500, darkGreenPaint);
-
+            // Drawing the text for the player scores
             black.setTextSize(35);
             canvas.drawText("Player 2", 30, 55, black);
             canvas.drawText("Score: 0", 30, 90, black);
@@ -128,16 +135,67 @@ public class QwirkleView extends SurfaceView{
 
             canvas.drawText("Player 4", 30, 325, black);
             canvas.drawText("Score: 0", 30, 360, black);
+
+            // Draw all previously placed tiles
+            for (BoardModel tile : placedTiles) {
+                // Get the position of the tile on the grid
+                float x = offsetX + (tile.xLoc * cellSize);
+                float y = offsetY + (tile.yLoc * cellSize);
+
+                // Scale the tile to fit within the grid cell
+                int newTileSize = (int) (cellSize);
+                Bitmap scaledTile = Bitmap.createScaledBitmap(tile.tileBitmap, newTileSize, newTileSize, false);
+
+                // Calculate the centered position for the tile
+                float centeredX = x + (cellSize - newTileSize) / 2;
+                float centeredY = y + (cellSize - newTileSize) / 2;
+
+                // Draw the scaled tile at the centered position
+                canvas.drawBitmap(scaledTile, centeredX, centeredY, null);
+            }
         }
 
-        // Setters
+    // Method to add a new tile to the grid
+    public void addTile(float row, float col) {
+        // TODO: This does not draw it on the GUI but!! The action is still created so this must be a condition in the PlaceTileAction (isValid move)
 
-    /**
-     * Sets the board and then redraws
-     * @param board
-     */
-    public void setBoard(Board board) {
-            this.board = board;
-            invalidate();
+        // Check if there is already a tile at the loc
+        for (BoardModel tile : placedTiles) {
+            if (tile.xLoc == col && tile.yLoc == row) {
+                // Return without adding.
+                return;
+            }
+        }
+        if (currTileBitmap != null) {
+            BoardModel newTile = new BoardModel(col, row, currTileBitmap);
+            placedTiles.add(newTile);
+            currTileBitmap = null; // Clear current tile after placing
+            invalidate(); // Redraw the view
         }
     }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        // Check if no tile is selected
+        if (currTileBitmap == null) {
+            return false; // Do nothing if no tile is selected
+        }
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            // Calculate the column and row based on the touch coord
+            int col = (int) ((event.getX() - offsetX) / cellSize);
+            int row = (int) ((event.getY() - offsetY) / cellSize);
+
+            // Bound checking and then adds tile if its inside
+            if (col >= 0 && col < COLUMNS && row >= 0 && row < ROWS) {
+                addTile(row, col);
+
+                // If the player has touched the screen, call onTileTouched
+                if (tileTouchListener != null) {
+                    tileTouchListener.onTileTouched(row, col);
+                }
+            }
+            return true; // Event done
+        }
+        return false;
+    }
+}
