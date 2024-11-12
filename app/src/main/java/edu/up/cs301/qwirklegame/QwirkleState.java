@@ -1,11 +1,9 @@
 package edu.up.cs301.qwirklegame;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -270,20 +268,27 @@ public class QwirkleState extends GameState {
 	 * changes an x,y coordinate by one step in a given dir
 	 * TODO: finish
 	 */
-	public void takeStep(int x, int y, String dir) {
-		if (dir == "north") {
-			y++;
+	public int[] takeStep(int x, int y, String dir) {
+		int[] cord = new int[2];
+		switch (dir) {
+			case "north":
+				y--;
+				break;
+			case "south":
+				y++;
+				break;
+			case "east":
+				x++;
+				break;
+			case "west":
+				x--;
+				break;
 		}
-		if (dir == "south") {
-			y = y - 1;
-		}
-		if (dir == "east") {
-			x++;
-		}
-		if (dir == "west") {
-			x = x - 1;
-		}
+		cord[0] = x;
+		cord[1] = y;
+		return cord;
 	}
+
 
 	/**
 	 * helper method for isValid
@@ -313,7 +318,8 @@ public class QwirkleState extends GameState {
 			int currY = candY;
 			int currColor = 0;
 			int currShape = 0;
-			takeStep(currX, currY, dir);
+			currX = takeStep(currX, currY, dir)[0];
+			currY = takeStep(currX, currY, dir)[1];
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
 			while (board.notEmpty(currX, currY)) {
@@ -376,7 +382,6 @@ public class QwirkleState extends GameState {
 
 
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
-		String direction = "";
 		int yChan = 0;
 		int xChan = 0;
 		for (int i = 0; i < 4; i++) {
