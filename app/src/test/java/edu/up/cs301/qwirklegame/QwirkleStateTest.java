@@ -54,9 +54,18 @@ public class QwirkleStateTest {
 
     @Test
     public void refillHand() {
+        QwirkleState q1 = new QwirkleState();
+        q1.refillHand(0);
+        int len = q1.getPlayerHand(0).size();
+        assertEquals(6, len);
     }
 
     @Test
     public void getPlayerHand() {
+        QwirkleState q1 = new QwirkleState();
+        q1.drawTiles(0,3);
+        int len = q1.getPlayerHand(0).size();
+        assertEquals(3, len);
+
     }
 }
