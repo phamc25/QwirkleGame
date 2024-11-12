@@ -1,11 +1,9 @@
 package edu.up.cs301.qwirklegame;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
@@ -270,14 +268,27 @@ public class QwirkleState extends GameState {
 	 * changes an x,y coordinate by one step in a given dir
 	 * TODO: finish
 	 */
-	public void takeStep(int x, int y, String dir) {
-		int xIndex;
-		int yIndex;
-		if (dir == "north") {
-
-
+	public int[] takeStep(int x, int y, String dir) {
+		int[] cord = new int[2];
+		switch (dir) {
+			case "north":
+				y--;
+				break;
+			case "south":
+				y++;
+				break;
+			case "east":
+				x++;
+				break;
+			case "west":
+				x--;
+				break;
 		}
+		cord[0] = x;
+		cord[1] = y;
+		return cord;
 	}
+
 
 	/**
 	 * helper method for isValid
@@ -285,12 +296,9 @@ public class QwirkleState extends GameState {
 	 * checks to see if a place on the board is not empty
 	 * TODO: finish
 	 */
-//	public boolean notEmpty(int x, int y) {
-//
-//		if ( != null) {
-//
-//		}
-//	}
+	public boolean notEmpty(int x, int y) {
+		return board.getTiles()[x][y] != null;
+	}
 
 	/**
 	 * isValid
@@ -307,7 +315,8 @@ public class QwirkleState extends GameState {
 			int currY = candY;
 			int currColor = 0;
 			int currShape = 0;
-			takeStep(currX, currY, dir);
+			currX = takeStep(currX, currY, dir)[0];
+			currY = takeStep(currX, currY, dir)[1];
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
 			while (board.notEmpty(currX, currY)) {
