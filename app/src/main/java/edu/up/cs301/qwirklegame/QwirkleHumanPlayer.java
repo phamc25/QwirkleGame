@@ -1,37 +1,45 @@
 package edu.up.cs301.qwirklegame;
 
+import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
-
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 /**
- * A GUI of a counter-player. The GUI displays the current value of the counter,
- * and allows the human player to press the '+' and '-' buttons in order to
- * send moves to the game.
- * 
- * Just for fun, the GUI is implemented so that if the player presses either button
- * when the counter-value is zero, the screen flashes briefly, with the flash-color
- * being dependent on whether the player is player 0 or player 1.
- * 
- * @author Steven R. Vegdahl
- * @author Andrew M. Nuxoll
- * @version July 2013
+ * This contains the GUI for the QwirkleHumanPlayer player. The player can see their own hand,
+ * their score along with all of the other player's scores, the board that they are placing
+ * the tile on, and the buttons that correspond with being able to discard tiles, confirm their
+ * selection, and end their turn.
+ *
+ * This also sends the current tile that is selected to the QwirkleView class, which draws the
+ * tile onto the SurfaceView. So it is a controller that has its own view but also a controller
+ * for the board view
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
+ * @version November 11, 2024
  */
-public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListener, View.OnTouchListener{
+public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListener, QwirkleView.OnTileTouchListener {
 
 	/* instance variables */
-	
-	// The TextView the displays the current counter value
-	private TextView testResultsTextView;
+	// Textviews for the human player
+	private TextView tilesLeft;
+	private TextView playerTurn;
+	private TextView playerScore;
 	
 	// the most recent game state, as given to us by the QwirkleLocalGame
 	private QwirkleState state;
@@ -39,21 +47,37 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// the android activity that we are running
 	private GameMainActivity myActivity;
 
-	// for accessing/updating the model
-	private BoardModel boardModel;
 
-	// accessing/drawing the view
+	// Tile IDs for the tile ImageButtons
+	private static final int[] TILE_IDS = {
+			R.id.tile1, R.id.tile2, R.id.tile3,
+			R.id.tile4, R.id.tile5, R.id.tile6
+	};
+
+	// Tile R.drawable resources for the images!
+	public static final int[][] TILE_RESOURCES = {
+			// RED, BLUE, GREEN, YELLOW, PURPLE, ORANGE
+			{R.drawable.tile_red_circle,    R.drawable.tile_blue_circle,    R.drawable.tile_green_circle,    R.drawable.tile_yellow_circle,    R.drawable.tile_purple_circle,    R.drawable.tile_orange_circle},    // CIRCLE
+			{R.drawable.tile_red_square,    R.drawable.tile_blue_square,    R.drawable.tile_green_square,    R.drawable.tile_yellow_square,    R.drawable.tile_purple_square,    R.drawable.tile_orange_square},    // SQUARE
+			{R.drawable.tile_red_diamond,   R.drawable.tile_blue_diamond,   R.drawable.tile_green_diamond,   R.drawable.tile_yellow_diamond,   R.drawable.tile_purple_diamond,   R.drawable.tile_orange_diamond},   // DIAMOND
+			{R.drawable.tile_red_4star,     R.drawable.tile_blue_4star,     R.drawable.tile_green_4star,     R.drawable.tile_yellow_4star,     R.drawable.tile_purple_4star,     R.drawable.tile_orange_4star},     // FOURSTAR
+			{R.drawable.tile_red_clover,    R.drawable.tile_blue_clover,    R.drawable.tile_green_clover,    R.drawable.tile_yellow_clover,    R.drawable.tile_purple_clover,    R.drawable.tile_orange_clover},    // CLOVER
+			{R.drawable.tile_red_8star,     R.drawable.tile_blue_8star,     R.drawable.tile_green_8star,     R.drawable.tile_yellow_8star,     R.drawable.tile_purple_8star,     R.drawable.tile_orange_8star}      // EIGHTSTAR
+	};
+
+	// Array of ImageButtons for all 6 tiles
+	private ImageButton[] tileButtons;
+
+	// An instance of the QwirkleView (so we can add a tile to the board view)
 	private QwirkleView qwirkleView;
-	
+
 	/**
 	 * constructor
 	 * @param name
 	 * 		the player's name
 	 */
-	public QwirkleHumanPlayer (String name, QwirkleView initView) {
+	public QwirkleHumanPlayer(String name) {
 		super(name);
-		this.qwirkleView = initView;
-		this.boardModel = initView.getModel();
 	}
 
 	/**
@@ -70,165 +94,77 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * sets the counter value in the text view
 	 */
 	protected void updateDisplay() {
-		// set the text in the appropriate widget
-		//counterValueTextView.setText("" + state.getCounter());
+		updateHandDisplay();
+		// Update text views
+		tilesLeft.setText(String.valueOf(state.getTilesLeft()));
+		playerTurn.setText(String.valueOf(state.getCurrPlayer()));
+		playerScore.setText(String.valueOf(state.getPlayersScore()[state.getCurrPlayer()]));
 	}
 
 	/**
-	 * this method gets called when the user clicks the '+' or '-' button. It
-	 * creates a new QwirkleMoveAction to return to the parent activity.
+	 * this method gets called when the user clicks end turn or discard mode or confirm
 	 * 
 	 * @param button
 	 * 		the button that was clicked
 	 */
 	public void onClick(View button) {
 		// if we are not yet connected to a game, ignore
-		if (game == null) return;
-
-		// clearing any previous text
-		testResultsTextView.setText("");
-
-		// making a new QwirkleState w default constructor
-		QwirkleState firstInstance = new QwirkleState();
-
-		// deep copy of firstInstance for player1
-		QwirkleState firstCopy = new QwirkleState(firstInstance);
-
-		// method calls, faux gameplay
-
-		// Get the current player and draw tiles for both players
-		int currPID = firstInstance.getCurrPlayer();
-		firstInstance.drawTiles(currPID, 6);
-		firstInstance.drawTiles(1 - currPID, 6);
-
-		// Both hands for players
-		ArrayList<QwirkleTile> hand0 = firstInstance.getPlayerHand(currPID);
-		ArrayList<QwirkleTile> hand1 = firstInstance.getPlayerHand(1 - currPID);
-
-		// Both scores for players
-		int[] playersScore = firstInstance.getPlayersScore();
-
-		// Player 0 gets the first tile and place it on the board (Red circle)
-		QwirkleTile redCircle = hand0.get(0);
-		firstInstance.setCurrTile(0);
-		firstInstance.placeTile(new PlaceTileAction(this, redCircle, 0, 0));
-		testResultsTextView.append("Player 0 placed a RED CIRCLE tile at 0,0 \n");
-
-		// Player 0 ends turn
-		playersScore[firstInstance.getCurrPlayer()] += 1;	// 1 point for player 1
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 0 ended their turn and got +1 point. A YELLOW EIGHTSTAR was added to their hand \n");
-
-		// Player 1 turn start
-		hand1.get(1).setSelected(true);
-		ArrayList<QwirkleTile> selected = firstInstance.getSelectedTiles(hand1);
-		firstInstance.discardTiles(new DiscardTilesAction(this, selected), hand1);
-		testResultsTextView.append("Player 1 discarded a RED EIGHTSTAR tile \n");
-
-		// Player 1 ends their turn
-		playersScore[firstInstance.getCurrPlayer()] += 0;	// 0 points for player 2
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 1 ended their turn and got no points. An ORANGE CIRCLE was added to their hand \n");
-
-		// Player 0 turn start
-		QwirkleTile redSquare = hand0.get(2);
-		QwirkleTile orangeSquare = hand0.get(3);
-		firstInstance.setCurrTile(2);
-		firstInstance.placeTile(new PlaceTileAction(this,redSquare,1,0));
-		testResultsTextView.append("Player 0 placed a RED SQUARE tile at 1,0 \n");
-		firstInstance.setCurrTile(3);
-		firstInstance.placeTile(new PlaceTileAction(this,orangeSquare,1,1));
-		testResultsTextView.append("Player 0 placed a ORANGE SQUARE tile at 1,1 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 2;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 0 ended their turn and got 2 points. A RED EIGHTSTAR was added to their hand \n");
-
-		// Player 1 turn start
-		QwirkleTile orangeFStar = hand1.get(2);
-		QwirkleTile orangeDiamond = hand1.get(4);
-		QwirkleTile orangeCircle = hand1.get(5);
-		firstInstance.setCurrTile(5);
-		firstInstance.placeTile(new PlaceTileAction(this, orangeCircle,0,1));
-		testResultsTextView.append("Player 1 placed a ORANGE CIRCLE tile at 0,1 \n");
-		firstInstance.setCurrTile(4);
-		firstInstance.placeTile(new PlaceTileAction(this, orangeDiamond,3,1));
-		testResultsTextView.append("Player 1 placed a ORANGE DIAMOND tile at 3,1 \n");
-		firstInstance.setCurrTile(2);
-		firstInstance.placeTile(new PlaceTileAction(this, orangeFStar,2,1));
-		testResultsTextView.append("Player 1 placed a ORANGE FOURSTAR tile at 2,1 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 3;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 1 ended their turn and got 3 points. A NO TILES were added to their hand \n");
-
-		// Player 0 turn start
-		QwirkleTile orangeClover = hand0.get(1);
-		firstInstance.setCurrTile(1);
-		firstInstance.placeTile(new PlaceTileAction(this,orangeClover,4,1));
-		testResultsTextView.append("Player 0 placed a ORANGE CLOVER tile at 4,1 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 1;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 0 ended their turn and got 1 point. A NO TILES were added to their hand \n");
-
-		// Player 1 turn start
-		QwirkleTile blueClover = hand1.get(1);
-		firstInstance.setCurrTile(1);
-		firstInstance.placeTile(new PlaceTileAction(this,blueClover,4,2));
-		testResultsTextView.append("Player 1 placed a BLUE CLOVER tile at 4,2 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 1;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 1 ended their turn and got 1 point. A NO TILES were added to their hand \n");
-
-		// Player 0 turn start
-		QwirkleTile greenCircle = hand0.get(0);
-		firstInstance.setCurrTile(0);
-		firstInstance.placeTile(new PlaceTileAction(this,greenCircle,0,2));
-		testResultsTextView.append("Player 0 placed a GREEN CIRCLE tile at 0,2 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 1;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 0 ended their turn and got 1 point. A NO TILES were added to their hand \n");
-
-		// Player 1 turn start
-		QwirkleTile blueCircle = hand1.get(0);
-		firstInstance.setCurrTile(0);
-		firstInstance.placeTile(new PlaceTileAction(this,blueCircle,0,3));
-		testResultsTextView.append("Player 1 placed a BLUE CIRCLE tile at 0,3 \n");
-		playersScore[firstInstance.getCurrPlayer()] += 1;
-		firstInstance.endTurn(new EndTurnAction(firstInstance, this, 2));
-		testResultsTextView.append("Player 1 ended their turn and got 1 point. A NO TILES were added to their hand \n");
-		testResultsTextView.append("Player 1 has no more tiles, the game ends.\n");
-
-		testResultsTextView.append("\n");
-
-		// Second game state for checking
-		QwirkleState secondInstance = new QwirkleState();
-		QwirkleState secondCopy = new QwirkleState(secondInstance);	// Deep copy
-
-		// Appending both game state instance toStrings to textview
-		testResultsTextView.append(firstInstance.toString(firstCopy) + "\n");
-		testResultsTextView.append(firstInstance.toString(secondCopy));
-
-		// Construct the action and send it to the game
-		// GameAction action = null;
-		if (button.getId() == R.id.tile1) {
-
-		}
-//			// plus button: create "increment" action
-//			action = new QwirkleMoveAction(this, true);
-//		}
-//		else if (button.getId() == R.id.minusButton) {
-//			// minus button: create "decrement" action
-//			action = new QwirkleMoveAction(this, false);
-//		}
-		// if (button.getId() == R.id.end_button) {
-		//	action = new EndTurnAction(state, action.getPlayer());
-
-		//} else {
-			// something else was pressed: ignore
+		if (game == null) {
 			return;
-			//}
-		
-		//game.sendAction(action); // send action to the game
+		}
+		// Check if it's the current player's turn
+		if (this.playerNum != state.getCurrPlayer()) {
+			return;
+		}
+
+		// If the button pressed is the end turn
+		if (button.getId() == R.id.end_turn) {
+
+			// Create a new end turn action and then update the display
+			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
+//			updateDisplay();
+			game.sendAction(end); // send action to the game
+		}
+		else {
+			// Else these are the tile image buttons
+			// Check if it's a tile button
+			for (int i = 0; i < TILE_IDS.length; i++) {
+				if (button.getId() == TILE_IDS[i]) {
+//					selectedTileIndex = i; // Store selected tile index
+					state.setCurrTile(i);	// Set the current tile index
+					notifyBoardView();	// Let the board know what tile it is!
+					return;  // Exit after handling tile
+				}
+			}
+			// Not a tile or recognized button
+			return;
+		}
 	}// onClick
+
+	/**
+	 * If the tile is touched, create a new place tile action
+	 * @param x
+	 * @param y
+	 */
+	@Override
+	public void onTileTouched(int x, int y) {
+		// if we are not yet connected to a game, ignore
+		if (game == null) {
+			return;
+		}
+		// Check if it's the current player's turn
+		if (this.playerNum != state.getCurrPlayer()) {
+			return;
+		}
+		if (state != null) {
+			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
+			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
+
+			// Send the PlaceTileAction to the game
+			game.sendAction(place);
+		}
+	}
 	
 	/**
 	 * callback method when we get a message (e.g., from the game)
@@ -244,6 +180,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
 		updateDisplay();
+		updateHandDisplay();
 	}
 	
 	/**
@@ -261,40 +198,101 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	    // Load the layout resource for our GUI
 		activity.setContentView(R.layout.qwirkle_human_player);
 
-		// intitialize testResultsTextView
-		testResultsTextView = activity.findViewById(R.id.editTextTextMultiLine);
+		// Buttons for the game
+		Button endTurnButton = (Button) activity.findViewById(R.id.end_turn);
+		endTurnButton.setOnClickListener(this);
 
-		// make this object the listener
-		Button editText = (Button) activity.findViewById(R.id.run_test);
-//		editText.setOnClickListener(this);
+		// Initialize tile buttons array
+		tileButtons = new ImageButton[TILE_IDS.length];
 
-//		Button minusButton = (Button) activity.findViewById(R.id.minusButton);
-//		minusButton.setOnClickListener(this);
-//		Button endTurnButton = (Button) activity.findViewById(R.id.end_button);
-//		endTurnButton.setOnClickListener(this);
+		// Set up all tile buttons in a loop
+		for (int i = 0; i < TILE_IDS.length; i++) {
+			tileButtons[i] = activity.findViewById(TILE_IDS[i]);
+			tileButtons[i].setOnClickListener(this);
+		}
 
-		// remember the field that we update to display the counter's value
-		//this.counterValueTextView =
-		//		(TextView) activity.findViewById(R.id.counterValueTextView);
+		// Set up the textviews that the player sees
+		this.tilesLeft = (TextView) activity.findViewById(R.id.tiles_left);
+		this.playerTurn = (TextView) activity.findViewById(R.id.player_turn);
+		this.playerScore = (TextView) activity.findViewById(R.id.player_score);
+
+		// Get the QwirkleView instance and set the touch listener
+		qwirkleView = (QwirkleView) activity.findViewById(R.id.boardView);
+		qwirkleView.setOnTileTouchListener(this); // Set this class as the OnTileTouchListener
 		
 		// if we have a game state, "simulate" that we have just received
 		// the state from the game so that the GUI values are updated
-		//if (state != null) {
+		if (state != null) {
 			receiveInfo(state);
-		//}
+		}
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent motionEvent) {
-		float xLocation = motionEvent.getX();
-		float yLocation = motionEvent.getY();
+	/**
+	 * This notifies the board view of the currently selected tile resource
+	 */
+	private void notifyBoardView() {
+		// Checking for hand bounds
+		if (state.getCurrTile() >= 0 && state.getCurrTile() < tileButtons.length) {
+			// Get the tile
+			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
+			// Set the selected tile
+			qwirkleView.setSelectedTile(getTileImageFile(tile));
+		}
+	}
 
-		//save those coordinates
-		boardModel.xLoc = xLocation;
-		boardModel.yLoc = yLocation;
+	/**
+	 * Updates the hand of the player and set the image tile resources
+	 */
+	public void updateHandDisplay() {
+		// Get the player's hand
+		ArrayList<QwirkleTile> hand = state.getPlayerHand(game.getGameState().getCurrentPlayer());
 
+		// Update each tile button based on the hand
+		for (int i = 0; i < tileButtons.length; i++) {
+				QwirkleTile tile = hand.get(i);
+				int imageResource = getTileImageFile(tile);
+				tileButtons[i].setImageResource(imageResource);
+		}
+	}
 
-		return false;
+	/**
+	 * Takes a QwirkleTile and matches the image file name to the tile from
+	 * the TILE_RESOURCES array
+	 *
+	 * @param tile
+	 * @return
+	 */
+	public int getTileImageFile(QwirkleTile tile) {
+		// No tile, draw blank tile
+		if (tile == null) { return R.drawable.tile_blank; }
+		// Return the right tile image with the enum values
+		return TILE_RESOURCES[tile.getShape().ordinal()][tile.getColor().ordinal()];
+	}
+
+	/**
+	 * Prints out the board
+	 * @param board
+	 */
+	private void checkBoardState(QwirkleTile[][] board) {
+		QwirkleTile[][] boardTiles = state.getBoard().getTiles();
+		for (int row = 0; row < boardTiles.length; row++) {
+			for (int col = 0; col < boardTiles[row].length; col++) {
+				QwirkleTile tile = boardTiles[row][col];
+//				if (tile != null) {
+//					System.out.println("Tile at (" + row + ", " + col + "): " + tile);
+//				} else {
+//					System.out.println("No tile at (" + row + ", " + col + ")");
+//				}
+			}
+		}
 	}
 }// class QwirkleHumanPlayer
 
+/**
+ * External Citation
+ *
+ * Problem: Getting enum ordinal values
+ * Source: https://www.tutorialspoint.com/java/lang/enum_ordinal.htm
+ *
+ * Date: November 10, 2024
+ */

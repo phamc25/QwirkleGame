@@ -15,14 +15,14 @@ public class Board {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
-    public static final int LENGTH = 15;
-    public static final int WIDTH = 20;
+    public static final int ROWS = 13;
+    public static final int COLUMNS = 25;
 
     /**
      *  Constructor
      */
     public Board() {
-        this.boardArray = new QwirkleTile[LENGTH][WIDTH];
+        this.boardArray = new QwirkleTile[ROWS][COLUMNS];
     }
 
     /**
@@ -38,7 +38,7 @@ public class Board {
      */
     public QwirkleTile[][] copyBoard() {
         // Create a new double array of QwirkleTile for the copied array
-        QwirkleTile[][] copy = new QwirkleTile[LENGTH][WIDTH];
+        QwirkleTile[][] copy = new QwirkleTile[ROWS][COLUMNS];
 
         // Loop through the original board to copy into the copy array
         for (int i = 0; i < boardArray.length; i++) {
@@ -54,7 +54,7 @@ public class Board {
     /**
      *  Getters for variables
      */
-    public QwirkleTile[][] getBoard() {
+    public QwirkleTile[][] getTiles() {
         return this.boardArray;
     }
 
