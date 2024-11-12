@@ -66,7 +66,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_1"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_blue_4star" />
+                android:src="@drawable/tile_blank" />
 
             <ImageButton
                 android:id="@+id/tile2"
@@ -75,7 +75,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_2"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_orange_circle" />
+                android:src="@drawable/tile_blank" />
 
             <ImageButton
                 android:id="@+id/tile3"
@@ -84,7 +84,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_3"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_red_circle" />
+                android:src="@drawable/tile_blank" />
 
             <ImageButton
                 android:id="@+id/tile4"
@@ -93,7 +93,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_4"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_red_clover" />
+                android:src="@drawable/tile_blank" />
 
             <ImageButton
                 android:id="@+id/tile5"
@@ -102,7 +102,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_5"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_yellow_diamond" />
+                android:src="@drawable/tile_blank" />
 
             <ImageButton
                 android:id="@+id/tile6"
@@ -111,7 +111,7 @@
                 android:layout_weight="0"
                 android:contentDescription="@string/tile_6"
                 android:scaleType="fitCenter"
-                android:src="@drawable/tile_green_square" />
+                android:src="@drawable/tile_blank" />
 
         </LinearLayout>
 

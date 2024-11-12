@@ -15,17 +15,22 @@ package edu.up.cs301.qwirklegame;
 public class QwirkleTile {
     // Declaring for each shape of tile
     public enum Shape {
-        CLOVER, FOURSTAR, EIGHTSTAR, CIRCLE, SQUARE, DIAMOND
+        CIRCLE, SQUARE, DIAMOND, FOURSTAR, CLOVER, EIGHTSTAR
     }
     // For each color of tile
     public enum Color {
-        RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE
+        RED, BLUE, GREEN, YELLOW, PURPLE, ORANGE
     }
 
     // instance vars
     private Shape shape;
     private Color color;
     private boolean isSelected;
+
+    @Override
+    public String toString() {
+        return "" + color + " " + shape;
+    }
 
     /**
      * Constructor

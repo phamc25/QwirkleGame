@@ -21,17 +21,19 @@ public class PlaceTileAction extends GameAction {
 
     // The tile being placed
     private QwirkleTile placedTile;
+    private int selectedTileIndex;
 
     // The position on the board where the tile is being placed
     private int x;
     private int y;
 
     // setting vars to parameters passed
-    public PlaceTileAction(GamePlayer player, QwirkleTile tile, int x, int y) {
+    public PlaceTileAction(GamePlayer player, QwirkleTile tile, int x, int y, int selectedTileIndex) {
         super(player);
         this.placedTile = tile;
         this.x = x;
         this.y = y;
+        this.selectedTileIndex = selectedTileIndex;
     }
 
     // get the placed tile
@@ -47,6 +49,7 @@ public class PlaceTileAction extends GameAction {
         return y;
     }
 
+    public int getSelectedTileIndex() { return selectedTileIndex; }
     public QwirkleTile.Color getColor() {return placedTile.getColor();}
     public QwirkleTile.Shape getShape() {return placedTile.getShape();}
 

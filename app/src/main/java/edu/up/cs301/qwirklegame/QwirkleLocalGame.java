@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import static edu.up.cs301.qwirklegame.QwirkleState.HAND_SIZE;
+
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 import edu.up.cs301.GameFramework.LocalGame;
@@ -56,18 +58,21 @@ public class QwirkleLocalGame extends LocalGame {
 	@Override
 	protected boolean makeMove(GameAction action) {
 		Log.i("action", action.getClass().toString());
-		
-		if (action instanceof QwirkleMoveAction) {
-		
-			// cast so that we Java knows it's a QwirkleMoveAction
-			QwirkleMoveAction cma = (QwirkleMoveAction)action;
 
-			// Update the counter values based upon the action
-			//int result = gameState.getCounter() + (cma.isPlus() ? 1 : -1);
-			//gameState.setCounter(result);
-			
-			// denote that this was a legal/successful move
-			return true;
+		// If action is an EndTurnAction
+		if (action instanceof EndTurnAction) {
+			// cast so that we Java knows it's a EndTurnAction
+			EndTurnAction ea = (EndTurnAction) action;
+			return this.gameState.endTurn(ea);
+
+		}
+		// Else if it is a PlaceTileAction
+		else if (action instanceof PlaceTileAction) {
+			// cast so that we Java knows it's a EndTurnAction
+			PlaceTileAction place = (PlaceTileAction) action;
+			// Update the current tile so the game state knows
+			gameState.setCurrTile(place.getSelectedTileIndex());
+			return this.gameState.placeTile(place);
 		}
 		else {
 			// denote that this was an illegal move
@@ -97,17 +102,22 @@ public class QwirkleLocalGame extends LocalGame {
 	@Override
 	protected String checkIfGameOver() {
 		int currPlayer = gameState.getCurrPlayer();	// Current player
-
+		int nullTiles = 0;
 		// Get the number of tiles in the player's hand
 		int numTiles = this.gameState.getPlayerHand(currPlayer).size();
-
-		// Check if the length of the player's hand has reached 0
-		if (numTiles == 0) {
+		if (this.gameState.getTilesLeft() == 0) {
+			for (int i = 0; i < HAND_SIZE; i++) {
+				if (this.gameState.getPlayerHand(currPlayer).get(i) == null) {
+					nullTiles++;
+				}
+			}
+		}
+		if (nullTiles == 6) {
 			// Add 6 points to their score
 			int[] playersScore = gameState.getPlayersScore();
 			gameState.setPlayersScore(currPlayer, playersScore[currPlayer] + FINAL_ADD_POINTS);
-
 			int winningPlayer = 0;
+
 			// Loop through the array and find the player with the biggest score
 			for (int i = 1; i < playersScore.length; i++) {
 				if (playersScore[i] > playersScore[winningPlayer]) {
