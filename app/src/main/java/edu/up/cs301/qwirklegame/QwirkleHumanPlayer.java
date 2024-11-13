@@ -122,7 +122,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 			// Create a new end turn action and then update the display
 			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
-//			updateDisplay();
+
+//			updateHandDisplay();
 			game.sendAction(end); // send action to the game
 		}
 		else {
@@ -154,7 +155,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		}
 		// Check if it's the current player's turn
 		if (this.playerNum != state.getCurrPlayer()) {
-			return;
+			this.flash(0xFFFF0000, 200);
 		}
 		if (state != null) {
 			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
@@ -166,7 +167,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			}
 			// else flash the screen
 			else {
-				this.flash(0xFFFFFF00, 500);
+				this.flash(0xFFFF0000, 200);
 			}
 			// Send the PlaceTileAction to the game
 		}
@@ -250,14 +251,16 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * Updates the hand of the player and set the image tile resources
 	 */
 	public void updateHandDisplay() {
-		// Get the player's hand
-		ArrayList<QwirkleTile> hand = state.getPlayerHand(game.getGameState().getCurrentPlayer());
+		if (this.playerNum == state.getCurrPlayer()) {
+			// Get the player's hand
+			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
 
-		// Update each tile button based on the hand
-		for (int i = 0; i < tileButtons.length; i++) {
+			// Update each tile button based on the hand
+			for (int i = 0; i < tileButtons.length; i++) {
 				QwirkleTile tile = hand.get(i);
 				int imageResource = getTileImageFile(tile);
 				tileButtons[i].setImageResource(imageResource);
+			}
 		}
 	}
 
