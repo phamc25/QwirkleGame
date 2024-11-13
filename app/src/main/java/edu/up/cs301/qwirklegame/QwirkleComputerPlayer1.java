@@ -40,7 +40,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
 	@Override
 	protected void receiveInfo(GameInfo info) {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			if (!(info instanceof QwirkleState)) {
 				return;
 			}
