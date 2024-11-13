@@ -63,6 +63,17 @@ public class QwirkleLocalGame extends LocalGame {
 		if (action instanceof EndTurnAction) {
 			// cast so that we Java knows it's a EndTurnAction
 			EndTurnAction ea = (EndTurnAction) action;
+			int nullTiles = 0;
+			// can end their turn at any time
+			for (int i = 0; i < gameState.getPlayerHand(gameState.getCurrPlayer()).size(); i++) {
+				if (gameState.getPlayerHand(gameState.getCurrPlayer()).get(i) == null) {
+					nullTiles++;
+				}
+			}
+			gameState.drawTiles(gameState.getCurrPlayer(), nullTiles);
+
+			sendUpdatedStateTo(action.getPlayer());
+			gameState.nextPlayer();
 			return this.gameState.endTurn(ea);
 
 		}
@@ -125,7 +136,7 @@ public class QwirkleLocalGame extends LocalGame {
 				}
 			}
 			// Return the winning player
-			return playerNames[winningPlayer] + "has won.";
+			return playerNames[winningPlayer] + " has won with a score of " + playersScore[winningPlayer] + "! ";
 		}
 		// If no player hand has reached 0, the game is not over
 		else {

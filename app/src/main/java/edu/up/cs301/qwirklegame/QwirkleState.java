@@ -129,15 +129,35 @@ public class QwirkleState extends GameState {
 	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
+//		// Check if move is valid first before placing tile
+//		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
+//			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+//
+//			//TODO: confirm that the to-be-placed tile is in the player's hand
+//
+//			//place the tile now
+//			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+//
+//			// Set the tile to null in the hand
+//			playerHand.set(currTile, null);
+//		}
+//		else {
+//			return false;
+//		}
 		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-
+		if (!(board.notEmpty(action.getX(), action.getY()))) {
+			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+			playerHand.set(currTile, null);
+		}
+		else {
+			return false;
+		}
 		//TODO: confirm that the to-be-placed tile is in the player's hand
 
 		//place the tile now
-		board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+
 
 		// Set the tile to null in the hand
-		playerHand.set(currTile, null);
 		return true;
 	}
 
@@ -187,17 +207,12 @@ public class QwirkleState extends GameState {
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
-		int nullTiles = 0;
-		// can end their turn at any time
-		for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
-			if (tilesInHands[currPlayer].get(i) == null) {
-				nullTiles++;
-			}
-		}
-		drawTiles(currPlayer, nullTiles);
 
-		this.currPlayer = 1 - currPlayer;
 		return true;
+	}
+
+	public void nextPlayer() {
+		this.currPlayer = (currPlayer + 1) % numPlayers;
 	}
 
 	// Getter methods
@@ -318,13 +333,14 @@ public class QwirkleState extends GameState {
 	 */
 	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
 		String[] dirs = {"north", "south", "east", "west"};
+		QwirkleTile inLineTile = new QwirkleTile(null, null);
 
 		//for each direction
 		for (String dir : dirs) {
 			int currX = candX;
 			int currY = candY;
-			int currColor = 0;
-			int currShape = 0;
+			QwirkleTile.Color currColor = null;
+			QwirkleTile.Shape currShape = null;
 			currX = takeStep(currX, currY, dir)[0];
 			currY = takeStep(currX, currY, dir)[1];
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
@@ -332,22 +348,28 @@ public class QwirkleState extends GameState {
 			while (board.notEmpty(currX, currY)) {
 				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
 
-				QwirkleTile inLineTile = new QwirkleTile(null, null);
+				// Loop through the current player hand and set inLineTile to the current tile
+				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
+					if (i == currTile) {
+						inLineTile = tilesInHands[currPlayer].get(currTile);
+
+					}
+				}
 				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
-				inLineTile = pta.getPlacedTile();
+//				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 
 				//if both are None then this is the first neighbor,
 				//set curr shape and color
-				if ((currShape == 0) && (currColor == 0)) {
-					currShape = inLineTile.getShape().ordinal();
-					currColor = inLineTile.getColor().ordinal();
+				if ((currShape == null) && (currColor == null)) {
+					currShape = inLineTile.getShape();
+					currColor = inLineTile.getColor();
 				}
 				//case: mismatching color
-				else if ((currColor != 0) && (inLineTile.getColor().ordinal() != currColor)) {
+				else if ((currColor != null) && (inLineTile.getColor() != currColor)) {
 					//Does the shape still match?
-					if ((currShape != 0) && (inLineTile.getShape().ordinal() == currShape)) {
-						currColor = 0;  //ok, enforce the shape and ignore
+					if ((currShape != null) && (inLineTile.getShape() == currShape)) {
+						currColor = null;  //ok, enforce the shape and ignore
 						//colors from now on
 					}
 					else {
@@ -356,10 +378,10 @@ public class QwirkleState extends GameState {
 				}
 
 				//case mismatching shape
-				else if ((currShape != 0) && (inLineTile.getShape().ordinal() != currShape)) {
+				else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
 					//Does the color still match?
-					if ((currColor != 0) && (inLineTile.getColor().ordinal() == currColor)) {
-						currColor = 0;  //enforce color but not shape
+					if ((currColor != null) && (inLineTile.getColor() == currColor)) {
+						currColor = null;  //enforce color but not shape
 						continue;
 					}
 					else {
