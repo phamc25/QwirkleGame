@@ -369,6 +369,7 @@ public class QwirkleState extends GameState {
 
 				takeStep(currX, currY, dir);
 
+
 			}//while
 
 			//check for duplicates in the 'row' arraylist
