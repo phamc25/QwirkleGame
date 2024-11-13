@@ -27,8 +27,8 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
         super(name);
         
         // start the timer, ticking 20 times per second
-        getTimer().setInterval(50);
-        getTimer().start();
+//        getTimer().setInterval(50);
+//        getTimer().start();
     }
     
     /**
@@ -39,21 +39,32 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
      */
 	@Override
 	protected void receiveInfo(GameInfo info) {
-		// Do nothing, as we ignore all state in deciding our next move. It
-		// depends totally on the timer and random numbers.
-	}
+		try {
+			Thread.sleep(1000);
+			if (!(info instanceof QwirkleState)) {
+				return;
+			}
+			// Just send end turn for now
+			QwirkleState gameState = (QwirkleState) info;
+			game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
+
+
+		} catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	
 	/**
 	 * callback method: the timer ticked
 	 */
-	protected void timerTicked() {
-		// 5% of the time, increment or decrement the counter
-		if (Math.random() >= 0.05) return; // do nothing 95% of the time
-
-		// "flip a coin" to determine whether to increment or decrement
-		boolean move = Math.random() >= 0.5;
-		
-		// send the move-action to the game
-		game.sendAction(new QwirkleMoveAction(this, move));
-	}
+//	protected void timerTicked() {
+//		// 5% of the time, increment or decrement the counter
+//		if (Math.random() >= 0.05) return; // do nothing 95% of the time
+//
+//		// "flip a coin" to determine whether to increment or decrement
+//		boolean move = Math.random() >= 0.5;
+//
+//		// send the move-action to the game
+//		game.sendAction(new QwirkleMoveAction(this, move));
+//	}
 }

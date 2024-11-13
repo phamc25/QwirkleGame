@@ -17,29 +17,29 @@ public abstract class GameState extends GameInfo {
     // to satisfy the Serializable interface
     private static final long serialVersionUID = -5109179064333136954L;
 
-    //How many setup phases we have, initially set to 0
+//    //How many setup phases we have, initially set to 0
     protected int numSetupTurns = 0;
-
-    //How many setup turns have passed, initially set to 0
+//
+//    //How many setup turns have passed, initially set to 0
     protected int currentSetupTurn = 0;
-
+//
     protected int numPlayers = 0;
-    protected int currentPlayer = 0;
-
-
+//    protected int currentPlayer = 0;
+//
+//
     public GameState() {
         this.numSetupTurns = 0;
         this.currentSetupTurn = 0;
         this.numPlayers = 0;
-        this.currentPlayer = 0;
+//        this.currentPlayer = 0;
     }
-
-    // Copy constructor
+//
+//    // Copy constructor
     public GameState(GameState orig) {
         this.numSetupTurns = orig.numSetupTurns;
         this.currentSetupTurn = orig.currentSetupTurn;
         this.numPlayers = orig.numPlayers;
-        this.currentPlayer = orig.currentPlayer;
+//        this.currentPlayer = orig.currentPlayer;
     }
     /**
      * getNumSetupTurns
@@ -72,28 +72,28 @@ public abstract class GameState extends GameInfo {
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
-
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void nextPlayer() {
-        currentPlayer = (currentPlayer + 1) % numPlayers;
-    }
+//
+//    public int getCurrentPlayer() {
+//        return currentPlayer;
+//    }
+//
+//    public void nextPlayer() {
+//        currentPlayer = (currentPlayer + 1) % numPlayers;
+//    }
 
     /**
      * toString
      *
      * @return String representation of this instance
      */
-    public String toString() {
-        return "GameState{" +
-                "numSetupTurns=" + numSetupTurns +
-                ", currentSetupTurn=" + currentSetupTurn +
-                ", numPlayers=" + numPlayers +
-                ", currentPlayer=" + currentPlayer +
-                '}';
-    }
+//    public String toString() {
+//        return "GameState{" +
+//                "numSetupTurns=" + numSetupTurns +
+//                ", currentSetupTurn=" + currentSetupTurn +
+//                ", numPlayers=" + numPlayers +
+//                ", currentPlayer=" + currentPlayer +
+//                '}';
+//    }
 
 
     public abstract String toString(GameState currState);
