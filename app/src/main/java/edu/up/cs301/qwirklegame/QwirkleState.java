@@ -316,8 +316,8 @@ public class QwirkleState extends GameState {
 		for (String dir : dirs) {
 			int currX = candX;
 			int currY = candY;
-			int currColor = 0;
-			int currShape = 0;
+			QwirkleTile.Color currColor = null;
+			QwirkleTile.Shape currShape = null;
 			currX = takeStep(currX, currY, dir)[0];
 			currY = takeStep(currX, currY, dir)[1];
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
@@ -329,6 +329,7 @@ public class QwirkleState extends GameState {
 				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
 					if (i == currTile) {
 						inLineTile = tilesInHands[currPlayer].get(currTile);
+
 					}
 				}
 				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
@@ -337,15 +338,15 @@ public class QwirkleState extends GameState {
 
 				//if both are None then this is the first neighbor,
 				//set curr shape and color
-				if ((currShape == 0) && (currColor == 0)) {
-					currShape = inLineTile.getShape().ordinal();
-					currColor = inLineTile.getColor().ordinal();
+				if ((currShape == null) && (currColor == null)) {
+					currShape = inLineTile.getShape();
+					currColor = inLineTile.getColor();
 				}
 				//case: mismatching color
-				else if ((currColor != 0) && (inLineTile.getColor().ordinal() != currColor)) {
+				else if ((currColor != null) && (inLineTile.getColor() != currColor)) {
 					//Does the shape still match?
-					if ((currShape != 0) && (inLineTile.getShape().ordinal() == currShape)) {
-						currColor = 0;  //ok, enforce the shape and ignore
+					if ((currShape != null) && (inLineTile.getShape() == currShape)) {
+						currColor = null;  //ok, enforce the shape and ignore
 						//colors from now on
 					}
 					else {
@@ -354,10 +355,10 @@ public class QwirkleState extends GameState {
 				}
 
 				//case mismatching shape
-				else if ((currShape != 0) && (inLineTile.getShape().ordinal() != currShape)) {
+				else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
 					//Does the color still match?
-					if ((currColor != 0) && (inLineTile.getColor().ordinal() == currColor)) {
-						currColor = 0;  //enforce color but not shape
+					if ((currColor != null) && (inLineTile.getColor() == currColor)) {
+						currColor = null;  //enforce color but not shape
 						continue;
 					}
 					else {
