@@ -129,15 +129,21 @@ public class QwirkleState extends GameState {
 	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+		// Check if move is valid first before placing tile
+		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
+			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
-		//TODO: confirm that the to-be-placed tile is in the player's hand
+			//TODO: confirm that the to-be-placed tile is in the player's hand
 
-		//place the tile now
-		board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+			//place the tile now
+			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
 
-		// Set the tile to null in the hand
-		playerHand.set(currTile, null);
+			// Set the tile to null in the hand
+			playerHand.set(currTile, null);
+		}
+		else {
+
+		}
 		return true;
 	}
 
@@ -318,6 +324,7 @@ public class QwirkleState extends GameState {
 	 */
 	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
 		String[] dirs = {"north", "south", "east", "west"};
+		QwirkleTile inLineTile = new QwirkleTile(null, null);
 
 		//for each direction
 		for (String dir : dirs) {
@@ -332,9 +339,14 @@ public class QwirkleState extends GameState {
 			while (board.notEmpty(currX, currY)) {
 				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
 
-				QwirkleTile inLineTile = new QwirkleTile(null, null);
+				// Loop through the current player hand and set inLineTile to the current tile
+				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
+					if (i == currTile) {
+						inLineTile = tilesInHands[currPlayer].get(currTile);
+					}
+				}
 				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
-				inLineTile = pta.getPlacedTile();
+//				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 
 				//if both are None then this is the first neighbor,
