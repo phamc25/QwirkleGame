@@ -129,21 +129,35 @@ public class QwirkleState extends GameState {
 	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-		// Check if move is valid first before placing tile
-		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
-			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-
-			//TODO: confirm that the to-be-placed tile is in the player's hand
-
-			//place the tile now
+//		// Check if move is valid first before placing tile
+//		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
+//			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+//
+//			//TODO: confirm that the to-be-placed tile is in the player's hand
+//
+//			//place the tile now
+//			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+//
+//			// Set the tile to null in the hand
+//			playerHand.set(currTile, null);
+//		}
+//		else {
+//			return false;
+//		}
+		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+		if (!(board.notEmpty(action.getX(), action.getY()))) {
 			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
-
-			// Set the tile to null in the hand
 			playerHand.set(currTile, null);
 		}
 		else {
-
+			return false;
 		}
+		//TODO: confirm that the to-be-placed tile is in the player's hand
+
+		//place the tile now
+
+
+		// Set the tile to null in the hand
 		return true;
 	}
 
@@ -193,17 +207,12 @@ public class QwirkleState extends GameState {
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
-		int nullTiles = 0;
-		// can end their turn at any time
-		for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
-			if (tilesInHands[currPlayer].get(i) == null) {
-				nullTiles++;
-			}
-		}
-		drawTiles(currPlayer, nullTiles);
 
-		this.currPlayer = 1 - currPlayer;
 		return true;
+	}
+
+	public void nextPlayer() {
+		this.currPlayer = (currPlayer + 1) % numPlayers;
 	}
 
 	// Getter methods
@@ -367,6 +376,7 @@ public class QwirkleState extends GameState {
 				}
 
 				takeStep(currX, currY, dir);
+
 
 			}//while
 
