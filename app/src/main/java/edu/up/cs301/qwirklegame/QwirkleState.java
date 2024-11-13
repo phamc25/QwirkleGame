@@ -296,20 +296,6 @@ public class QwirkleState extends GameState {
 		return cord;
 	}
 
-
-	/**
-	 * helper method for isValid
-	 *
-	 * checks to see if a place on the board is not empty
-	 * TODO: finish
-	 */
-//	public boolean notEmpty(int x, int y) {
-//
-//		if ( != null) {
-//
-//		}
-//	}
-
 	/**
 	 * isValid
 	 *
