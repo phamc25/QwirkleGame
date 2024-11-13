@@ -160,9 +160,15 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
 			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
 			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
-
+			// If place tile is valid, send the action to local game
+			if (state.placeTile(place)) {
+				game.sendAction(place);
+			}
+			// else flash the screen
+			else {
+				this.flash(0xFFFFFF00, 500);
+			}
 			// Send the PlaceTileAction to the game
-			game.sendAction(place);
 		}
 	}
 	
