@@ -375,7 +375,8 @@ public class QwirkleState extends GameState {
 					}
 				}
 
-				takeStep(currX, currY, dir);
+				currX = takeStep(currX, currY, dir)[0];
+				currY = takeStep(currX, currY, dir)[1];
 
 
 			}//while
