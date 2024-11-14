@@ -129,29 +129,31 @@ public class QwirkleState extends GameState {
 	 * Places selected tile onto the board
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
-//		// Check if move is valid first before placing tile
-//		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
-//			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-//
-//			//TODO: confirm that the to-be-placed tile is in the player's hand
-//
-//			//place the tile now
+		// Check if move is valid first before placing tile
+		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
+			if (!(board.notEmpty(action.getX(), action.getY()))) {
+				ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+
+				//TODO: confirm that the to-be-placed tile is in the player's hand
+
+				//place the tile now
+				board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+
+				// Set the tile to null in the hand
+				playerHand.set(currTile, null);
+			}
+		}
+		else {
+			return false;
+		}
+//		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+//		if (!(board.notEmpty(action.getX(), action.getY()))) {
 //			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
-//
-//			// Set the tile to null in the hand
 //			playerHand.set(currTile, null);
 //		}
 //		else {
 //			return false;
 //		}
-		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-		if (!(board.notEmpty(action.getX(), action.getY()))) {
-			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
-			playerHand.set(currTile, null);
-		}
-		else {
-			return false;
-		}
 		//TODO: confirm that the to-be-placed tile is in the player's hand
 
 		//place the tile now
@@ -207,7 +209,8 @@ public class QwirkleState extends GameState {
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
-
+		// Update the player's score at the end of the turn
+		setPlayersScore(currPlayer, playersScore[currPlayer] + pointsToAdd);
 		return true;
 	}
 

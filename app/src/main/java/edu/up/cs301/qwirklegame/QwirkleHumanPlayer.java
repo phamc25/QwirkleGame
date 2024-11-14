@@ -116,6 +116,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (this.playerNum != state.getCurrPlayer()) {
 			return;
 		}
+//		notifyBoardView();
 
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
@@ -241,6 +242,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			qwirkleView.setSelectedTile(tile.getTileImageFile(tile));
 		}
 	}
+
+//	private void beginning
 
 	/**
 	 * Updates the hand of the player and set the image tile resources

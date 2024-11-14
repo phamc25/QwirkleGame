@@ -130,11 +130,11 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         canvas.drawText("Player 2", 30, 55, black);
         canvas.drawText("Score: 0", 30, 90, black);
 
-        canvas.drawText("Player 3", 30, 190, black);
-        canvas.drawText("Score: 0", 30, 225, black);
-
-        canvas.drawText("Player 4", 30, 325, black);
-        canvas.drawText("Score: 0", 30, 360, black);
+//        canvas.drawText("Player 3", 30, 190, black);
+//        canvas.drawText("Score: 0", 30, 225, black);
+//
+//        canvas.drawText("Player 4", 30, 325, black);
+//        canvas.drawText("Score: 0", 30, 360, black);
 
         // Draw all previously placed tiles
         for (BoardModel tile : placedTiles) {
