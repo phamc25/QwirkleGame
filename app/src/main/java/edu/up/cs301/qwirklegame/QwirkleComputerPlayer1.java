@@ -1,5 +1,14 @@
 package edu.up.cs301.qwirklegame;
 
+import static edu.up.cs301.qwirklegame.Board.COLUMNS;
+import static edu.up.cs301.qwirklegame.Board.ROWS;
+
+import android.view.MotionEvent;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 import edu.up.cs301.GameFramework.players.GameComputerPlayer;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.GameFramework.utilities.Tickable;
@@ -15,7 +24,9 @@ import edu.up.cs301.GameFramework.utilities.Tickable;
  *
  */
 public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickable {
-	
+	QwirkleTile[][] temp;
+	Random rand = new Random();
+	private QwirkleView qwirkleView;
     /**
      * Constructor for objects of class QwirkleComputerPlayer1
      * 
@@ -39,21 +50,43 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
      */
 	@Override
 	protected void receiveInfo(GameInfo info) {
-		try {
-			Thread.sleep(2000);
-			if (!(info instanceof QwirkleState)) {
+		if (info instanceof QwirkleState) {
+			QwirkleState gameState = (QwirkleState) info;
+			if (this.playerNum != gameState.getCurrPlayer()) {
 				return;
 			}
-			// Just send end turn for now
-			QwirkleState gameState = (QwirkleState) info;
-			game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
+
+			try {
+				Thread.sleep(2000);  // Simulate a delay for thinking time
+
+				// Ensure we are still working with a valid game state
+				if (!(info instanceof QwirkleState)) {
+					return;
+				}
+
+				// Select a random tile from the computer player's hand
+				QwirkleTile toPlace = gameState.getPlayerHand(gameState.getCurrPlayer()).get(0);  // Example: picking the first tile
+
+				// Randomly pick a valid position on the board
+				int randX = rand.nextInt(ROWS);
+				int randY = rand.nextInt(COLUMNS);
+
+				// Create a PlaceTileAction and attempt to place the tile on the board
+				PlaceTileAction place = new PlaceTileAction(this, toPlace, randX, randY, 0);
+				if (gameState.placeTile(place)) {
+					// Send the action to the game and update the board
+					game.sendAction(place);
+				}
+					// End the turn
+					game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
+
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
 
-		} catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-	
 	/**
 	 * callback method: the timer ticked
 	 */

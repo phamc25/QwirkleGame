@@ -243,7 +243,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Get the tile
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			// Set the selected tile
-			qwirkleView.setSelectedTile(getTileImageFile(tile));
+			qwirkleView.setSelectedTile(tile.getTileImageFile(tile));
 		}
 	}
 
@@ -254,11 +254,17 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (this.playerNum == state.getCurrPlayer()) {
 			// Get the player's hand
 			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+			int imageResource;
 
 			// Update each tile button based on the hand
 			for (int i = 0; i < tileButtons.length; i++) {
 				QwirkleTile tile = hand.get(i);
-				int imageResource = getTileImageFile(tile);
+				if (tile == null) {
+					imageResource = R.drawable.tile_blank;
+				}
+				else {
+					imageResource = tile.getTileImageFile(tile);
+				}
 				tileButtons[i].setImageResource(imageResource);
 			}
 		}
