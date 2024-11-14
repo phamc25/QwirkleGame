@@ -335,7 +335,7 @@ public class QwirkleState extends GameState {
 			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
 			row.add(toPlace);
 			while (board.notEmpty(currX, currY)) {
-				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
+//				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
 
 				// Loop through the current player hand and set inLineTile to the current tile
 				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
@@ -344,7 +344,7 @@ public class QwirkleState extends GameState {
 
 					}
 				}
-				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
+//				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
 //				inLineTile = pta.getPlacedTile();
 				row.add(inLineTile);
 

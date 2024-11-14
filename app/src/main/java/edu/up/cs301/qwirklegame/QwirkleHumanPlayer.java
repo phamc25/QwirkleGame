@@ -238,6 +238,10 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (state.getCurrTile() >= 0 && state.getCurrTile() < tileButtons.length) {
 			// Get the tile
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
+			if (tile == null) {
+				this.flash(0xFFFF0000, 100);
+				return;
+			}
 			// Set the selected tile
 			qwirkleView.setSelectedTile(tile.getTileImageFile(tile));
 		}
