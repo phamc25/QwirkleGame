@@ -15,12 +15,31 @@ public class QwirkleStateTest {
 
     }
 
+    // Ryan's unit tests
     @Test
     public void getAddPoints() {
+        QwirkleState qState = new QwirkleState();
+        int expectedPoints = 10;
+        qState.setAddPoints(10);
+        int actualPoints = qState.getAddPoints();
+        assertEquals(expectedPoints, actualPoints);
     }
 
     @Test
     public void getCurrPlayer() {
+        QwirkleState qState = new QwirkleState();
+        int expectedPlayer = 1;
+        qState.setCurrPlayer(1);
+        int actualPlayer = qState.getCurrPlayer();
+        assertEquals(expectedPlayer, actualPlayer);
+    }
+
+    @Test
+    public void getTilesLeft() {
+        QwirkleState qState = new QwirkleState();
+        int expectedAmount = 108;
+        int actualAmount = qState.getTilesLeft();
+        assertEquals(expectedAmount, actualAmount);
     }
 
     // Chloe's unit tests
