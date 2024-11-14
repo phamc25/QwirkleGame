@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import static edu.up.cs301.qwirklegame.QwirkleHumanPlayer.TILE_RESOURCES;
+
 /**
  * This contains the class for Qwirkle Tiles
  *
@@ -73,6 +75,19 @@ public class QwirkleTile {
         return color;
     }
     public boolean getSelected() { return isSelected; }
+    /**
+     * Takes a QwirkleTile and matches the image file name to the tile from
+     * the TILE_RESOURCES array
+     *
+     * @param tile
+     * @return
+     */
+    public int getTileImageFile(QwirkleTile tile) {
+        // No tile, draw blank tile
+        if (tile == null) { return R.drawable.tile_blank; }
+        // Return the right tile image with the enum values
+        return TILE_RESOURCES[tile.getShape().ordinal()][tile.getColor().ordinal()];
+    }
 
     // Setters for tile variables
     public void setSelected(boolean selected) { this.isSelected = selected; }
