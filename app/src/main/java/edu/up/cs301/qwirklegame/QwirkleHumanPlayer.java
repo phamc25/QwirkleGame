@@ -122,8 +122,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 			// Create a new end turn action and then update the display
 			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
-
-//			updateHandDisplay();
 			game.sendAction(end); // send action to the game
 		}
 		else {
@@ -131,14 +129,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Check if it's a tile button
 			for (int i = 0; i < TILE_IDS.length; i++) {
 				if (button.getId() == TILE_IDS[i]) {
-//					selectedTileIndex = i; // Store selected tile index
 					state.setCurrTile(i);	// Set the current tile index
 					notifyBoardView();	// Let the board know what tile it is!
 					return;  // Exit after handling tile
 				}
 			}
-			// Not a tile or recognized button
-			return;
 		}
 	}// onClick
 
@@ -266,38 +261,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 					imageResource = tile.getTileImageFile(tile);
 				}
 				tileButtons[i].setImageResource(imageResource);
-			}
-		}
-	}
-
-	/**
-	 * Takes a QwirkleTile and matches the image file name to the tile from
-	 * the TILE_RESOURCES array
-	 *
-	 * @param tile
-	 * @return
-	 */
-	public int getTileImageFile(QwirkleTile tile) {
-		// No tile, draw blank tile
-		if (tile == null) { return R.drawable.tile_blank; }
-		// Return the right tile image with the enum values
-		return TILE_RESOURCES[tile.getShape().ordinal()][tile.getColor().ordinal()];
-	}
-
-	/**
-	 * Prints out the board
-	 * @param board
-	 */
-	private void checkBoardState(QwirkleTile[][] board) {
-		QwirkleTile[][] boardTiles = state.getBoard().getTiles();
-		for (int row = 0; row < boardTiles.length; row++) {
-			for (int col = 0; col < boardTiles[row].length; col++) {
-				QwirkleTile tile = boardTiles[row][col];
-//				if (tile != null) {
-//					System.out.println("Tile at (" + row + ", " + col + "): " + tile);
-//				} else {
-//					System.out.println("No tile at (" + row + ", " + col + ")");
-//				}
 			}
 		}
 	}

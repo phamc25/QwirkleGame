@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import static edu.up.cs301.qwirklegame.QwirkleHumanPlayer.TILE_RESOURCES;
+
 /**
  * This contains the class for Qwirkle Tiles
  *
