@@ -1,6 +1,9 @@
 package edu.up.cs301.qwirklegame;
 
 
+import static edu.up.cs301.qwirklegame.Board.COLUMNS;
+import static edu.up.cs301.qwirklegame.Board.ROWS;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -133,8 +136,7 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean placeTile (PlaceTileAction action) {
 		// Check if move is valid first before placing tile
-		if (isValid(action.getPlacedTile(), action.getX(), action.getY())) {
-			if (!(board.notEmpty(action.getX(), action.getY()))) {
+		if (isValid(action.getPlacedTile(), action.getX(), action.getY()) && !(board.notEmpty(action.getX(), action.getY()))) {
 				ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
 				//TODO: confirm that the to-be-placed tile is in the player's hand
@@ -144,12 +146,11 @@ public class QwirkleState extends GameState {
 
 				// Set the tile to null in the hand
 				playerHand.set(currTile, null);
-			}
 		}
 		else {
 			return false;
 		}
-//		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 //		if (!(board.notEmpty(action.getX(), action.getY()))) {
 //			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
 //			playerHand.set(currTile, null);
@@ -268,16 +269,16 @@ public class QwirkleState extends GameState {
 		int[] cord = new int[2];
 		switch (dir) {
 			case "north":
-				y--;
+				x--;
 				break;
 			case "south":
-				y++;
-				break;
-			case "east":
 				x++;
 				break;
+			case "east":
+				y++;
+				break;
 			case "west":
-				x--;
+				y--;
 				break;
 		}
 		cord[0] = x;
@@ -291,105 +292,212 @@ public class QwirkleState extends GameState {
 	 * @return true if the given tile can be legally placed in the given position
 	 * TODO: finish translating nux's pseudocode
 	 */
-	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
-		String[] dirs = {"north", "south", "east", "west"};
-		QwirkleTile inLineTile = new QwirkleTile(null, null);
-
-		// can place a tile anywhere only when it's the first move
-		if (isFirstMove) {
-			isFirstMove = false;
-			this.playersScore[currPlayer] = 1;
-			return true;
-		}
-		else {
-			//for each direction
-			for (String dir : dirs) {
-				int currX = candX;
-				int currY = candY;
-				QwirkleTile.Color currColor = null;
-				QwirkleTile.Shape currShape = null;
-				currX = takeStep(currX, currY, dir)[0];
-				currY = takeStep(currX, currY, dir)[1];
-				ArrayList<QwirkleTile> nearbyTiles = new ArrayList<QwirkleTile>();
-				nearbyTiles.add(toPlace);
-
-				// Loop through the current player hand and set inLineTile to the current tile
-				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
-					if (i == currTile) {
-						inLineTile = tilesInHands[currPlayer].get(currTile);
-
-					}
-				}
-				nearbyTiles.add(inLineTile);
-
-				while (board.notEmpty(currX, currY)) {
-					QwirkleTile adjTile = board.getTile(currX, currY);
-					// matching shape, color still null
-					if (adjTile.getShape() == inLineTile.getShape()) {
-						// not used after this
-						currShape = inLineTile.getShape();
-						// list used for checking later
-						nearbyTiles.add(adjTile);
-					}
-					// matching color, shape still null
-					else if (adjTile.getColor() == inLineTile.getColor()){
-						// also not used after this
-						currColor = inLineTile.getColor();
-						// checking
-						nearbyTiles.add(adjTile);
-					}
-
-//					//case: mismatching color
-//					if ((currColor != null) && (inLineTile.getColor() != currColor)) {
-//						//Does the shape still match?
-//						if ((currShape != null) && (inLineTile.getShape() == currShape)) {
-//							currColor = null;  //ok, enforce the shape and ignore
-//							//colors from now on
+//	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
+//		String[] dirs = {"north", "south", "east", "west"};
+//		QwirkleTile inLineTile = new QwirkleTile(null, null);
+//
+//		// can place a tile anywhere only when it's the first move
+//		if (isFirstMove) {
+//			isFirstMove = false;
+//			this.pointsToAdd++;
+//			return true;
+//		}
+//		else {
+//			//for each direction
+//			for (String dir : dirs) {
+//				int currX = candX;
+//				int currY = candY;
+//				QwirkleTile.Color currColor = null;
+//				QwirkleTile.Shape currShape = null;
+//				currX = takeStep(currX, currY, dir)[0];
+//				currY = takeStep(currX, currY, dir)[1];
+//				ArrayList<QwirkleTile> nearbyTiles = new ArrayList<QwirkleTile>();
+//				nearbyTiles.add(toPlace);
+//
+//				// Loop through the current player hand and set inLineTile to the current tile
+////				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
+////					if (i == currTile) {
+////						inLineTile = tilesInHands[currPlayer].get(currTile);
+////
+////					}
+////				}
+//				inLineTile = tilesInHands[currPlayer].get(currTile);
+//				nearbyTiles.add(inLineTile);
+//
+//				while (board.notEmpty(currX, currY)) {
+//					QwirkleTile adjTile = board.getTile(currX, currY);
+//					// matching shape, color still null
+//					if (adjTile.getShape() == inLineTile.getShape()) {
+//						// not used after this
+//						currShape = inLineTile.getShape();
+//						// list used for checking later
+//						nearbyTiles.add(adjTile);
+//					}
+//					// matching color, shape still null
+//					else if (adjTile.getColor() == inLineTile.getColor()){
+//						// also not used after this
+//						currColor = inLineTile.getColor();
+//						// checking
+//						nearbyTiles.add(adjTile);
+//					}
+//
+////					//case: mismatching color
+////					if ((currColor != null) && (inLineTile.getColor() != currColor)) {
+////						//Does the shape still match?
+////						if ((currShape != null) && (inLineTile.getShape() == currShape)) {
+////							currColor = null;  //ok, enforce the shape and ignore
+////							//colors from now on
+////						}
+////						else {
+////							return false;
+////						}
+////					}
+////					///case mismatching shape
+////					else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
+////						//Does the color still match?
+////						if ((currColor != null) && (inLineTile.getColor() == currColor)) {
+////							currColor = null;  //enforce color but not shape
+////							continue;
+////						}
+////						else {
+////							return false;
+////						}
+//					currX = takeStep(currX, currY, dir)[0];
+//					currY = takeStep(currX, currY, dir)[1];
+//				}//while
+//
+//				// no neighbors at all & not the first move
+//				if (!isFirstMove && !board.notEmpty(currX, currY)) {
+//					return false;
+//				}
+//
+//				//check for duplicates in the 'nearbyTiles' arraylist & that
+//				// they're all the same shape or color
+//				for (int i = 0; i <  nearbyTiles.size(); i++) {
+//					for (int j = 1; j < nearbyTiles.size(); j++) {
+//						QwirkleTile t1 = nearbyTiles.get(i);
+//						QwirkleTile t2 = nearbyTiles.get(j);
+//						if (t1.equals(t2)) {
+//							return false;
 //						}
-//						else {
+//						if (!t1.getShape().equals(t2.getShape())) {
+//							return false;
+//						}
+//						else if (!t1.getColor().equals(t2.getColor())) {
 //							return false;
 //						}
 //					}
-//					///case mismatching shape
-//					else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
-//						//Does the color still match?
-//						if ((currColor != null) && (inLineTile.getColor() == currColor)) {
-//							currColor = null;  //enforce color but not shape
-//							continue;
-//						}
-//						else {
-//							return false;
-//						}
-					currX = takeStep(currX, currY, dir)[0];
-					currY = takeStep(currX, currY, dir)[1];
-				}//while
+//				}
+//			}
+//			// no mismatches found, no repeated tiles, connected to another tile
+//			return true;
+//		}
+//	}
+	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
+		// Check if this is the first move
+		if (isFirstMove) {
+			isFirstMove = false;
+			this.pointsToAdd++;
+			return true;
+		}
 
-				// no neighbors at all & not the first move
-				if (!isFirstMove && !board.notEmpty(currX, currY)) {
-					return false;
+		boolean hasNeighbor = false;
+		String[] directions = {"north", "south", "east", "west"};
+
+		// Added strings for vertical and horizontal line iteration
+		String[] lines = {"vertical", "horizontal"};
+
+		// First check if the position has any adjacent tiles
+		for (String dir : directions) {
+			// Next position index
+			int[] nextPos = takeStep(candX, candY, dir);
+			int adjX = nextPos[0];
+			int adjY = nextPos[1];
+
+			// Bound checking and see if there is a tile in that direction
+			if (adjX >= 0 && adjX < COLUMNS && adjY >= 0 && adjY < ROWS && board.notEmpty(adjX, adjY)) {
+				hasNeighbor = true;
+				// Stop iterating
+				break;
+			}
+		}
+
+		// If all directions have been iterated and theres nothing, return false
+		if (!hasNeighbor) {
+			return false;
+		}
+
+		// Check both vertical and horizontal lines
+		for (String line : lines) {
+			ArrayList<QwirkleTile> tilesInLine = new ArrayList<>();
+
+			// Add the tile we're trying to place
+			tilesInLine.add(toPlace);
+
+			// Get the directions to check based on the line
+			String[] lineDirections;
+			// If its a vertical line, make line directions be north and south
+			if (line.equals("vertical")) {
+				lineDirections = new String[]{"north", "south"};
+			// Else its horizontal, make it east and west
+			} else {
+				lineDirections = new String[]{"east", "west"};
+			}
+
+			// Check both directions of the line
+			for (String dir : lineDirections) {
+				int[] pos = takeStep(candX, candY, dir);
+
+				// Keep going in this direction while there are tiles
+				while (pos[0] >= 0 && pos[0] < COLUMNS && pos[1] >= 0 && pos[1] < ROWS &&
+						board.notEmpty(pos[0], pos[1])) {
+					QwirkleTile nextTile = board.getTiles()[pos[0]][pos[1]];
+					tilesInLine.add(nextTile);
+					pos = takeStep(pos[0], pos[1], dir);
 				}
+			}
 
-				//check for duplicates in the 'nearbyTiles' arraylist & that
-				// they're all the same shape or color
-				for (int i = 0; i <  nearbyTiles.size(); i++) {
-					for (int j = 1; j < nearbyTiles.size(); j++) {
-						QwirkleTile t1 = nearbyTiles.get(i);
-						QwirkleTile t2 = nearbyTiles.get(j);
-						if (t1.equals(t2)) {
+			// If we found tiles in this line
+			if (tilesInLine.size() > 1) {
+				// Check if this is a color line or shape line based on first two tiles
+				QwirkleTile firstTile = tilesInLine.get(0);
+				QwirkleTile secondTile = tilesInLine.get(1);
+
+				boolean isColorLine = firstTile.getColor() == secondTile.getColor();
+
+				// Validate all tiles in the line follow the same rule
+				for (int i = 1; i < tilesInLine.size(); i++) {
+					QwirkleTile currTile = tilesInLine.get(i);
+
+					if (isColorLine) {
+						// In a color line, all colors must match and shapes must be different
+						if (currTile.getColor() != firstTile.getColor()) {
 							return false;
 						}
-						if (!t1.getShape().equals(t2.getShape())) {
+						// Check for duplicate shapes in color line
+						for (int j = 0; j < i; j++) {
+							if (currTile.getShape() == tilesInLine.get(j).getShape()) {
+								return false;
+							}
+						}
+					} else {
+						// In a shape line, all shapes must match and colors must be different
+						if (currTile.getShape() != firstTile.getShape()) {
 							return false;
 						}
-						else if (!t1.getColor().equals(t2.getColor())) {
-							return false;
+						// Check for duplicate colors in shape line
+						for (int j = 0; j < i; j++) {
+							if (currTile.getColor() == tilesInLine.get(j).getColor()) {
+								return false;
+							}
 						}
 					}
 				}
 			}
-			// no mismatches found, no repeated tiles, connected to another tile
-			return true;
 		}
+
+		// no mismatches found, no repeated tiles, connected to another tile
+		return true;
 	}
 
 	/**

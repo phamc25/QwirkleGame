@@ -143,29 +143,64 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * @param x
 	 * @param y
 	 */
+//	@Override
+//	public void onTileTouched(int x, int y) {
+//		// if we are not yet connected to a game, ignore
+//		if (game == null) {
+//			return;
+//		}
+//		// Check if it's the current player's turn
+//		if (this.playerNum != state.getCurrPlayer()) {
+//			this.flash(0xFFFF0000, 200);
+//		}
+//		if (state != null) {
+//			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
+//			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+//			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
+//			// If place tile is valid, send the action to local game
+//			if (state.placeTile(place)) {
+//				game.sendAction(place);
+//			}
+//			// else flash the screen
+//			else {
+//				this.flash(0xFFFF0000, 200);
+//			}
+//			// Send the PlaceTileAction to the game
+//		}
+//	}
 	@Override
 	public void onTileTouched(int x, int y) {
-		// if we are not yet connected to a game, ignore
+		// If we are not yet connected to a game, ignore
 		if (game == null) {
 			return;
 		}
+
 		// Check if it's the current player's turn
 		if (this.playerNum != state.getCurrPlayer()) {
-			this.flash(0xFFFF0000, 200);
+			this.flash(0xFFFF0000, 200); // Flash red if not the current player's turn
+			return;
 		}
-		if (state != null) {
-			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
-			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
-			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
-			// If place tile is valid, send the action to local game
-			if (state.placeTile(place)) {
-				game.sendAction(place);
-			}
-			// else flash the screen
-			else {
-				this.flash(0xFFFF0000, 200);
-			}
-			// Send the PlaceTileAction to the game
+
+		// Make sure a tile is selected
+		if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
+//			this.flash(0xFFFF4325, 200); // Flash red if no tile is selected
+			return;
+		}
+
+		// Get the current player's hand and selected tile
+		ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+		QwirkleTile selectedTile = hand.get(state.getCurrTile());
+
+		// Create the PlaceTileAction
+		PlaceTileAction place = new PlaceTileAction(this, selectedTile, x, y, state.getCurrTile());
+
+		// First check if the move is valid
+		if (state.isValid(selectedTile, x, y)) {
+			// Send the action to the game
+			game.sendAction(place);
+		} else {
+			// If invalid, flash
+			this.flash(0xFFFF4325, 200); // Flash red for invalid move
 		}
 	}
 	
@@ -175,20 +210,34 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * @param info
 	 * 		the message
 	 */
+//	@Override
+//	public void receiveInfo(GameInfo info) {
+//		// ignore the message if it's not a QwirkleState message
+//		if (!(info instanceof QwirkleState)) return;
+//
+//		// update our state; then update the display
+//		this.state = (QwirkleState)info;
+//		updateDisplay();
+//		updateHandDisplay();
+//		// Check if it is the human player's turn
+//		if (this.playerNum == state.getCurrPlayer()) {
+//			// Update the board view with the current state
+//			qwirkleView.updateFromGameState(state.getBoard());
+//		}
+//	}
 	@Override
 	public void receiveInfo(GameInfo info) {
 		// ignore the message if it's not a QwirkleState message
 		if (!(info instanceof QwirkleState)) return;
-		
+
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
 		updateDisplay();
 		updateHandDisplay();
-		// Check if it is the human player's turn
-		if (this.playerNum == state.getCurrPlayer()) {
-			// Update the board view with the current state
-			qwirkleView.updateFromGameState(state.getBoard());
-		}
+
+		// Update the board view with the current state
+		// This will reflect all valid moves that have been made
+		qwirkleView.updateFromGameState(state.getBoard());
 	}
 	
 	/**
@@ -227,9 +276,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// Get the QwirkleView instance and set the touch listener
 		qwirkleView = (QwirkleView) activity.findViewById(R.id.boardView);
 		qwirkleView.setOnTileTouchListener(this); // Set this class as the OnTileTouchListener
-		
-		// if we have a game state, "simulate" that we have just received
-		// the state from the game so that the GUI values are updated
+
 		if (state != null) {
 			receiveInfo(state);
 		}

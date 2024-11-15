@@ -50,6 +50,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
 
     // Variables for drawing grid
     private float cellSize, offsetX, offsetY;
+    private int selectedTileResource = -1;
 
     // Paints
     private Paint black;
@@ -76,6 +77,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
      * @param imageResource
      */
     public void setSelectedTile(int imageResource) {
+        selectedTileResource = imageResource;
         // Load the bitmap from the resource ID
         currTileBitmap = BitmapFactory.decodeResource(getResources(), imageResource);
 
@@ -156,7 +158,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
     }
 
     // Method to add a new tile to the grid
-    public void addTile(float row, float col) {
+    public void addTile(float row, float col, Bitmap currTileBitmap) {
         // TODO: This does not draw it on the GUI but!! The action is still created so this must be a condition in the PlaceTileAction (isValid move)
 
         // Check if there is already a tile at the loc
@@ -169,7 +171,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         if (currTileBitmap != null) {
             BoardModel newTile = new BoardModel(col, row, currTileBitmap);
             placedTiles.add(newTile);
-            currTileBitmap = null; // Clear current tile after placing
+//            currTileBitmap = null; // Clear current tile after placing
             invalidate(); // Redraw the view
         }
     }
@@ -187,8 +189,6 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
 
             // Bound checking and then adds tile if its inside
             if (col >= 0 && col < COLUMNS && row >= 0 && row < ROWS) {
-                addTile(row, col);
-
                 // If the player has touched the screen, call onTileTouched
                 if (tileTouchListener != null) {
                     tileTouchListener.onTileTouched(row, col);
@@ -203,6 +203,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
      * @param board the current board state from QwirkleState.
      */
     public void updateFromGameState(Board board) {
+        clearSelectedTile();
         // Clear the current list of placed tiles
         placedTiles.clear();
 
@@ -213,12 +214,17 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
                 if (tile != null) {
                     // Convert QwirkleTile to a BoardModel and add it to placedTiles
                     Bitmap tileBitmap = BitmapFactory.decodeResource(getResources(), tile.getTileImageFile(tile));
-                    BoardModel boardTile = new BoardModel(col, row, tileBitmap);
-                    placedTiles.add(boardTile);
+                    addTile(row, col, tileBitmap);
                 }
             }
         }
         // Redraw the board view
         invalidate();
+    }
+
+    private void clearSelectedTile() {
+        selectedTileResource = -1;
+        currTileBitmap = null;
+        invalidate(); // Force a redraw
     }
 }
