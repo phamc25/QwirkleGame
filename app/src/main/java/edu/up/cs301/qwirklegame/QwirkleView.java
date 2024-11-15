@@ -198,4 +198,27 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         }
         return false;
     }
+    /**
+     * Updates the board view with the tiles from the current game state.
+     * @param board the current board state from QwirkleState.
+     */
+    public void updateFromGameState(Board board) {
+        // Clear the current list of placed tiles
+        placedTiles.clear();
+
+        // Loop through the board to retrieve and add tiles
+        for (int row = 0; row < board.getTiles().length; row++) {
+            for (int col = 0; col < board.getTiles()[row].length; col++) {
+                QwirkleTile tile = board.getTiles()[row][col];
+                if (tile != null) {
+                    // Convert QwirkleTile to a BoardModel and add it to placedTiles
+                    Bitmap tileBitmap = BitmapFactory.decodeResource(getResources(), tile.getTileImageFile(tile));
+                    BoardModel boardTile = new BoardModel(col, row, tileBitmap);
+                    placedTiles.add(boardTile);
+                }
+            }
+        }
+        // Redraw the board view
+        invalidate();
+    }
 }

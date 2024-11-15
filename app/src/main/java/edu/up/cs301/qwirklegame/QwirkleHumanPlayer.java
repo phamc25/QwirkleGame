@@ -184,6 +184,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.state = (QwirkleState)info;
 		updateDisplay();
 		updateHandDisplay();
+		// Check if it is the human player's turn
+		if (this.playerNum == state.getCurrPlayer()) {
+			// Update the board view with the current state
+			qwirkleView.updateFromGameState(state.getBoard());
+		}
 	}
 	
 	/**
