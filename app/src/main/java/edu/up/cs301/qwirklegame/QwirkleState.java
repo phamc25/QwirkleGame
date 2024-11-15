@@ -427,11 +427,11 @@ public class QwirkleState extends GameState {
 			return false;
 		}
 
-		// Check both vertical and horizontal lines
+		// Check both vertical and horizontal dirs
 		for (String line : lines) {
 			ArrayList<QwirkleTile> tilesInLine = new ArrayList<>();
 
-			// Add the tile we're trying to place
+			// Add the tile player is trying to place
 			tilesInLine.add(toPlace);
 
 			// Get the directions to check based on the line
@@ -444,7 +444,7 @@ public class QwirkleState extends GameState {
 				lineDirections = new String[]{"east", "west"};
 			}
 
-			// Check both directions of the line
+			// Check both dirs
 			for (String dir : lineDirections) {
 				int[] pos = takeStep(candX, candY, dir);
 

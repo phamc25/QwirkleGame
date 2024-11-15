@@ -184,17 +184,17 @@
                 android:gravity="right"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/discard_mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text=" Discard Mode " />
+<!--                <Button-->
+<!--                    android:id="@+id/discard_mode"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text=" Discard Mode " />-->
 
-                <Button
-                    android:id="@+id/confirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="      Confirm      " />
+<!--                <Button-->
+<!--                    android:id="@+id/confirm"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:text="      Confirm      " />-->
 
             </LinearLayout>
 
