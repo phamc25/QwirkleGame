@@ -33,6 +33,7 @@ public class QwirkleState extends GameState {
 	private int[] playersScore;    // An array to hold player's scores
 	private ArrayList<QwirkleTile> tilesInBag;        // ArrayList of tiles in bag: 72
 	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
+	private boolean isFirstMove;
 
 	// Static variables for common values
 	public static final int HAND_SIZE = 6;
@@ -51,6 +52,7 @@ public class QwirkleState extends GameState {
 		this.board = new Board();
 		this.playersScore = new int[2];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
+		this.isFirstMove = true;
 
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
@@ -103,6 +105,7 @@ public class QwirkleState extends GameState {
 		this.drawTiles = orig.drawTiles;
 		this.currTile = orig.currTile;
 		this.board = new Board(orig.board);
+		this.isFirstMove = orig.isFirstMove;
 
 		// Deep copy for int array
 		this.playersScore = Arrays.copyOf(orig.playersScore, orig.playersScore.length);
@@ -218,38 +221,6 @@ public class QwirkleState extends GameState {
 		this.currPlayer = (currPlayer + 1) % numPlayers;
 	}
 
-	// Getter methods
-	public int[] getPlayersScore() {
-		return playersScore;
-	}
-	public int getAddPoints() {
-		return pointsToAdd;
-	}
-	public int getCurrPlayer() {
-		return currPlayer;
-	}
-	public int getTilesLeft() { return tilesInBag.size(); }
-	public Board getBoard() {
-		return board;
-	}
-	public int getCurrTile() { return currTile; }
-	public ArrayList<QwirkleTile> getPlayerHand(int playerIndex) {
-		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
-			return tilesInHands[playerIndex];
-		}
-		return null; // Return null if invalid index
-	}
-
-	// Setter methods
-	public void setAddPoints(int points) { this.pointsToAdd = points; }
-	public void setCurrPlayer(int player) { this.currPlayer = player; }
-	public void setPlayersScore(int player, int score) {
-		this.playersScore[player] = score;
-	}
-	public void setCurrTile(int curr) {
-		this.currTile = curr;
-	}
-
 	/**
 	 * Draws tiles to set player's hand
 	 * @param playerIndex
@@ -324,18 +295,23 @@ public class QwirkleState extends GameState {
 		String[] dirs = {"north", "south", "east", "west"};
 		QwirkleTile inLineTile = new QwirkleTile(null, null);
 
-		//for each direction
-		for (String dir : dirs) {
-			int currX = candX;
-			int currY = candY;
-			QwirkleTile.Color currColor = null;
-			QwirkleTile.Shape currShape = null;
-			currX = takeStep(currX, currY, dir)[0];
-			currY = takeStep(currX, currY, dir)[1];
-			ArrayList<QwirkleTile> row = new ArrayList<QwirkleTile>();
-			row.add(toPlace);
-			while (board.notEmpty(currX, currY)) {
-				QwirkleHumanPlayer player = new QwirkleHumanPlayer("temp");
+		// can place a tile anywhere only when it's the first move
+		if (isFirstMove) {
+			isFirstMove = false;
+			this.playersScore[currPlayer] = 1;
+			return true;
+		}
+		else {
+			//for each direction
+			for (String dir : dirs) {
+				int currX = candX;
+				int currY = candY;
+				QwirkleTile.Color currColor = null;
+				QwirkleTile.Shape currShape = null;
+				currX = takeStep(currX, currY, dir)[0];
+				currY = takeStep(currX, currY, dir)[1];
+				ArrayList<QwirkleTile> nearbyTiles = new ArrayList<QwirkleTile>();
+				nearbyTiles.add(toPlace);
 
 				// Loop through the current player hand and set inLineTile to the current tile
 				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
@@ -344,60 +320,76 @@ public class QwirkleState extends GameState {
 
 					}
 				}
-				PlaceTileAction pta = new PlaceTileAction(player, inLineTile, currX, currY, currTile);
-//				inLineTile = pta.getPlacedTile();
-				row.add(inLineTile);
+				nearbyTiles.add(inLineTile);
 
-				//if both are None then this is the first neighbor,
-				//set curr shape and color
-				if ((currShape == null) && (currColor == null)) {
-					currShape = inLineTile.getShape();
-					currColor = inLineTile.getColor();
+				while (board.notEmpty(currX, currY)) {
+					QwirkleTile adjTile = board.getTile(currX, currY);
+					// matching shape, color still null
+					if (adjTile.getShape() == inLineTile.getShape()) {
+						// not used after this
+						currShape = inLineTile.getShape();
+						// list used for checking later
+						nearbyTiles.add(adjTile);
+					}
+					// matching color, shape still null
+					else if (adjTile.getColor() == inLineTile.getColor()){
+						// also not used after this
+						currColor = inLineTile.getColor();
+						// checking
+						nearbyTiles.add(adjTile);
+					}
+
+//					//case: mismatching color
+//					if ((currColor != null) && (inLineTile.getColor() != currColor)) {
+//						//Does the shape still match?
+//						if ((currShape != null) && (inLineTile.getShape() == currShape)) {
+//							currColor = null;  //ok, enforce the shape and ignore
+//							//colors from now on
+//						}
+//						else {
+//							return false;
+//						}
+//					}
+//					///case mismatching shape
+//					else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
+//						//Does the color still match?
+//						if ((currColor != null) && (inLineTile.getColor() == currColor)) {
+//							currColor = null;  //enforce color but not shape
+//							continue;
+//						}
+//						else {
+//							return false;
+//						}
+					currX = takeStep(currX, currY, dir)[0];
+					currY = takeStep(currX, currY, dir)[1];
+				}//while
+
+				// no neighbors at all & not the first move
+				if (!isFirstMove && !board.notEmpty(currX, currY)) {
+					return false;
 				}
-				//case: mismatching color
-				else if ((currColor != null) && (inLineTile.getColor() != currColor)) {
-					//Does the shape still match?
-					if ((currShape != null) && (inLineTile.getShape() == currShape)) {
-						currColor = null;  //ok, enforce the shape and ignore
-						//colors from now on
+
+				//check for duplicates in the 'nearbyTiles' arraylist & that
+				// they're all the same shape or color
+				for (int i = 0; i <  nearbyTiles.size(); i++) {
+					for (int j = 1; j < nearbyTiles.size(); j++) {
+						QwirkleTile t1 = nearbyTiles.get(i);
+						QwirkleTile t2 = nearbyTiles.get(j);
+						if (t1.equals(t2)) {
+							return false;
+						}
+						if (!t1.getShape().equals(t2.getShape())) {
+							return false;
+						}
+						else if (!t1.getColor().equals(t2.getColor())) {
+							return false;
+						}
 					}
-					else {
-						return false;
-					}
-				}
-
-				//case mismatching shape
-				else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
-					//Does the color still match?
-					if ((currColor != null) && (inLineTile.getColor() == currColor)) {
-						currColor = null;  //enforce color but not shape
-						continue;
-					}
-					else {
-						return false;
-					}
-				}
-
-				currX = takeStep(currX, currY, dir)[0];
-				currY = takeStep(currX, currY, dir)[1];
-
-
-			}//while
-
-			//check for duplicates in the 'row' arraylist
-			for (int i = 0; i < row.size(); i++) {
-				for (int j = 1; j < row.size(); j++) {
-					QwirkleTile t1 = row.get(i);
-					QwirkleTile t2 = row.get(j);
-					if (t1.equals(t2)) {
-						return false;
-					}
-
 				}
 			}
+			// no mismatches found, no repeated tiles, connected to another tile
+			return true;
 		}
-		//no mismatches found
-		return true;
 	}
 
 	/**
@@ -484,7 +476,40 @@ public class QwirkleState extends GameState {
 			return state;
 		}
 
+	// Getter methods
+	public int[] getPlayersScore() {
+		return playersScore;
 	}
+	public int getAddPoints() {
+		return pointsToAdd;
+	}
+	public int getCurrPlayer() {
+		return currPlayer;
+	}
+	public int getTilesLeft() { return tilesInBag.size(); }
+	public Board getBoard() {
+		return board;
+	}
+	public int getCurrTile() { return currTile; }
+	public ArrayList<QwirkleTile> getPlayerHand(int playerIndex) {
+		if (playerIndex >= 0 && playerIndex < tilesInHands.length) {
+			return tilesInHands[playerIndex];
+		}
+		return null; // Return null if invalid index
+	}
+
+	// Setter methods
+	public void setAddPoints(int points) { this.pointsToAdd = points; }
+	public void setCurrPlayer(int player) { this.currPlayer = player; }
+	public void setPlayersScore(int player, int score) {
+
+		this.playersScore[player] = score;
+	}
+	public void setCurrTile(int curr) {
+		this.currTile = curr;
+	}
+
+}
 
 /**
  * External Citation
