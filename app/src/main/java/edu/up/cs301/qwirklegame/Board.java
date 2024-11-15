@@ -83,6 +83,10 @@ public class Board {
      * @return
      */
     public boolean notEmpty(int x, int y) {
+        if ((x < 0) || (x >= ROWS) || (y < 0) || (y >= COLUMNS)) {
+            return true;  //better to throw an exception here?
+        }
+
         if (boardArray[x][y] != null) {
             return true;
         }

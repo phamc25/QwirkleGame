@@ -4,6 +4,8 @@ package edu.up.cs301.qwirklegame;
 import static edu.up.cs301.qwirklegame.Board.COLUMNS;
 import static edu.up.cs301.qwirklegame.Board.ROWS;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +15,7 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 /**
  * This contains the state for the Qwirkle game.
- * 
+ *
  * @author Chloe Pham
  * @author Talia Martinez
  * @author Tyler Crosbie
@@ -137,15 +139,15 @@ public class QwirkleState extends GameState {
 	protected boolean placeTile (PlaceTileAction action) {
 		// Check if move is valid first before placing tile
 		if (isValid(action.getPlacedTile(), action.getX(), action.getY()) && !(board.notEmpty(action.getX(), action.getY()))) {
-				ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
+			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
-				//TODO: confirm that the to-be-placed tile is in the player's hand
+			//TODO: confirm that the to-be-placed tile is in the player's hand
 
-				//place the tile now
-				board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
+			//place the tile now
+			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
 
-				// Set the tile to null in the hand
-				playerHand.set(currTile, null);
+			// Set the tile to null in the hand
+			playerHand.set(currTile, null);
 		}
 		else {
 			return false;
@@ -180,7 +182,7 @@ public class QwirkleState extends GameState {
 		}
 
 		// Removes the selected tiles from the current player's hand and into the bag
-        tilesInBag.addAll(selectedTiles);
+		tilesInBag.addAll(selectedTiles);
 		hand.removeAll(selectedTiles);
 
 		return true;
@@ -415,7 +417,7 @@ public class QwirkleState extends GameState {
 			int adjY = nextPos[1];
 
 			// Bound checking and see if there is a tile in that direction
-			if (adjX >= 0 && adjX < COLUMNS && adjY >= 0 && adjY < ROWS && board.notEmpty(adjX, adjY)) {
+			if (adjX >= 0 && adjX < ROWS && adjY >= 0 && adjY < COLUMNS && board.notEmpty(adjX, adjY)) {
 				hasNeighbor = true;
 				// Stop iterating
 				break;
@@ -439,7 +441,7 @@ public class QwirkleState extends GameState {
 			// If its a vertical line, make line directions be north and south
 			if (line.equals("vertical")) {
 				lineDirections = new String[]{"north", "south"};
-			// Else its horizontal, make it east and west
+				// Else its horizontal, make it east and west
 			} else {
 				lineDirections = new String[]{"east", "west"};
 			}
@@ -449,7 +451,7 @@ public class QwirkleState extends GameState {
 				int[] pos = takeStep(candX, candY, dir);
 
 				// Keep going in this direction while there are tiles
-				while (pos[0] >= 0 && pos[0] < COLUMNS && pos[1] >= 0 && pos[1] < ROWS &&
+				while (pos[0] >= 0 && pos[0] < ROWS && pos[1] >= 0 && pos[1] < COLUMNS &&
 						board.notEmpty(pos[0], pos[1])) {
 					QwirkleTile nextTile = board.getTiles()[pos[0]][pos[1]];
 					tilesInLine.add(nextTile);
@@ -462,6 +464,11 @@ public class QwirkleState extends GameState {
 				// Check if this is a color line or shape line based on first two tiles
 				QwirkleTile firstTile = tilesInLine.get(0);
 				QwirkleTile secondTile = tilesInLine.get(1);
+
+				//TODO: DEBUG
+				if ((firstTile == null) || (secondTile == null)) {
+					Log.d("oops!", "null tile");
+				}
 
 				boolean isColorLine = firstTile.getColor() == secondTile.getColor();
 
@@ -530,59 +537,59 @@ public class QwirkleState extends GameState {
 				xChan = 0;
 			}
 		}
-			return true;
+		return true;
 
 	}
 
 
-		/**
-		 * toString method that describes the state of the game as a string
-		 */
-		@Override
-		public String toString (GameState currState){
-			String state = "Current Game State: \n";
-			// TODO: Commented out for Proj #E, manual hard-code for faux game
+	/**
+	 * toString method that describes the state of the game as a string
+	 */
+	@Override
+	public String toString (GameState currState){
+		String state = "Current Game State: \n";
+		// TODO: Commented out for Proj #E, manual hard-code for faux game
 //		state += "Points to add: " + this.pointsToAdd + "\n";
-			state += "Current player: " + this.currPlayer + "\n";
+		state += "Current player: " + this.currPlayer + "\n";
 //		state += "Tiles to be drawn: " + this.drawTiles + "\n";
 
-			// Loops through the board array and prints the number of QwirkleTiles in the board
-			int tiles = 0;
-			for (int i = 0; i < board.getTiles().length; i++) {
-				for (int j = 0; j < board.getTiles()[i].length; j++) {
-					if (board.getTiles()[i][j] != null)
-						tiles++;
-				}
+		// Loops through the board array and prints the number of QwirkleTiles in the board
+		int tiles = 0;
+		for (int i = 0; i < board.getTiles().length; i++) {
+			for (int j = 0; j < board.getTiles()[i].length; j++) {
+				if (board.getTiles()[i][j] != null)
+					tiles++;
 			}
-			state += "Number of tiles on board: " + tiles + "\n";
-
-			// Loops through players' scores and print them
-			int topScore = 0;
-			int winner = 0;
-			for (int i = 0; i < playersScore.length; i++) {
-				if (playersScore[i] > topScore) {
-					topScore = playersScore[i];
-					winner = i;
-				}
-				state += "Player " + i + " score: " + playersScore[i] + "\n";
-			}
-
-			state += "Number of tiles in bag: " + this.tilesInBag.size() + "\n";
-
-			// Loop through the array of arraylists and print out the tiles in each
-			// player's hand
-			for (int i = 0; i < tilesInHands.length; i++) {
-				state += "Player " + i + " tiles: ";    // Prints player
-				for (int j = 0; j < tilesInHands[i].size(); j++) {
-					QwirkleTile tile = tilesInHands[i].get(j);
-					state += tile.getColor() + " " + tile.getShape() + ", ";    // Prints out the hand
-				}
-				state += "\n";
-			}
-
-			state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
-			return state;
 		}
+		state += "Number of tiles on board: " + tiles + "\n";
+
+		// Loops through players' scores and print them
+		int topScore = 0;
+		int winner = 0;
+		for (int i = 0; i < playersScore.length; i++) {
+			if (playersScore[i] > topScore) {
+				topScore = playersScore[i];
+				winner = i;
+			}
+			state += "Player " + i + " score: " + playersScore[i] + "\n";
+		}
+
+		state += "Number of tiles in bag: " + this.tilesInBag.size() + "\n";
+
+		// Loop through the array of arraylists and print out the tiles in each
+		// player's hand
+		for (int i = 0; i < tilesInHands.length; i++) {
+			state += "Player " + i + " tiles: ";    // Prints player
+			for (int j = 0; j < tilesInHands[i].size(); j++) {
+				QwirkleTile tile = tilesInHands[i].get(j);
+				state += tile.getColor() + " " + tile.getShape() + ", ";    // Prints out the hand
+			}
+			state += "\n";
+		}
+
+		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
+		return state;
+	}
 
 	// Getter methods
 	public int[] getPlayersScore() {
