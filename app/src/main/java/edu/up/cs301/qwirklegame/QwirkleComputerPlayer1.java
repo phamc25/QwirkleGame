@@ -104,8 +104,10 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
 								}
 								PlaceTileAction pta = new PlaceTileAction(this, curr, possX, possY,
 										gameState.getCurrTile());
-								gameState.placeTile(pta);
-								return;
+								if (gameState.placeTile(pta)) {
+									game.sendAction(pta);
+									return;
+								}
 							}
 						}
 					}
