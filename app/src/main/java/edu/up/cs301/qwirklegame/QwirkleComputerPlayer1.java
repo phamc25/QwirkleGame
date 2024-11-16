@@ -79,30 +79,65 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
 			return;
 		}
 
-		//Try N times to find a valid place to play
-		for(int i = 0; i < 1000; ++i) {
+		int possX;
+		int possY;
 
-			// Select a random tile from the computer player's hand
-			QwirkleTile toPlace = null;
-			while(toPlace == null) {
-				int tileIndex = rand.nextInt(myHand.size());
-				toPlace = myHand.get(tileIndex);
-			}// Example: picking the first tile
-
-			// Randomly pick a valid position on the board
-			int randX = rand.nextInt(ROWS);
-			int randY = rand.nextInt(COLUMNS);
-			if (gameState.isValid(toPlace, randX, randY)) {
-				// Create a PlaceTileAction and attempt to place the tile on the board
-				PlaceTileAction place = new PlaceTileAction(this, toPlace, randX, randY, 0);
-				if (gameState.placeTile(place)) {
-					// Send the action to the game and update the board
-					game.sendAction(place);
-					return;
+		for (int i = 0; i < gameState.getBoard().ROWS; i++) {
+			for (int j = 0; j < gameState.getBoard().COLUMNS; j++) {
+				// if we come across a space that as a tile, save the index
+				if (gameState.getBoard().notEmpty(i, j)) {
+					possX = i;
+					possY = j;
+					for (int k = 0; k < numTiles; k++) {
+						QwirkleTile curr = myHand.get(k);
+						String[] dirs = {"north", "south", "east", "west"};
+						for (String dir : dirs) {
+							// seeing if the adjacent spaces to a tile on the board is a valid move
+							possX = gameState.takeStep(possX, possY, dir)[0];
+							possY = gameState.takeStep(possX, possY, dir)[1];
+							if (gameState.isValid(curr, possX, possY)) {
+								// let the human player think we're thinking
+								try {
+										Thread.sleep(200);
+								} catch (InterruptedException e) {
+										throw new RuntimeException(e);
+								}
+								PlaceTileAction pta = new PlaceTileAction(this, curr, possX, possY,
+										gameState.getCurrTile());
+								gameState.placeTile(pta);
+								return;
+							}
+						}
+					}
 				}
 			}
 		}
-		// Give up: End the turn
+
+
+		//Try N times to find a valid place to play
+//		for(int i = 0; i < 1000; ++i) {
+//
+//			// Select a random tile from the computer player's hand
+//			QwirkleTile toPlace = null;
+//			while(toPlace == null) {
+//				int tileIndex = rand.nextInt(myHand.size());
+//				toPlace = myHand.get(tileIndex);
+//			}// Example: picking the first tile
+//
+//			// Randomly pick a valid position on the board
+//			int randX = rand.nextInt(ROWS);
+//			int randY = rand.nextInt(COLUMNS);
+//			if (gameState.isValid(toPlace, randX, randY)) {
+//				// Create a PlaceTileAction and attempt to place the tile on the board
+//				PlaceTileAction place = new PlaceTileAction(this, toPlace, randX, randY, 0);
+//				if (gameState.placeTile(place)) {
+//					// Send the action to the game and update the board
+//					game.sendAction(place);
+//					return;
+//				}
+//			}
+//		}
+		// otherwise give up: End the turn
 		game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
 
 
