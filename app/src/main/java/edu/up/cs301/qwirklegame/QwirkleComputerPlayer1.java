@@ -143,20 +143,19 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer implements Tickab
 //	}
 		// Get the current player's hand
 //		ArrayList<QwirkleTile> myHand = gameState.getPlayerHand(gameState.getCurrPlayer());
-
 		// Iterate through the player's hand
-		for (int handIndex = 0; handIndex < myHand.size(); handIndex++) {
-			QwirkleTile toPlace = myHand.get(handIndex);
-			if (toPlace == null) continue;  // Skip null tiles in the hand
-
+		for (int i = 0; i < myHand.size(); i++) {
+			QwirkleTile toPlace = myHand.get(i);
+			if (toPlace == null) {
+				continue;  // Skip null tiles in the hand
+			}
 			// Iterate through the entire board to find a valid
 			for (int x = 0; x < gameState.getBoard().ROWS; x++) {
 				for (int y = 0; y < gameState.getBoard().COLUMNS; y++) {
 					// Check if the placement is valid and the spot is empty
 					if (gameState.isValid(toPlace, x, y) && !gameState.getBoard().notEmpty(x, y)) {
 						// Create a PlaceTileAction
-						PlaceTileAction place = new PlaceTileAction(this, toPlace, x, y, handIndex);
-
+						PlaceTileAction place = new PlaceTileAction(this, toPlace, x, y, i);
 						// Try to place
 						if (gameState.placeTile(place)) {
 							// Send the action to the game

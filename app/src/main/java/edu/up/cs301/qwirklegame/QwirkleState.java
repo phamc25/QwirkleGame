@@ -141,14 +141,11 @@ public class QwirkleState extends GameState {
 		if (isValid(action.getPlacedTile(), action.getX(), action.getY()) && !(board.notEmpty(action.getX(), action.getY()))) {
 			ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
-			//TODO: confirm that the to-be-placed tile is in the player's hand
-
 			//place the tile now
 			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
 
 			// Set the tile to null in the hand
 			playerHand.set(currTile, null);
-//			action.setSelectedTileIndex(-1);
 		}
 		else {
 			return false;
@@ -205,7 +202,6 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean endTurn (EndTurnAction action) {
 		// Update the player's score at the end of the turn
-		setPlayersScore(currPlayer, playersScore[currPlayer] + pointsToAdd);
 		return true;
 	}
 

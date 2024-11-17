@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -55,6 +56,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
     // Paints
     private Paint black;
     private Paint gridPaint;
+    private Paint lightYellow;
 
     public QwirkleView(Context context, AttributeSet attrs) {
 
@@ -69,11 +71,15 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         black = new Paint();
         black.setColor(Color.BLACK);
 
+        lightYellow = new Paint();
+        lightYellow.setColor(0xFFFFFFAD);
+        lightYellow.setStyle(Paint.Style.FILL);
+
         setBackgroundColor(0xFFDDDDDD);
     }
 
     /**
-     * // This method allows QwirkleHumanPlayer to set the selected tile
+     * This method allows QwirkleHumanPlayer to set the selected tile
      * @param imageResource
      */
     public void setSelectedTile(int imageResource) {
@@ -127,16 +133,11 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         // Drawing the grid board
         drawBoard(canvas);
 
-        // Drawing the text for the player scores
-        black.setTextSize(35);
-        canvas.drawText("Player 2", 30, 55, black);
-        canvas.drawText("Score: 0", 30, 90, black);
-
-//        canvas.drawText("Player 3", 30, 190, black);
-//        canvas.drawText("Score: 0", 30, 225, black);
-//
-//        canvas.drawText("Player 4", 30, 325, black);
-//        canvas.drawText("Score: 0", 30, 360, black);
+        // Draw center placement
+        float left = offsetX + 1 + (COLUMNS / 2) * cellSize;
+        float top = offsetY + 1 + (ROWS / 2) * cellSize;
+        RectF centerCell = new RectF(left, top, left + cellSize - 2, top + cellSize - 2);
+        canvas.drawRect(centerCell, lightYellow);
 
         // Draw all previously placed tiles
         for (BoardModel tile : placedTiles) {
@@ -159,8 +160,6 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
 
     // Method to add a new tile to the grid
     public void addTile(float row, float col, Bitmap currTileBitmap) {
-        // TODO: This does not draw it on the GUI but!! The action is still created so this must be a condition in the PlaceTileAction (isValid move)
-
         // Check if there is already a tile at the loc
         for (BoardModel tile : placedTiles) {
             if (tile.xLoc == col && tile.yLoc == row) {

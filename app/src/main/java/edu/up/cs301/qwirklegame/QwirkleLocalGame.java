@@ -72,8 +72,14 @@ public class QwirkleLocalGame extends LocalGame {
 			}
 			gameState.drawTiles(gameState.getCurrPlayer(), nullTiles);
 
-			sendUpdatedStateTo(action.getPlayer());
+			// Score of the current player
+			int playerScore = gameState.getPlayersScore()[gameState.getCurrPlayer()];
+			// Set the score
+			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
+			// Change the player
 			gameState.nextPlayer();
+
+			sendUpdatedStateTo(action.getPlayer());
 			return this.gameState.endTurn(ea);
 
 		}

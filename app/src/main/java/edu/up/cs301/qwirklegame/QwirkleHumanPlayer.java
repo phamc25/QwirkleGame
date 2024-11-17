@@ -40,7 +40,10 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	private TextView tilesLeft;
 	private TextView playerTurn;
 	private TextView playerScore;
-	
+	private TextView player2Score;
+	private TextView player3Score;
+	private TextView player4Score;
+
 	// the most recent game state, as given to us by the QwirkleLocalGame
 	private QwirkleState state;
 	
@@ -99,6 +102,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		tilesLeft.setText(String.valueOf(state.getTilesLeft()));
 		playerTurn.setText(String.valueOf(state.getCurrPlayer()));
 		playerScore.setText(String.valueOf(state.getPlayersScore()[state.getCurrPlayer()]));
+		player2Score.setText("Player 2: " + state.getPlayersScore()[(state.getCurrPlayer() + 1) % state.getPlayersScore().length]);
 	}
 
 	/**
@@ -143,31 +147,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * @param x
 	 * @param y
 	 */
-//	@Override
-//	public void onTileTouched(int x, int y) {
-//		// if we are not yet connected to a game, ignore
-//		if (game == null) {
-//			return;
-//		}
-//		// Check if it's the current player's turn
-//		if (this.playerNum != state.getCurrPlayer()) {
-//			this.flash(0xFFFF0000, 200);
-//		}
-//		if (state != null) {
-//			// Create the PlaceTileAction with the current tile index (currTile) and coordinates (x, y)
-//			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
-//			PlaceTileAction place = new PlaceTileAction(this, hand.get(state.getCurrTile()), x, y, state.getCurrTile());
-//			// If place tile is valid, send the action to local game
-//			if (state.placeTile(place)) {
-//				game.sendAction(place);
-//			}
-//			// else flash the screen
-//			else {
-//				this.flash(0xFFFF0000, 200);
-//			}
-//			// Send the PlaceTileAction to the game
-//		}
-//	}
 	@Override
 	public void onTileTouched(int x, int y) {
 		// If we are not yet connected to a game, ignore
@@ -210,21 +189,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * @param info
 	 * 		the message
 	 */
-//	@Override
-//	public void receiveInfo(GameInfo info) {
-//		// ignore the message if it's not a QwirkleState message
-//		if (!(info instanceof QwirkleState)) return;
-//
-//		// update our state; then update the display
-//		this.state = (QwirkleState)info;
-//		updateDisplay();
-//		updateHandDisplay();
-//		// Check if it is the human player's turn
-//		if (this.playerNum == state.getCurrPlayer()) {
-//			// Update the board view with the current state
-//			qwirkleView.updateFromGameState(state.getBoard());
-//		}
-//	}
 	@Override
 	public void receiveInfo(GameInfo info) {
 		// ignore the message if it's not a QwirkleState message
@@ -272,6 +236,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.tilesLeft = (TextView) activity.findViewById(R.id.tiles_left);
 		this.playerTurn = (TextView) activity.findViewById(R.id.player_turn);
 		this.playerScore = (TextView) activity.findViewById(R.id.player_score);
+		this.player2Score = (TextView) activity.findViewById(R.id.player2);
 
 		// Get the QwirkleView instance and set the touch listener
 		qwirkleView = (QwirkleView) activity.findViewById(R.id.boardView);
