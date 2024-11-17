@@ -232,12 +232,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
-		updateDisplay();
-		updateHandDisplay();
-
 		// Update the board view with the current state
 		// This will reflect all valid moves that have been made
+		updateDisplay();
+		updateHandDisplay();
 		qwirkleView.updateFromGameState(state.getBoard());
+
 	}
 	
 	/**

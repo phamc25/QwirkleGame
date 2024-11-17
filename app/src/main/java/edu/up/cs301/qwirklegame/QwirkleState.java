@@ -148,23 +148,12 @@ public class QwirkleState extends GameState {
 
 			// Set the tile to null in the hand
 			playerHand.set(currTile, null);
+//			action.setSelectedTileIndex(-1);
 		}
 		else {
 			return false;
 		}
 		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
-//		if (!(board.notEmpty(action.getX(), action.getY()))) {
-//			board.addToBoard(action.getPlacedTile(), action.getX(), action.getY());
-//			playerHand.set(currTile, null);
-//		}
-//		else {
-//			return false;
-//		}
-		//TODO: confirm that the to-be-placed tile is in the player's hand
-
-		//place the tile now
-
-
 		// Set the tile to null in the hand
 		return true;
 	}
@@ -612,6 +601,7 @@ public class QwirkleState extends GameState {
 		}
 		return null; // Return null if invalid index
 	}
+	public boolean isFirstMove() { return isFirstMove; }
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
