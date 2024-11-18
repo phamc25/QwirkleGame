@@ -85,7 +85,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 								game.sendAction(place);
 								// Simulate computer is "thinking"
 								try {
-									Thread.sleep(500);  // TODO:  make this longer?
+									Thread.sleep(500);
 								} catch (InterruptedException e) {
 									throw new RuntimeException(e);
 								}
