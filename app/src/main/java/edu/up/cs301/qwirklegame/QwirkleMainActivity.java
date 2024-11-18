@@ -48,7 +48,7 @@ public class QwirkleMainActivity extends GameMainActivity {
 			}});
 
 		// a computer player type (player type 2)
-		playerTypes.add(new GamePlayerType("Computer Player (GUI)") {
+		playerTypes.add(new GamePlayerType("Computer Player: Smart") {
 			public GamePlayer createPlayer(String name) {
 				return new QwirkleComputerPlayer2(name);
 			}});

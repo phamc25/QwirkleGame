@@ -13,7 +13,6 @@ import edu.up.cs301.GameFramework.players.GamePlayer;
  * @author Ryan Murray
  *
  */
-
 public class EndTurnAction extends GameAction {
 
     // to satisfy Serializable interface

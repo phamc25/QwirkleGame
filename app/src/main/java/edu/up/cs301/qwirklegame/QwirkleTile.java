@@ -67,14 +67,6 @@ public class QwirkleTile {
         return false;
     }
 
-    // Getters for tile attributes
-    public Shape getShape() {
-        return shape;
-    }
-    public Color getColor() {
-        return color;
-    }
-    public boolean getSelected() { return isSelected; }
     /**
      * Takes a QwirkleTile and matches the image file name to the tile from
      * the TILE_RESOURCES array
@@ -89,10 +81,15 @@ public class QwirkleTile {
         return TILE_RESOURCES[tile.getShape().ordinal()][tile.getColor().ordinal()];
     }
 
+    // Getters for tile attributes
+    public Shape getShape() {
+        return shape;
+    }
+    public Color getColor() {
+        return color;
+    }
+    public boolean getSelected() { return isSelected; }
+
     // Setters for tile variables
     public void setSelected(boolean selected) { this.isSelected = selected; }
-
-    public boolean isValidTile(QwirkleTile tile) {
-        return true;
-    }
 }

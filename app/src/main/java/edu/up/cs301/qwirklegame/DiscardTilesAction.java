@@ -15,8 +15,6 @@ import java.util.ArrayList;
  */
 
 public class DiscardTilesAction extends GameAction {
-
-
     // to satisfy Serializable interface
     private static final long serialVersionUID = 8927349827349823L;
 

@@ -50,7 +50,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// the android activity that we are running
 	private GameMainActivity myActivity;
 
-
 	// Tile IDs for the tile ImageButtons
 	private static final int[] TILE_IDS = {
 			R.id.tile1, R.id.tile2, R.id.tile3,
@@ -209,7 +208,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * 		the activity under which we are running
 	 */
 	public void setAsGui(GameMainActivity activity) {
-		
 		// remember the activity
 		this.myActivity = activity;
 		

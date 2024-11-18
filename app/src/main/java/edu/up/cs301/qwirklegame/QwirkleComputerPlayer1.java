@@ -104,3 +104,12 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 		game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
 	}
 }
+
+/**
+ * External Citation
+ *
+ * Problem: Implementing computer player
+ * Source: Professor Nuxoll office hours
+ *
+ * Date: Week of November 11, 2024
+ */

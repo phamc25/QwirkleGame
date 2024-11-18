@@ -542,6 +542,7 @@ public class QwirkleState extends GameState {
  *
  * Date: October 11, 2024
  */
+
 /**
  * External Citation
  *
@@ -550,6 +551,25 @@ public class QwirkleState extends GameState {
  *
  * Date: November 4, 2024
  */
+
+/**
+ * External Citation
+ *
+ * Problem: How can we send the action to the local gamestate instead?
+ * Source: Professor Nuxoll office hours
+ *
+ * Date: November 8, 2024
+ */
+
+/**
+ * External Citation
+ *
+ * Problem: isValid() method implementation
+ * Source: Professor Nuxoll office hours
+ *
+ * Date: Week of November 11, 2024
+ */
+
 
 
 

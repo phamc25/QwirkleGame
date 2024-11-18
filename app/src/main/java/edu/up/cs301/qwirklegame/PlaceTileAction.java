@@ -27,7 +27,14 @@ public class PlaceTileAction extends GameAction {
     private int x;
     private int y;
 
-    // setting vars to parameters passed
+    /**
+     * Constructor that sets the variables to the parameters
+     * @param player
+     * @param tile
+     * @param x
+     * @param y
+     * @param selectedTileIndex
+     */
     public PlaceTileAction(GamePlayer player, QwirkleTile tile, int x, int y, int selectedTileIndex) {
         super(player);
         this.placedTile = tile;
@@ -36,20 +43,15 @@ public class PlaceTileAction extends GameAction {
         this.selectedTileIndex = selectedTileIndex;
     }
 
-    // get the placed tile
-    public QwirkleTile getPlacedTile() {
-        return placedTile;
-    }
-
-    // getter methods
+    // Getter methods
     public int getX() {
         return x;
     }
     public int getY() {
         return y;
     }
+    public QwirkleTile getPlacedTile() {
+        return placedTile;
+    }
     public int getSelectedTileIndex() { return selectedTileIndex; }
-    public QwirkleTile.Color getColor() {return placedTile.getColor();}
-    public QwirkleTile.Shape getShape() {return placedTile.getShape();}
-
 }
