@@ -52,17 +52,6 @@ public class Board {
     }
 
     /**
-     *  Getters for variables
-     */
-    public QwirkleTile[][] getTiles() {
-        return this.boardArray;
-    }
-
-    public QwirkleTile getTile(int xVal, int yVal) {
-        return this.boardArray[xVal][yVal];
-    }
-
-    /**
      * Adds a tile to empty spot on board
      *
      * @param tile tile to be added
@@ -92,4 +81,16 @@ public class Board {
         }
         return false;
     }
+
+    /**
+     *  Getters for variables
+     */
+    public QwirkleTile[][] getTiles() {
+        return this.boardArray;
+    }
+    public QwirkleTile getTile(int xVal, int yVal) {
+        return this.boardArray[xVal][yVal];
+    }
 }
+
+

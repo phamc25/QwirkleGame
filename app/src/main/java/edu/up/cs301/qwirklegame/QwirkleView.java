@@ -54,7 +54,6 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
     private int selectedTileResource = -1;
 
     // Paints
-    private Paint black;
     private Paint gridPaint;
     private Paint lightYellow;
 
@@ -64,17 +63,17 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         setWillNotDraw(false);
         setOnTouchListener(this);
 
+        // Set grid paint
         gridPaint = new Paint();
         gridPaint.setColor(Color.BLACK);
         gridPaint.setStrokeWidth(2);
 
-        black = new Paint();
-        black.setColor(Color.BLACK);
-
+        // Paint for center grid cell
         lightYellow = new Paint();
         lightYellow.setColor(0xFFFFFFAD);
         lightYellow.setStyle(Paint.Style.FILL);
 
+        // Set background color to light grey
         setBackgroundColor(0xFFDDDDDD);
     }
 
@@ -170,7 +169,6 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         if (currTileBitmap != null) {
             BoardModel newTile = new BoardModel(col, row, currTileBitmap);
             placedTiles.add(newTile);
-//            currTileBitmap = null; // Clear current tile after placing
             invalidate(); // Redraw the view
         }
     }
@@ -197,6 +195,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         }
         return false;
     }
+
     /**
      * Updates the board view with the tiles from the current game state.
      * @param board the current board state from QwirkleState.
@@ -221,6 +220,9 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
         invalidate();
     }
 
+    /**
+     * This method resets the currently selected tile and its bitmap
+     */
     private void clearSelectedTile() {
         selectedTileResource = -1;
         currTileBitmap = null;

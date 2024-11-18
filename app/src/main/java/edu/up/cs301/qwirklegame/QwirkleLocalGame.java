@@ -11,13 +11,16 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * A class that represents the state of a game. In our counter game, the only
- * relevant piece of information is the value of the game's counter. The
- * QwirkleState object is therefore very simple.
- * 
- * @author Steven R. Vegdahl
- * @author Andrew M. Nuxoll
- * @version July 2013
+ * This contains the Qwirkle Local Game. Any actions made by any players
+ * get sent here to be sent to the actual Game State
+ *
+ * @author Chloe Pham
+ * @author Talia Martinez
+ * @author Tyler Crosbie
+ * @author De'Ante Agleham
+ * @author Ryan Murray
+ *
+ * @version November 17, 2024
  */
 public class QwirkleLocalGame extends LocalGame {
 
@@ -27,7 +30,6 @@ public class QwirkleLocalGame extends LocalGame {
 
 	// the game's state
 	private QwirkleState gameState;
-
 
 	/**
 	 * Check if player can move
@@ -70,15 +72,18 @@ public class QwirkleLocalGame extends LocalGame {
 					nullTiles++;
 				}
 			}
+			// Draw tiles to fill hand back to 6 tiles
 			gameState.drawTiles(gameState.getCurrPlayer(), nullTiles);
 
 			// Score of the current player
 			int playerScore = gameState.getPlayersScore()[gameState.getCurrPlayer()];
 			// Set the score
 			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
+			gameState.setAddPoints(0);
 			// Change the player
 			gameState.nextPlayer();
 
+			// Send the state to the player
 			sendUpdatedStateTo(action.getPlayer());
 			return this.gameState.endTurn(ea);
 
@@ -120,8 +125,6 @@ public class QwirkleLocalGame extends LocalGame {
 	protected String checkIfGameOver() {
 		int currPlayer = gameState.getCurrPlayer();	// Current player
 		int nullTiles = 0;
-		// Get the number of tiles in the player's hand
-		int numTiles = this.gameState.getPlayerHand(currPlayer).size();
 		if (this.gameState.getTilesLeft() == 0) {
 			for (int i = 0; i < HAND_SIZE; i++) {
 				if (this.gameState.getPlayerHand(currPlayer).get(i) == null) {
@@ -148,52 +151,5 @@ public class QwirkleLocalGame extends LocalGame {
 		else {
 			return null;
 		}
-
-		// get the value of the counter
-		//int counterVal = this.gameState.getCounter();
-		
-		/*if (counterVal >= TARGET_MAGNITUDE) {
-			// counter has reached target magnitude, so return message that
-			// player 0 has won.
-			return playerNames[0]+" has won.";
-		}
-		else if (counterVal <= -TARGET_MAGNITUDE) {
-			// counter has reached negative of target magnitude; if there
-			// is a second player, return message that this player has won,
-			// otherwise that the first player has lost
-			if (playerNames.length >= 2) {
-				return playerNames[1]+" has won.";
-			}
-			else {
-				return playerNames[0]+" has lost.";
-			}
-		}else {
-			// game is still between the two limit: return null, as the game
-			// is not yet over
-			return null;
-		}*/
-
     }
-	protected void endTurn(GamePlayer player) {
-		int playerIndex = getPlayerIndex(player);
-
-		// Refill the player's hand at the end of the turn
-		gameState.refillHand(playerIndex);
-
-		super.endTurn(player);
-	}
-
-
-	public int getPlayerIndex(GamePlayer player) {
-		for (int i = 0; i < players.length; i++) {
-			if (players[i] == player) {
-				return i;
-			}
-		}
-		return -1; // Return -1 if the player is not found
-	}
-
-
-
-
 }// class QwirkleLocalGame

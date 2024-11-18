@@ -120,7 +120,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (this.playerNum != state.getCurrPlayer()) {
 			return;
 		}
-//		notifyBoardView();
 
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
@@ -156,13 +155,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// Check if it's the current player's turn
 		if (this.playerNum != state.getCurrPlayer()) {
-			this.flash(0xFFFF0000, 200); // Flash red if not the current player's turn
 			return;
 		}
 
 		// Make sure a tile is selected
 		if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
-//			this.flash(0xFFFF4325, 200); // Flash red if no tile is selected
 			return;
 		}
 
@@ -179,7 +176,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			game.sendAction(place);
 		} else {
 			// If invalid, flash
-			this.flash(0xFFFF4325, 200); // Flash red for invalid move
+			this.flash(0xFFFF4325, 100); // Flash red for invalid move
 		}
 	}
 	
@@ -256,15 +253,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Get the tile
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			if (tile == null) {
-				this.flash(0xFFFF0000, 100);
 				return;
 			}
 			// Set the selected tile
 			qwirkleView.setSelectedTile(tile.getTileImageFile(tile));
 		}
 	}
-
-//	private void beginning
 
 	/**
 	 * Updates the hand of the player and set the image tile resources

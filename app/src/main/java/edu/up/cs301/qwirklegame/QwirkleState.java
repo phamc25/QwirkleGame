@@ -87,18 +87,6 @@ public class QwirkleState extends GameState {
 	}
 
 	/**
-	 * Nuxoll's probably bad idea for finding out how many players there are right away
-	 */
-	public QwirkleState(GameConfig config) {
-		this();
-		this.numPlayers = config.getNumPlayers();
-		if (this.numPlayers != 2) { //not the default
-			setupTileLists(this.numPlayers);
-		}
-
-	}
-
-	/**
 	 * copy constructor; makes a copy of the original object
 	 *
 	 * @param orig the object from which the copy should be made
@@ -205,6 +193,9 @@ public class QwirkleState extends GameState {
 		return true;
 	}
 
+	/**
+	 * Method that switches the currPlayer variable to the next player
+	 */
 	public void nextPlayer() {
 		this.currPlayer = (currPlayer + 1) % numPlayers;
 	}
@@ -247,13 +238,13 @@ public class QwirkleState extends GameState {
 	}
 
 	/**
-	 * helper method for isValid
+	 * Helper method for isValid
 	 * <p>
 	 * changes an x,y coordinate by one step in a given dir
-	 * TODO: finish
 	 */
 	public int[] takeStep(int x, int y, String dir) {
 		int[] cord = new int[2];
+		// Take a step in the direction by changing x or y vals
 		switch (dir) {
 			case "north":
 				x--;
@@ -268,6 +259,7 @@ public class QwirkleState extends GameState {
 				y--;
 				break;
 		}
+		// Assign cord values with updated x and y and return
 		cord[0] = x;
 		cord[1] = y;
 		return cord;
@@ -277,121 +269,25 @@ public class QwirkleState extends GameState {
 	 * isValid
 	 *
 	 * @return true if the given tile can be legally placed in the given position
-	 * TODO: finish translating nux's pseudocode
 	 */
-//	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
-//		String[] dirs = {"north", "south", "east", "west"};
-//		QwirkleTile inLineTile = new QwirkleTile(null, null);
-//
-//		// can place a tile anywhere only when it's the first move
-//		if (isFirstMove) {
-//			isFirstMove = false;
-//			this.pointsToAdd++;
-//			return true;
-//		}
-//		else {
-//			//for each direction
-//			for (String dir : dirs) {
-//				int currX = candX;
-//				int currY = candY;
-//				QwirkleTile.Color currColor = null;
-//				QwirkleTile.Shape currShape = null;
-//				currX = takeStep(currX, currY, dir)[0];
-//				currY = takeStep(currX, currY, dir)[1];
-//				ArrayList<QwirkleTile> nearbyTiles = new ArrayList<QwirkleTile>();
-//				nearbyTiles.add(toPlace);
-//
-//				// Loop through the current player hand and set inLineTile to the current tile
-////				for (int i = 0; i < tilesInHands[currPlayer].size(); i++) {
-////					if (i == currTile) {
-////						inLineTile = tilesInHands[currPlayer].get(currTile);
-////
-////					}
-////				}
-//				inLineTile = tilesInHands[currPlayer].get(currTile);
-//				nearbyTiles.add(inLineTile);
-//
-//				while (board.notEmpty(currX, currY)) {
-//					QwirkleTile adjTile = board.getTile(currX, currY);
-//					// matching shape, color still null
-//					if (adjTile.getShape() == inLineTile.getShape()) {
-//						// not used after this
-//						currShape = inLineTile.getShape();
-//						// list used for checking later
-//						nearbyTiles.add(adjTile);
-//					}
-//					// matching color, shape still null
-//					else if (adjTile.getColor() == inLineTile.getColor()){
-//						// also not used after this
-//						currColor = inLineTile.getColor();
-//						// checking
-//						nearbyTiles.add(adjTile);
-//					}
-//
-////					//case: mismatching color
-////					if ((currColor != null) && (inLineTile.getColor() != currColor)) {
-////						//Does the shape still match?
-////						if ((currShape != null) && (inLineTile.getShape() == currShape)) {
-////							currColor = null;  //ok, enforce the shape and ignore
-////							//colors from now on
-////						}
-////						else {
-////							return false;
-////						}
-////					}
-////					///case mismatching shape
-////					else if ((currShape != null) && (inLineTile.getShape() != currShape)) {
-////						//Does the color still match?
-////						if ((currColor != null) && (inLineTile.getColor() == currColor)) {
-////							currColor = null;  //enforce color but not shape
-////							continue;
-////						}
-////						else {
-////							return false;
-////						}
-//					currX = takeStep(currX, currY, dir)[0];
-//					currY = takeStep(currX, currY, dir)[1];
-//				}//while
-//
-//				// no neighbors at all & not the first move
-//				if (!isFirstMove && !board.notEmpty(currX, currY)) {
-//					return false;
-//				}
-//
-//				//check for duplicates in the 'nearbyTiles' arraylist & that
-//				// they're all the same shape or color
-//				for (int i = 0; i <  nearbyTiles.size(); i++) {
-//					for (int j = 1; j < nearbyTiles.size(); j++) {
-//						QwirkleTile t1 = nearbyTiles.get(i);
-//						QwirkleTile t2 = nearbyTiles.get(j);
-//						if (t1.equals(t2)) {
-//							return false;
-//						}
-//						if (!t1.getShape().equals(t2.getShape())) {
-//							return false;
-//						}
-//						else if (!t1.getColor().equals(t2.getColor())) {
-//							return false;
-//						}
-//					}
-//				}
-//			}
-//			// no mismatches found, no repeated tiles, connected to another tile
-//			return true;
-//		}
-//	}
 	public boolean isValid(QwirkleTile toPlace, int candX, int candY) {
 		// Check if this is the first move
 		if (isFirstMove) {
-			isFirstMove = false;
-			this.pointsToAdd++;
+			// Force the player to play in the center of the board
+			if (candX != ROWS / 2 || candY != COLUMNS / 2) {
+				return false;
+			}
+			isFirstMove = false;	// Set to false once first move is made
+			this.pointsToAdd++;		// Incrememnt points
 			return true;
 		}
 
+		// If a tile has a neighbor
 		boolean hasNeighbor = false;
+		// Strings for all directions of a tile
 		String[] directions = {"north", "south", "east", "west"};
 
-		// Added strings for vertical and horizontal line iteration
+		// Strings for vertical and horizontal line iteration
 		String[] lines = {"vertical", "horizontal"};
 
 		// First check if the position has any adjacent tiles
@@ -450,7 +346,6 @@ public class QwirkleState extends GameState {
 				QwirkleTile firstTile = tilesInLine.get(0);
 				QwirkleTile secondTile = tilesInLine.get(1);
 
-				//TODO: DEBUG
 				if ((firstTile == null) || (secondTile == null)) {
 					Log.d("oops!", "null tile");
 				}
@@ -487,13 +382,15 @@ public class QwirkleState extends GameState {
 				}
 			}
 		}
-
+		// Add point for every tile placed
+		this.pointsToAdd++;
 		// no mismatches found, no repeated tiles, connected to another tile
 		return true;
 	}
 
 	/**
-	 * Checks if Quirkle has been achieved (colors/shapes match up)
+	 * Checks if Qwirkle has been achieved (colors/shapes match up)
+	 * TODO: "Qwirkle" bonus move is not completed yet
 	 *
 	 * @param toPlace
 	 * @param candX
@@ -528,15 +425,16 @@ public class QwirkleState extends GameState {
 
 
 	/**
-	 * toString method that describes the state of the game as a string
+	 * toString method that returns the current gamestate in a string
+	 * @param currState
+	 * @return
 	 */
 	@Override
 	public String toString (GameState currState){
 		String state = "Current Game State: \n";
-		// TODO: Commented out for Proj #E, manual hard-code for faux game
-//		state += "Points to add: " + this.pointsToAdd + "\n";
+		state += "Points to add: " + this.pointsToAdd + "\n";
 		state += "Current player: " + this.currPlayer + "\n";
-//		state += "Tiles to be drawn: " + this.drawTiles + "\n";
+		state += "Tiles to be drawn: " + this.drawTiles + "\n";
 
 		// Loops through the board array and prints the number of QwirkleTiles in the board
 		int tiles = 0;
@@ -571,7 +469,6 @@ public class QwirkleState extends GameState {
 			}
 			state += "\n";
 		}
-
 		state += "Game winner: Player " + winner + " with " + topScore + " points!" + "\n";
 		return state;
 	}
@@ -597,19 +494,14 @@ public class QwirkleState extends GameState {
 		}
 		return null; // Return null if invalid index
 	}
-	public boolean isFirstMove() { return isFirstMove; }
 
 	// Setter methods
 	public void setAddPoints(int points) { this.pointsToAdd = points; }
 	public void setCurrPlayer(int player) { this.currPlayer = player; }
-	public void setPlayersScore(int player, int score) {
-
-		this.playersScore[player] = score;
-	}
+	public void setPlayersScore(int player, int score) {this.playersScore[player] = score; }
 	public void setCurrTile(int curr) {
 		this.currTile = curr;
 	}
-
 }
 
 /**
