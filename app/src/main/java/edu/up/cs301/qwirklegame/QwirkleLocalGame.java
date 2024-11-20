@@ -34,23 +34,22 @@ public class QwirkleLocalGame extends LocalGame {
 	/**
 	 * Check if player can move
 	 *
-	 * @param playerIdx
-	 * 		the player's player-number (ID)
+	 * @param playerIdx the player's player-number (ID)
 	 */
 	@Override
 	protected boolean canMove(int playerIdx) {
-        return playerIdx == gameState.getCurrPlayer();
-    }
+		return playerIdx == gameState.getCurrPlayer();
+	}
 
 	/**
 	 * This ctor should be called when a new counter game is started
 	 */
 	public QwirkleLocalGame(GameState state) {
 		// initialize the game state, with the counter value starting at 0
-		if (! (state instanceof QwirkleState)) {
+		if (!(state instanceof QwirkleState)) {
 			state = new QwirkleState(); //is asking for the state of the game at the start
 		}
-		this.gameState = (QwirkleState)state;
+		this.gameState = (QwirkleState) state;
 		super.state = state;
 	}
 
@@ -63,44 +62,54 @@ public class QwirkleLocalGame extends LocalGame {
 
 		// If action is an EndTurnAction
 		if (action instanceof EndTurnAction) {
-			// cast so that we Java knows it's a EndTurnAction
-			EndTurnAction ea = (EndTurnAction) action;
-			int nullTiles = 0;
-			// can end their turn at any time
-			for (int i = 0; i < gameState.getPlayerHand(gameState.getCurrPlayer()).size(); i++) {
-				if (gameState.getPlayerHand(gameState.getCurrPlayer()).get(i) == null) {
-					nullTiles++;
-				}
-			}
-			// Draw tiles to fill hand back to 6 tiles
-			gameState.drawTiles(gameState.getCurrPlayer(), nullTiles);
-
-			// Score of the current player
-			int playerScore = gameState.getPlayersScore()[gameState.getCurrPlayer()];
-			// Set the score
-			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
-			gameState.setAddPoints(0);
-			// Change the player
-			gameState.nextPlayer();
-
-			// Send the state to the player
-			sendUpdatedStateTo(action.getPlayer());
-			return this.gameState.endTurn(ea);
-
+			return endTurn((EndTurnAction) action);
 		}
 		// Else if it is a PlaceTileAction
 		else if (action instanceof PlaceTileAction) {
-			// cast so that we Java knows it's a EndTurnAction
-			PlaceTileAction place = (PlaceTileAction) action;
-			// Update the current tile so the game state knows
-			gameState.setCurrTile(place.getSelectedTileIndex());
-			return this.gameState.placeTile(place);
-		}
-		else {
+			return placeTile((PlaceTileAction) action);
+		} else {
 			// denote that this was an illegal move
 			return false;
 		}
 	}//makeMove
+
+	protected boolean endTurn(EndTurnAction action) {
+		// Cast so that we Java knows it's a EndTurnAction
+		int nullTiles = 0;
+		// Can end their turn at any time
+		for (int i = 0; i < gameState.getPlayerHand(gameState.getCurrPlayer()).size(); i++) {
+			if (gameState.getPlayerHand(gameState.getCurrPlayer()).get(i) == null) {
+				nullTiles++;
+			}
+		}
+		// Draw tiles to fill hand back to 6 tiles
+		gameState.drawTiles(gameState.getCurrPlayer(), nullTiles);
+
+		// Score of the current player
+		int playerScore = gameState.getPlayersScore()[gameState.getCurrPlayer()];
+		// Set the score
+		gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
+		gameState.setAddPoints(0);
+
+		// Send state to the player
+		sendUpdatedStateTo(action.getPlayer());
+		gameState.nextPlayer();
+		return this.gameState.endTurn(action);
+	}
+
+	/**
+	 * Helper method for makeMove
+	 * @param action
+	 * @return
+	 */
+	protected boolean placeTile(PlaceTileAction action) {
+		// Get the current tile index
+		gameState.setCurrTile(action.getSelectedTileIndex());
+
+		// Send state to the player and return
+		sendUpdatedStateTo(action.getPlayer());
+		return this.gameState.placeTile(action);
+	}
 	
 	/**
 	 * send the updated state to a given player
