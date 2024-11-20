@@ -382,6 +382,7 @@ public class QwirkleState extends GameState {
 				}
 			}
 		}
+
 		// Add point for every tile placed
 		this.pointsToAdd++;
 		// no mismatches found, no repeated tiles, connected to another tile
