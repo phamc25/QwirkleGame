@@ -100,8 +100,10 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// Update text views
 		tilesLeft.setText(String.valueOf(state.getTilesLeft()));
 		playerTurn.setText(String.valueOf(state.getCurrPlayer()));
-		playerScore.setText(String.valueOf(state.getPlayersScore()[state.getCurrPlayer()]));
-		player2Score.setText("Player 2: " + state.getPlayersScore()[(state.getCurrPlayer() + 1) % state.getPlayersScore().length]);
+		if (state.getCurrPlayer() == this.playerNum) {
+			playerScore.setText(String.valueOf(state.getPlayersScore()[state.getCurrPlayer()]));
+			player2Score.setText("Player 2: " + state.getPlayersScore()[(state.getCurrPlayer() + 1) % state.getPlayersScore().length]);
+		}
 	}
 
 	/**
