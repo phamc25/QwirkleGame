@@ -33,8 +33,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 	/**
 	 * Constructor for objects of class QwirkleComputerPlayer1
 	 *
-	 * @param name
-	 * 		the player's name
+	 * @param name the player's name
 	 */
 	public QwirkleComputerPlayer1(String name) {
 		// invoke superclass constructor
@@ -44,8 +43,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 	/**
 	 * callback method--game's state has changed
 	 *
-	 * @param info
-	 * 		the information (presumably containing the game's state)
+	 * @param info the information (presumably containing the game's state)
 	 */
 	@Override
 	protected void receiveInfo(GameInfo info) {
@@ -64,43 +62,44 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 		ArrayList<QwirkleTile> myHand = gameState.getPlayerHand(gameState.getCurrPlayer());
 		// Keep track of the # of placed tiles
 		int placedTiles = 0;
-		for (int i = 0; i < myHand.size(); i++) {
+
+		// Define outer loop
+		outerLoop:
+		for (int i = 0; i < myHand.size() && placedTiles < 2; i++) {
 			QwirkleTile toPlace = myHand.get(i);
 			if (toPlace == null) {
 				continue;  // Skip null tiles in the hand
 			}
-			// Iterate through the entire board to find a valid
+
+			// Iterate through the entire board to find a valid position
 			for (int x = 0; x < ROWS; x++) {
 				for (int y = 0; y < COLUMNS; y++) {
-					// Computer player can only place 2 tiles
-					if (placedTiles < 2) {
-						// Check if the placement is valid and the spot is empty
-						if (gameState.isValid(toPlace, x, y) && !gameState.getBoard().notEmpty(x, y)) {
-							// Create a PlaceTileAction
-							PlaceTileAction place = new PlaceTileAction(this, toPlace, x, y, i);
-							// Try to place
+					// Check if the placement is valid and the spot is empty
+					if (gameState.isValid(toPlace, x, y) && !gameState.getBoard().notEmpty(x, y)) {
+						// Create a PlaceTileAction
+						PlaceTileAction place = new PlaceTileAction(this, toPlace, x, y, i);
+
+						// Try to place the tile
+						if (gameState.placeTile(place)) {
+							// Send the action to the game
+							game.sendAction(place);
 							placedTiles++;
-							if (gameState.placeTile(place)) {
-								// Send the action to the game
-								game.sendAction(place);
-								// Simulate computer is "thinking"
-								try {
-									Thread.sleep(500);
-								} catch (InterruptedException e) {
-									throw new RuntimeException(e);
-								}
-								break;  // Break the loop after successfully placing a tile
+
+							// Simulate computer "thinking"
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {
+								throw new RuntimeException(e);
 							}
+
+							// Break out of all loops after successfully placing a tile
+							continue outerLoop;
 						}
-					}
-					// Else the computer player has placed 2 tiles, break out
-					else {
-						break;
 					}
 				}
 			}
 		}
-		// If no valid moves are found, end the turn
+		// End turn after placing tiles or if no valid moves are found
 		game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
 	}
 }
