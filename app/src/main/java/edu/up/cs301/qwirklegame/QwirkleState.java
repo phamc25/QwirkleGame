@@ -6,6 +6,7 @@ import static edu.up.cs301.qwirklegame.Board.ROWS;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,7 +25,7 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  *
  * @version October 5, 2024
  */
-public class QwirkleState extends GameState {
+public class QwirkleState extends GameState implements Serializable {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
@@ -236,6 +237,17 @@ public class QwirkleState extends GameState {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
 	}
+
+	/**
+	 * Updates the player's score based on the # of connected tiles to the one(s) they placed
+	 */
+//	public int playerScore(QwirkleTile placed, int x,  int y) {
+//		ArrayList<QwirkleTile> scoreList;
+//		String[] directions = {"north", "south", "east", "west"};
+//		for (String dir : directions) {
+//			if ()
+//		}
+//	}
 
 	/**
 	 * Helper method for isValid

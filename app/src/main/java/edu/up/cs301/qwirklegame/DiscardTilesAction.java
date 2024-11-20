@@ -2,6 +2,8 @@ package edu.up.cs301.qwirklegame;
 
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  * @author Ryan Murray
  */
 
-public class DiscardTilesAction extends GameAction {
+public class DiscardTilesAction extends GameAction implements Serializable {
     // to satisfy Serializable interface
     private static final long serialVersionUID = 8927349827349823L;
 

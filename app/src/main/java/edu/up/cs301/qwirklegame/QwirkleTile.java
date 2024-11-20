@@ -2,6 +2,8 @@ package edu.up.cs301.qwirklegame;
 
 import static edu.up.cs301.qwirklegame.QwirkleHumanPlayer.TILE_RESOURCES;
 
+import java.io.Serializable;
+
 /**
  * This contains the class for Qwirkle Tiles
  *
@@ -14,7 +16,7 @@ import static edu.up.cs301.qwirklegame.QwirkleHumanPlayer.TILE_RESOURCES;
  * @version October 5, 2024
  */
 
-public class QwirkleTile {
+public class QwirkleTile implements Serializable {
     // Declaring for each shape of tile
     public enum Shape {
         CIRCLE, SQUARE, DIAMOND, FOURSTAR, CLOVER, EIGHTSTAR

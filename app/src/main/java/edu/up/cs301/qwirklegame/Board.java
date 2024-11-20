@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import java.io.Serializable;
+
 /**
  * Board Class
  *
@@ -11,7 +13,7 @@ package edu.up.cs301.qwirklegame;
  *
  */
 
-public class Board {
+public class Board  implements Serializable {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
