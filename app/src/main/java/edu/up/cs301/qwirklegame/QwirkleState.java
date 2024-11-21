@@ -31,14 +31,15 @@ public class QwirkleState extends GameState implements Serializable {
 	private static final long serialVersionUID = 7737393762469851826L;
 
 	// Instance variables
-	private int pointsToAdd;    // At the end of every turn, scores is calculated to be added
-	private int currPlayer;    // An integer that represents the current player playing
-	private int drawTiles;    // The # of tiles that need to be drawn at the end of turn
-	private int currTile;    // Represents the current tile index for tilesInHands
-	private Board board;    // Board game object that contains a QwirkleTile[][]
-	private int[] playersScore;    // An array to hold player's scores
-	private ArrayList<QwirkleTile> tilesInBag;        // ArrayList of tiles in bag: 72
-	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
+	private int pointsToAdd;               // At the end of every turn, scores is calculated to be added
+	private int currPlayer;                // An integer that represents the current player playing
+	private int drawTiles;                 // The # of tiles that need to be drawn at the end of turn
+	private int currTile;                  // Represents the current tile index for tilesInHands
+	private Board board;                   // Board game object that contains a QwirkleTile[][]
+	private int[] playersScore;                           // An array to hold player's scores
+	// public for testing
+	public ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
+	public ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
 
 	// Static variables for common values

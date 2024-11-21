@@ -6,13 +6,36 @@ import org.junit.Test;
 
 public class QwirkleStateTest {
 
+    // Talia's Unit Tests
     @Test
     public void getPlayersScore() {
         QwirkleState qwirkleState = new QwirkleState();
-        qwirkleState.setPlayersScore(0, 5);
+        int setScore = 5;
+        qwirkleState.setPlayersScore(0, setScore);
         int[] playerScore = qwirkleState.getPlayersScore();
-        assertTrue(playerScore[0] == 5);
+        assertEquals(setScore, playerScore[0]);
 
+    }
+
+    @Test
+    public void takeStep() {
+        QwirkleState state = new QwirkleState();
+        int x = 5;
+        int changedX = 4;
+        int y = 5;
+        String dir = "north";
+        state.takeStep(x, y, dir);
+        assertEquals(changedX, state.takeStep(x, y, dir)[0]);
+    }
+
+    @Test
+    public void nextPlayer() {
+        QwirkleState state = new QwirkleState();
+        state.setCurrPlayer(2);
+        int nextplayer = 3;
+        state.nextPlayer();
+        int nextActual = state.getCurrPlayer();
+        assertEquals(nextplayer, nextActual);
     }
 
     // Ryan's unit tests
