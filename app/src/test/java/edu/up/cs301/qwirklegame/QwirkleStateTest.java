@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class QwirkleStateTest {
 
     @Test
@@ -37,7 +39,7 @@ public class QwirkleStateTest {
     @Test
     public void getTilesLeft() {
         QwirkleState qState = new QwirkleState();
-        int expectedAmount = 108;
+        int expectedAmount = 24;
         int actualAmount = qState.getTilesLeft();
         assertEquals(expectedAmount, actualAmount);
     }
@@ -82,9 +84,28 @@ public class QwirkleStateTest {
     @Test
     public void getPlayerHand() {
         QwirkleState q1 = new QwirkleState();
-        q1.drawTiles(0,3);
+        q1.drawTiles(0,1);
         int len = q1.getPlayerHand(0).size();
-        assertEquals(3, len);
+        assertEquals(7, len);
+    }
 
+    @Test
+    public void drawTiles() {
+        QwirkleState state = new QwirkleState();
+        state.drawTiles(0, 3);
+        int bagSize = state.getTilesLeft();
+        assertEquals(21, bagSize);
+    }
+
+    @Test
+    public void getSelectedTiles() {
+        QwirkleState state = new QwirkleState();
+        ArrayList<QwirkleTile> selected = state.getPlayerHand(0);
+        QwirkleTile one = selected.get(0);
+        one.setSelected(true);
+
+        QwirkleTile three = selected.get(2);
+        three.setSelected(true);
+        assertEquals(2, state.getSelectedTiles(selected).size());
     }
 }

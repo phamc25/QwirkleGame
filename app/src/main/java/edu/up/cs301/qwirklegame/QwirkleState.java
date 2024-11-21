@@ -56,7 +56,7 @@ public class QwirkleState extends GameState implements Serializable {
 		this.drawTiles = 6;    // Each player needs to draw 6 tiles at the beginning
 		this.currTile = -1;    // Current tile selected not initialized yet
 		this.board = new Board();
-		this.playersScore = new int[2];    // Empty array of all player's scores
+		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
 		this.isFirstMove = true;
 
