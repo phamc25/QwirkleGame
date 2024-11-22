@@ -135,6 +135,8 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
      * Public Methods
      * --------------------------------------------------------------------
      */
+    //This flag is used to prevent simultaneous flashes (possible race condition)
+    boolean inFlash = false;
 
     /**
      * Flashes the background of the GUI--typically indicating that some kind
@@ -147,6 +149,10 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
      * 			the number of milliseconds the flash should last
      */
     protected void flash(int color, int duration) {
+        //detect and avoid a simultaneous flash
+        if (inFlash) return;
+        inFlash = true;
+
         // get the top view, ignoring if null
         View top = this.getTopView();
         if (top == null) return;
@@ -181,6 +187,7 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
             View top = GameHumanPlayer.this.getTopView();
             if (top == null) return;
             top.setBackgroundColor(oldColor);
+            inFlash = false;
         }
     }
 
