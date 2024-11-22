@@ -363,7 +363,12 @@ public class QwirkleState extends GameState implements Serializable {
 					Log.d("oops!", "null tile");
 				}
 
-				boolean isColorLine = firstTile.getColor() == secondTile.getColor();
+				boolean isColorLine = false;
+				try {
+					isColorLine = firstTile.getColor() == secondTile.getColor();
+				}
+				catch (NullPointerException e) {
+				}
 
 				// Validate all tiles in the line follow the same rule
 				for (int i = 1; i < tilesInLine.size(); i++) {
@@ -382,7 +387,11 @@ public class QwirkleState extends GameState implements Serializable {
 						}
 					} else {
 						// In a shape line, all shapes must match and colors must be different
-						if (currTile.getShape() != firstTile.getShape()) {
+						try {
+							if (currTile.getShape() != firstTile.getShape()) {
+								return false;
+							}
+						} catch (NullPointerException e) {
 							return false;
 						}
 						// Check for duplicate colors in shape line
@@ -398,6 +407,9 @@ public class QwirkleState extends GameState implements Serializable {
 
 		// Add point for every tile placed
 		this.pointsToAdd++;
+		if (isQwirkle(toPlace, candX, candY)) {
+			this.pointsToAdd += 6;
+		}
 		// no mismatches found, no repeated tiles, connected to another tile
 		return true;
 	}
@@ -422,7 +434,7 @@ public class QwirkleState extends GameState implements Serializable {
 					yChan = -j;
 				} else if (i == 2) {
 					xChan = j;
-				} else if (i == 3) {
+				} else {
 					xChan = -j;
 				}
 				if (!board.notEmpty(candX + xChan, candY + yChan)) {
