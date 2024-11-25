@@ -414,8 +414,8 @@ public class QwirkleState extends GameState implements Serializable {
 	}
 
 	/**
+	 * Calculates score for current player's turn
 	 * Checks if Qwirkle has been achieved (colors/shapes match up)
-	 * TODO: "Qwirkle" bonus move is not completed yet
 	 *
 	 * @param candX
 	 * @param candY
