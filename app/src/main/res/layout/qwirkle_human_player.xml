@@ -243,7 +243,7 @@
                     android:id="@+id/discard"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text=" Discard" />
+                    android:text=" Discard Tile" />
 
 <!--                <Button-->
 <!--                    android:id="@+id/confirm"-->
@@ -264,7 +264,9 @@
                     android:id="@+id/end_turn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="End Turn" />
+                    android:backgroundTint="#B12929"
+                    android:text="End Turn"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </LinearLayout>

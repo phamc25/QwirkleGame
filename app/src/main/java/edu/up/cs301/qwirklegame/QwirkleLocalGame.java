@@ -48,9 +48,6 @@ public class QwirkleLocalGame extends LocalGame {
 	 */
 	public QwirkleLocalGame(GameState state) {
 		// initialize the game state, with the counter value starting at 0
-		if (! (state instanceof QwirkleState)) {
-			state = new QwirkleState(); //is asking for the state of the game at the start
-		}
 		this.gameState = (QwirkleState)state;
 		super.state = state;
 	}
@@ -80,13 +77,14 @@ public class QwirkleLocalGame extends LocalGame {
 			int playerScore = gameState.getPlayersScore()[gameState.getCurrPlayer()];
 			// Set the score
 			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
+			sendAllUpdatedState();
 			gameState.setAddPoints(0);
 			// Change the player
-			sendUpdatedStateTo(action.getPlayer());
+//			sendUpdatedStateTo(action.getPlayer());
 			gameState.nextPlayer();
 
 			// Send the state to the player
-			sendUpdatedStateTo(action.getPlayer());
+			sendAllUpdatedState();
 			return this.gameState.endTurn(ea);
 
 		}

@@ -50,8 +50,8 @@ public class QwirkleState extends GameState implements Serializable {
 	 * default constructor
 	 * inits the game to match the starting state
 	 */
-	public QwirkleState() {
-		this.numPlayers = 2;
+	public QwirkleState(int numPlayers) {
+		this.numPlayers = numPlayers;
 		this.pointsToAdd = 0;    // No points added to score yet
 		this.currPlayer = 0;    // No current player is decided yet at the beginning
 		this.drawTiles = 6;    // Each player needs to draw 6 tiles at the beginning
@@ -60,7 +60,6 @@ public class QwirkleState extends GameState implements Serializable {
 		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
 		this.isFirstMove = true;
-
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
@@ -76,6 +75,13 @@ public class QwirkleState extends GameState implements Serializable {
 		for (int i = 0; i < numPlayers; i++) {
 			drawTiles(i, HAND_SIZE);
 		}
+	}
+
+	/**
+	 * Constructor for unit tests
+	 */
+	public QwirkleState() {
+		this(2);
 	}
 
 	/**
