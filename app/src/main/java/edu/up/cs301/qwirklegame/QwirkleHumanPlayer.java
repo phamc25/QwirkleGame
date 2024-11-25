@@ -76,7 +76,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	private QwirkleTile selectedTile;
 
 	private boolean canPlace = true;
-	private boolean canDiscard = true;
+	private boolean canDiscard = false;
 
 	/**
 	 * constructor
