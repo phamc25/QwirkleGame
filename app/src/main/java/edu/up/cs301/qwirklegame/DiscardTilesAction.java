@@ -23,7 +23,7 @@ public class DiscardTilesAction extends GameAction implements Serializable {
     // List of tiles to discard
     private QwirkleTile tileToDiscard;
 
-    public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
+    public DiscardTilesAction(GamePlayer player, QwirkleTile tileToDiscard) {
         super(player);
         this.tileToDiscard = tileToDiscard;
     }
@@ -33,7 +33,7 @@ public class DiscardTilesAction extends GameAction implements Serializable {
     }
 
     //Sets a new list of tiles to discard
-    public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
+    public void setTilesToDiscard(QwirkleTile tileToDiscard) {
         this.tileToDiscard = tileToDiscard;
     }
 }
