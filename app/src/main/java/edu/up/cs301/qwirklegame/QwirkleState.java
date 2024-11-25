@@ -429,7 +429,7 @@ public class QwirkleState extends GameState implements Serializable {
 		int score = 1;
 		int yChan = 0;
 		int xChan = 0;
-		for (int j = 0; j < 6; j++) {
+		for (int j = 0; j < 5; j++) {
 			yChan++;
 			if (board.notEmpty(candX + xChan, candY + yChan)) {
 				score++;
@@ -440,7 +440,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		yChan = 0;
-		for (int j = 0; j < 6; j++) {
+		for (int j = 0; j < 5; j++) {
 			yChan--;
 			if (board.notEmpty(candX + xChan, candY + yChan)) {
 				score++;
@@ -451,7 +451,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		yChan = 0;
-		for (int j = 0; j < 6; j++) {
+		for (int j = 0; j < 5; j++) {
 			xChan++;
 			if (board.notEmpty(candX + xChan, candY + yChan)) {
 				score++;
@@ -462,7 +462,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		xChan = 0;
-		for (int j = 0; j < 6; j++) {
+		for (int j = 0; j < 5; j++) {
 			xChan--;
 			if (board.notEmpty(candX + xChan, candY + yChan)) {
 				score++;
