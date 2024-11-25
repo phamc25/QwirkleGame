@@ -40,6 +40,9 @@ public class QwirkleState extends GameState {
 	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
 
+	private ArrayList<Integer> currentTilesX = new ArrayList<>();
+	private ArrayList<Integer> currentTilesY = new ArrayList<>();
+
 	// Static variables for common values
 	public static final int HAND_SIZE = 6;
 	public static final int MAX_PLAYERS = 4;
@@ -190,6 +193,8 @@ public class QwirkleState extends GameState {
 	 */
 	protected boolean endTurn (EndTurnAction action) {
 		// Update the player's score at the end of the turn
+		currentTilesX.clear();
+		currentTilesY.clear();
 		return true;
 	}
 
@@ -265,6 +270,61 @@ public class QwirkleState extends GameState {
 		return cord;
 	}
 
+	// Checks if all tiles from current turn are connected in a straight line
+	public boolean currTilesInLine(int candX, int candY) {
+		// Stores this move's tiles in an arrayList
+		//if previous candX or candY equals current, dont add
+
+		boolean sameCoordX = false;
+		boolean sameCoordY = false;
+		// Checks if X value of current tile matches an old coordinate
+		// and if not it adds the value to the arraylist
+		if (currentTilesX.size() == 0) {
+			currentTilesX.add(candX);
+			currentTilesY.add(candY);
+		}
+		else {
+			for (int i = 0; i < currentTilesX.size(); i++) {
+				if (currentTilesX.get(i) == candX) {
+					sameCoordX = true;
+					break;
+				}
+			}
+			if (!sameCoordX) {
+				currentTilesX.add(candX);
+			}
+
+			// Checks if Y value of current tile matches an old coordinate
+			// and if not it adds the value to the arraylist
+			for (int i = 0; i < currentTilesY.size(); i++) {
+				if (currentTilesY.get(i) == candY) {
+					sameCoordY = true;
+					break;
+				}
+			}
+			if (!sameCoordY) {
+				currentTilesY.add(candY);
+			}
+		}
+
+		//Checks
+		/*
+		if ((!sameCoordX && !sameCoordY) && !isFirstMove) {
+			currentTilesX.remove(currentTilesX.size() - 1);
+			currentTilesY.remove(currentTilesY.size() - 1);
+			return false;
+		}
+		 */
+
+		if (currentTilesX.size() > 1 && currentTilesY.size() > 1) {
+			currentTilesX.remove(currentTilesX.size() - 1);
+			currentTilesY.remove(currentTilesY.size() - 1);
+			return false;
+		}
+
+		return true;
+	}//end of method
+
 	/**
 	 * isValid
 	 *
@@ -279,6 +339,8 @@ public class QwirkleState extends GameState {
 			}
 			isFirstMove = false;	// Set to false once first move is made
 			this.pointsToAdd++;		// Incrememnt points
+			currentTilesX.add(candX);
+			currentTilesY.add(candY);
 			return true;
 		}
 
@@ -383,6 +445,10 @@ public class QwirkleState extends GameState {
 			}
 		}
 
+		//Checks if this turn's tiles are in one line
+		if (!currTilesInLine(candX,candY)) {
+			return false;
+		}
 		// Add point for every tile placed
 		this.pointsToAdd++;
 		// no mismatches found, no repeated tiles, connected to another tile

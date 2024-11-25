@@ -175,7 +175,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (state.isValid(selectedTile, x, y)) {
 			// Send the action to the game
 			game.sendAction(place);
-		} else {
+		}
+		else {
 			// If invalid, flash
 			this.flash(0xFFFF4325, 100); // Flash red for invalid move
 		}
