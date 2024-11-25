@@ -68,6 +68,7 @@ public class QwirkleState extends GameState implements Serializable {
 				for (int i = 0; i < 1; i++) {
 					this.tilesInBag.add(new QwirkleTile(shape, color));
 				}
+		tilesInBag = shuffleTiles(tilesInBag);
 
 		setupTileLists(this.numPlayers);
 
@@ -160,6 +161,7 @@ public class QwirkleState extends GameState implements Serializable {
 		// Removes the selected tiles from the current player's hand and into the bag
 		tilesInBag.addAll(selectedTiles);
 		hand.removeAll(selectedTiles);
+		tilesInBag = shuffleTiles(tilesInBag);
 
 		return true;
 	}
