@@ -449,6 +449,17 @@ public class QwirkleState extends GameState implements Serializable {
 
 	}
 
+	public ArrayList<QwirkleTile> shuffleTiles(ArrayList<QwirkleTile> currBag) {
+		ArrayList<QwirkleTile> shuffledBag = new ArrayList<>(currBag); // Create a copy of the tiles in the bag
+		for (int i = 0; i < shuffledBag.size(); i++) {
+			// Swap the current tile with a random tile
+			int randomIndex = (int) (Math.random() * shuffledBag.size());
+			QwirkleTile temp = shuffledBag.get(i);
+			shuffledBag.set(i, shuffledBag.get(randomIndex));
+			shuffledBag.set(randomIndex, temp);
+		}
+		return shuffledBag;
+	}
 
 	/**
 	 * toString method that returns the current gamestate in a string
