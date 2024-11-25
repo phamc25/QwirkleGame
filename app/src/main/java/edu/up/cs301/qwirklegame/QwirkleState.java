@@ -408,10 +408,7 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 
 		// Add point for every tile placed
-		this.pointsToAdd++;
-		if (isQwirkle(toPlace, candX, candY)) {
-			this.pointsToAdd += 6;
-		}
+		this.pointsToAdd = calcScore(candX, candY);
 		// no mismatches found, no repeated tiles, connected to another tile
 		return true;
 	}
@@ -420,53 +417,65 @@ public class QwirkleState extends GameState implements Serializable {
 	 * Checks if Qwirkle has been achieved (colors/shapes match up)
 	 * TODO: "Qwirkle" bonus move is not completed yet
 	 *
-	 * @param toPlace
 	 * @param candX
 	 * @param candY
 	 * @return
 	 */
-	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+	protected int calcScore(int candX, int candY) {
 		boolean right = true;
 		boolean left = true;
 		boolean up = true;
 		boolean down = true;
+		int score = 1;
 		int yChan = 0;
 		int xChan = 0;
 		for (int j = 0; j < 6; j++) {
 			yChan++;
-			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan)) {
+				score++;
+			} else {
 				up = false;
+				break;
 
 			}
 		}
 		yChan = 0;
 		for (int j = 0; j < 6; j++) {
 			yChan--;
-			if (!board.notEmpty(candX + xChan, candY + yChan)) {
-				down =  false;
+			if (board.notEmpty(candX + xChan, candY + yChan)) {
+				score++;
+			} else {
+				down = false;
+				break;
 
 			}
 		}
 		yChan = 0;
 		for (int j = 0; j < 6; j++) {
 			xChan++;
-			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan)) {
+				score++;
+			} else {
 				right = false;
+				break;
 
 			}
 		}
 		xChan = 0;
 		for (int j = 0; j < 6; j++) {
 			xChan--;
-			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan)) {
+				score++;
+			} else {
 				left = false;
+				break;
 
 			}
 		}
 		if ((right||left)||(up||down)) {
-			return true;
+			score += 6;
 		}
-		return false;
+		return score;
 
 	}
 
