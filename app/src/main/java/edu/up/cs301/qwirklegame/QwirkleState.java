@@ -468,31 +468,6 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 		return false;
 
-
-
-
-
-//		for (int i = 0; i < 4; i++) {
-//			for (int j = 0; j < 6; j++) {
-//				if (i == 0) {
-//					yChan = j;
-//				} else if (i == 1) {
-//					yChan = -j;
-//				} else if (i == 2) {
-//					xChan = j;
-//				} else if (i ==3) {
-//					xChan = -j;
-//				}
-//				if (!board.notEmpty(candX + xChan, candY + yChan)) {
-//					return false;
-//
-//				}
-//				yChan = 0;
-//				xChan = 0;
-//			}
-//		}
-		//return true;
-
 	}
 
 	public ArrayList<QwirkleTile> shuffleTiles(ArrayList<QwirkleTile> currBag) {
