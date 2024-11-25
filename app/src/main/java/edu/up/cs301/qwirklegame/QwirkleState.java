@@ -426,28 +426,66 @@ public class QwirkleState extends GameState implements Serializable {
 	 * @return
 	 */
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+		boolean test = false;
 		int yChan = 0;
 		int xChan = 0;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 6; j++) {
-				if (i == 0) {
-					yChan = j;
-				} else if (i == 1) {
-					yChan = -j;
-				} else if (i == 2) {
-					xChan = j;
-				} else if (i ==3) {
-					xChan = -j;
-				}
-				if (!board.notEmpty(candX + xChan, candY + yChan)) {
-					return false;
+		for (int j = 0; j < 6; j++) {
+			yChan++;
+			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+				test = true;
 
-				}
-				yChan = 0;
-				xChan = 0;
 			}
 		}
-		return true;
+		yChan = 0;
+		for (int j = 0; j < 6; j++) {
+			yChan--;
+			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+				test = true;
+
+			}
+		}
+		yChan = 0;
+		for (int j = 0; j < 6; j++) {
+			xChan++;
+			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+				test = true;
+
+			}
+		}
+		xChan = 0;
+		for (int j = 0; j < 6; j++) {
+			xChan--;
+			if (!board.notEmpty(candX + xChan, candY + yChan)) {
+				test = true;
+
+			}
+		}
+		return test;
+
+
+
+
+
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 6; j++) {
+//				if (i == 0) {
+//					yChan = j;
+//				} else if (i == 1) {
+//					yChan = -j;
+//				} else if (i == 2) {
+//					xChan = j;
+//				} else if (i ==3) {
+//					xChan = -j;
+//				}
+//				if (!board.notEmpty(candX + xChan, candY + yChan)) {
+//					return false;
+//
+//				}
+//				yChan = 0;
+//				xChan = 0;
+//			}
+//		}
+		//return true;
 
 	}
 
