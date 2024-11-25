@@ -426,13 +426,16 @@ public class QwirkleState extends GameState implements Serializable {
 	 * @return
 	 */
 	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
-		boolean test = false;
+		boolean right = true;
+		boolean left = true;
+		boolean up = true;
+		boolean down = true;
 		int yChan = 0;
 		int xChan = 0;
 		for (int j = 0; j < 6; j++) {
 			yChan++;
 			if (!board.notEmpty(candX + xChan, candY + yChan)) {
-				test = true;
+				up = false;
 
 			}
 		}
@@ -440,7 +443,7 @@ public class QwirkleState extends GameState implements Serializable {
 		for (int j = 0; j < 6; j++) {
 			yChan--;
 			if (!board.notEmpty(candX + xChan, candY + yChan)) {
-				test = true;
+				down =  false;
 
 			}
 		}
@@ -448,7 +451,7 @@ public class QwirkleState extends GameState implements Serializable {
 		for (int j = 0; j < 6; j++) {
 			xChan++;
 			if (!board.notEmpty(candX + xChan, candY + yChan)) {
-				test = true;
+				right = false;
 
 			}
 		}
@@ -456,11 +459,14 @@ public class QwirkleState extends GameState implements Serializable {
 		for (int j = 0; j < 6; j++) {
 			xChan--;
 			if (!board.notEmpty(candX + xChan, candY + yChan)) {
-				test = true;
+				left = false;
 
 			}
 		}
-		return test;
+		if ((right||left)||(up||down)) {
+			return true;
+		}
+		return false;
 
 
 
