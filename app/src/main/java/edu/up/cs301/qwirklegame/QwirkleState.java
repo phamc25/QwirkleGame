@@ -436,7 +436,7 @@ public class QwirkleState extends GameState implements Serializable {
 					yChan = -j;
 				} else if (i == 2) {
 					xChan = j;
-				} else {
+				} else if (i ==3) {
 					xChan = -j;
 				}
 				if (!board.notEmpty(candX + xChan, candY + yChan)) {
