@@ -104,11 +104,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		updateHandDisplay();
 		// Update text views
 		tilesLeft.setText(String.valueOf(state.getTilesLeft()));
-		playerTurn.setText(String.valueOf(state.getCurrPlayer()));
-		if (state.getCurrPlayer() == this.playerNum) {
-			playerScore.setText(String.valueOf(state.getPlayersScore()[state.getCurrPlayer()]));
-			player2Score.setText("Player 2: " + state.getPlayersScore()[(state.getCurrPlayer() + 1) % state.getPlayersScore().length]);
-		}
+		playerTurn.setText(String.valueOf(state.getCurrPlayer() + 1));
+		resetTileBackground();
 	}
 
 	/**
@@ -134,6 +131,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			game.sendAction(end); // send action to the game
 			canPlace = true;
 			canDiscard = true;
+
+			// Reset backgrounds for all buttons
+			resetTileBackground();
 		}
 		else if (button.getId() == R.id.discard) {
 			if (canDiscard == false) {
@@ -151,7 +151,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
 			selectedTile = hand.get(state.getCurrTile());
 			if (selectedTile == null) {
-				this.flash(0xFFFF4325, 100);
 				return;
 			}
 			DiscardTilesAction discardAction = new DiscardTilesAction(this, selectedTile, state.getCurrTile());
@@ -163,7 +162,13 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			for (int i = 0; i < TILE_IDS.length; i++) {
 				if (button.getId() == TILE_IDS[i]) {
 					state.setCurrTile(i);	// Set the current tile index
-					notifyBoardView();	// Let the board know what tile it is!
+					notifyBoardView();	// Let the board know what tile it is
+
+					// Reset backgrounds for all buttons
+					resetTileBackground();
+
+					// Highlight the selected button
+					tileButtons[i].setBackgroundResource(R.drawable.tile_highlight);
 					return;  // Exit after handling tile
 				}
 			}
@@ -207,9 +212,18 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			canDiscard = false;
 			// Send the action to the game
 			game.sendAction(place);
+			// Reset backgrounds for all buttons
+			resetTileBackground();
 		} else {
 			// If invalid, flash
 			this.flash(0xFFFF4325, 100); // Flash red for invalid move
+		}
+	}
+
+	public void resetTileBackground() {
+		// Reset backgrounds for all buttons
+		for (ImageButton tileButton : tileButtons) {
+			tileButton.setBackgroundResource(android.R.color.transparent); // Default background
 		}
 	}
 	
@@ -226,8 +240,27 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
+
+		playerScore.setText(String.valueOf(state.getPlayersScore()[0]));
+		player2Score.setText("Player 2: " + state.getPlayersScore()[1]);
+
+		// Only update player 3 score if there are 3 or more players
+		if (state.getPlayersScore().length >= 3) {
+			player3Score.setText("Player 3: " + state.getPlayersScore()[2]);
+			player3Score.setVisibility(View.VISIBLE);
+		} else {
+			player3Score.setVisibility(View.GONE);
+		}
+
+		// Only update player 4 score if there are 4 players
+		if (state.getPlayersScore().length == 4) {
+			player4Score.setText("Player 4: " + state.getPlayersScore()[3]);
+			player4Score.setVisibility(View.VISIBLE);
+		} else {
+			player4Score.setVisibility(View.GONE);
+		}
+
 		// Update the board view with the current state
-		// This will reflect all valid moves that have been made
 		updateDisplay();
 		updateHandDisplay();
 		qwirkleView.updateFromGameState(state.getBoard());
@@ -270,6 +303,8 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		this.playerTurn = (TextView) activity.findViewById(R.id.player_turn);
 		this.playerScore = (TextView) activity.findViewById(R.id.player_score);
 		this.player2Score = (TextView) activity.findViewById(R.id.player2);
+		this.player3Score = (TextView) activity.findViewById(R.id.player3);
+		this.player4Score = (TextView) activity.findViewById(R.id.player4);
 
 		// Get the QwirkleView instance and set the touch listener
 		qwirkleView = (QwirkleView) activity.findViewById(R.id.boardView);
