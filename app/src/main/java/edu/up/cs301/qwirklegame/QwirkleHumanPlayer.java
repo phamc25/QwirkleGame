@@ -73,6 +73,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// An instance of the QwirkleView (so we can add a tile to the board view)
 	private QwirkleView qwirkleView;
 
+	private QwirkleTile selectedTile;
+
+	private boolean canPlace = true;
+	private boolean canDiscard = true;
+
 	/**
 	 * constructor
 	 * @param name
@@ -124,10 +129,33 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
-
 			// Create a new end turn action and then update the display
 			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
 			game.sendAction(end); // send action to the game
+			canPlace = true;
+			canDiscard = true;
+		}
+		else if (button.getId() == R.id.discard) {
+			if (canDiscard == false) {
+				this.flash(0xFFFF4325, 100);
+				return;
+			}
+			canPlace = false;
+			// Create a new discard tile action and then update the hand and the bag
+			// Make sure a tile is selected
+			if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
+				return;
+			}
+
+			// Get the current player's hand and selected tile
+			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
+			selectedTile = hand.get(state.getCurrTile());
+			if (selectedTile == null) {
+				this.flash(0xFFFF4325, 100);
+				return;
+			}
+			DiscardTilesAction discardAction = new DiscardTilesAction(this, selectedTile, state.getCurrTile());
+			game.sendAction(discardAction);
 		}
 		else {
 			// Else these are the tile image buttons
@@ -163,16 +191,20 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
 			return;
 		}
-
+		if (canPlace == false) {
+			this.flash(0xFFFF4325, 100);
+			return;
+		}
 		// Get the current player's hand and selected tile
 		ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
-		QwirkleTile selectedTile = hand.get(state.getCurrTile());
+		selectedTile = hand.get(state.getCurrTile());
 
 		// Create the PlaceTileAction
 		PlaceTileAction place = new PlaceTileAction(this, selectedTile, x, y, state.getCurrTile());
 
 		// First check if the move is valid
 		if (state.isValid(selectedTile, x, y)) {
+			canDiscard = false;
 			// Send the action to the game
 			game.sendAction(place);
 		} else {
@@ -220,6 +252,10 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		Button endTurnButton = (Button) activity.findViewById(R.id.end_turn);
 		endTurnButton.setOnClickListener(this);
 
+		// Discard button for tiles
+		Button discardButton = (Button) activity.findViewById(R.id.discard);
+		discardButton.setOnClickListener(this);
+
 		// Initialize tile buttons array
 		tileButtons = new ImageButton[TILE_IDS.length];
 
@@ -253,6 +289,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Get the tile
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			if (tile == null) {
+				this.flash(0xFFFF4325, 100);
 				return;
 			}
 			// Set the selected tile

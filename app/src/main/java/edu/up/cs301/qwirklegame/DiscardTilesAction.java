@@ -22,18 +22,24 @@ public class DiscardTilesAction extends GameAction implements Serializable {
 
     // List of tiles to discard
     private QwirkleTile tileToDiscard;
+    private int selectedTileIndex;
 
-    public DiscardTilesAction(GamePlayer player, QwirkleTile tileToDiscard) {
+    public DiscardTilesAction(GamePlayer player, QwirkleTile tileToDiscard, int selectedTileIndex) {
         super(player);
         this.tileToDiscard = tileToDiscard;
+        this.selectedTileIndex = selectedTileIndex;
     }
 
-    public QwirkleTile getSelectedTiles() {
+    public QwirkleTile getSelectedTile() {
         return tileToDiscard;
     }
 
-    //Sets a new list of tiles to discard
-    public void setTilesToDiscard(QwirkleTile tileToDiscard) {
-        this.tileToDiscard = tileToDiscard;
+    public int getSelectedTileIndex() {
+        return selectedTileIndex;
     }
+
+    //Sets a new list of tiles to discard
+//    public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
+//        this.tileToDiscard = tileToDiscard;
+//    }
 }

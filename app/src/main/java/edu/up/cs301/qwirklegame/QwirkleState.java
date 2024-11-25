@@ -149,20 +149,20 @@ public class QwirkleState extends GameState implements Serializable {
 	/**
 	 * Discards tiles that were selected
 	 */
-	protected boolean discardTiles (DiscardTilesAction action, ArrayList<QwirkleTile> hand) {
-		// Gets the selected tiles from the action
-		ArrayList<QwirkleTile> selectedTiles = getSelectedTiles(hand);
+	protected boolean discardTiles (DiscardTilesAction action) {
+		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
+		tilesInBag.add(playerHand.get(currTile));
+		playerHand.set(currTile, null);
 		// No selected tiles, return
-		if (selectedTiles.isEmpty()) {
-			return false;
-		}
+//		if (selectedTiles.isEmpty()) {
+//			return false;
+//		}
 
 		// Removes the selected tiles from the current player's hand and into the bag
-		tilesInBag.addAll(selectedTiles);
-		hand.removeAll(selectedTiles);
+//		tilesInBag.addAll(selectedTiles);
+//		hand.removeAll(selectedTiles);
 		tilesInBag = shuffleTiles(tilesInBag);
-
 		return true;
 	}
 
