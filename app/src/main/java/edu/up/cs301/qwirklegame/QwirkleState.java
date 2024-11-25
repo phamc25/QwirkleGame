@@ -436,7 +436,6 @@ public class QwirkleState extends GameState implements Serializable {
 			} else {
 				up = false;
 				break;
-
 			}
 		}
 		yChan = 0;
@@ -447,7 +446,6 @@ public class QwirkleState extends GameState implements Serializable {
 			} else {
 				down = false;
 				break;
-
 			}
 		}
 		yChan = 0;
@@ -458,7 +456,6 @@ public class QwirkleState extends GameState implements Serializable {
 			} else {
 				right = false;
 				break;
-
 			}
 		}
 		xChan = 0;
@@ -469,7 +466,6 @@ public class QwirkleState extends GameState implements Serializable {
 			} else {
 				left = false;
 				break;
-
 			}
 		}
 		if ((right||left)||(up||down)) {
