@@ -21,25 +21,19 @@ public class DiscardTilesAction extends GameAction implements Serializable {
     private static final long serialVersionUID = 8927349827349823L;
 
     // List of tiles to discard
-    private ArrayList<QwirkleTile> tilesToDiscard;
+    private QwirkleTile tileToDiscard;
 
     public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
         super(player);
-        this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
+        this.tileToDiscard = tileToDiscard;
     }
 
-    public ArrayList<QwirkleTile> getSelectedTiles() {
-        return tilesToDiscard;
+    public QwirkleTile getSelectedTiles() {
+        return tileToDiscard;
     }
 
     //Sets a new list of tiles to discard
     public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
-        this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
+        this.tileToDiscard = tileToDiscard;
     }
-
-    // Checks if there are tiles to discard
-    public boolean hasTilesToDiscard() {
-        return !tilesToDiscard.isEmpty();
-    }
-
 }
