@@ -309,7 +309,7 @@ public class QwirkleState extends GameState implements Serializable {
 
 		boolean sameCoordX = false;
 		boolean sameCoordY = false;
-		boolean connectingTile = false;
+		boolean connectingTile = true;
 		// Checks if X value of current tile matches an old coordinate
 		// and if not it adds the value to the arraylist
 		if (this.currentTilesX.size() == 0) {
@@ -346,28 +346,30 @@ public class QwirkleState extends GameState implements Serializable {
 			return false;
 		}
 
-		if (currentTilesX.size() > 1) {
+		if (currentTilesX.size() >= 1) {
 			for (int i = 0; i < currentTilesX.size(); i++) {
-				if (candX == currentTilesX.get(i) + 1 || candX == currentTilesX.get(i) - 1) {
+				if (candX == currentTilesX.get(i) || candX == currentTilesX.get(i)) {
 					return true;
 				}
 				else {
-					return false;
+					connectingTile = false;
 				}
-
-
 			}
 		}
 
-		if (currentTilesY.size() > 1) {
+		if (currentTilesY.size() >= 1) {
 			for (int i = 0; i < currentTilesY.size(); i++) {
 				if (candY == currentTilesY.get(i) + 1 || candY == currentTilesY.get(i) - 1) {
 					return true;
 				}
 				else {
-					return false;
+					connectingTile = false;
 				}
 			}
+		}
+
+		if (!connectingTile) {
+			return false;
 		}
 
 		return true;
