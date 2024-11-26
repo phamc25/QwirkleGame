@@ -41,6 +41,7 @@ public class QwirkleState extends GameState implements Serializable {
 	public ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
 	public ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
+	private boolean isFirstTurnMove;
 
 	private ArrayList<Integer> currentTilesX = new ArrayList<>();
 	private ArrayList<Integer> currentTilesY = new ArrayList<>();
@@ -63,6 +64,7 @@ public class QwirkleState extends GameState implements Serializable {
 		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
 		this.isFirstMove = true;
+		this.isFirstTurnMove = true;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
@@ -337,20 +339,50 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 
-		//Checks
-		/*
-		if ((!sameCoordX && !sameCoordY) && !isFirstMove) {
-			currentTilesX.remove(currentTilesX.size() - 1);
-			currentTilesY.remove(currentTilesY.size() - 1);
-			return false;
-		}
-		 */
-
 		if (this.currentTilesX.size() > 1 && this.currentTilesY.size() > 1) {
 			this.currentTilesX.remove(this.currentTilesX.size() - 1);
 			this.currentTilesY.remove(this.currentTilesY.size() - 1);
 			return false;
 		}
+
+//		// Ensure the tile is connected to at least one tile placed this turn
+//		boolean isConnected = false;
+//		for (int i = 0; i < currentTilesX.size() && i < currentTilesY.size(); i++) {
+//			int placedX = this.currentTilesX.get(i);
+//			int placedY = this.currentTilesY.get(i);
+//
+//			if ((candX == placedX && Math.abs(candY - placedY) == 1) ||
+//					(candY == placedY && Math.abs(candX - placedX) == 1)) {
+//				isConnected = true;
+//				isFirstTurnMove = false;
+//				break;
+//			}
+//		}
+//
+//		boolean isConnectedToBoard = false;
+//		if (!isFirstTurnMove) {
+//			// If the current tile is not connected to tiles placed during this turn,
+//			// check if it's connected to any tile already on the board
+//			String[] directions = {"north", "south", "east", "west"};
+//			for (String dir : directions) {
+//				int[] nextPos = takeStep(candX, candY, dir);
+//				int adjX = nextPos[0];
+//				int adjY = nextPos[1];
+//
+//				// Ensure the adjacent position is within bounds and occupied
+//				if (adjX >= 0 && adjX < ROWS && adjY >= 0 && adjY < COLUMNS && board.notEmpty(adjX, adjY)) {
+//					isConnectedToBoard = true;
+//					break;
+//				}
+//			}
+//		}
+//
+//		// If not connected, remove the last added tile and return false
+//		if (!isConnected && !isConnectedToBoard) {
+//			this.currentTilesX.remove(this.currentTilesX.size() - 1);
+//			this.currentTilesY.remove(this.currentTilesY.size() - 1);
+//			return false;
+//		}
 
 		return true;
 	}//end of method
@@ -560,7 +592,10 @@ public class QwirkleState extends GameState implements Serializable {
 			score += 6;
 		}
 		return score;
-
+	}
+	// Helper function to check bounds and tile existence
+	boolean isTileValid (int x, int y) {
+		return x >= 0 && y >= 0 && x < board.getTiles().length && y < board.getTiles()[x].length && board.getTiles()[x][y] != null;
 	}
 
 	public ArrayList<QwirkleTile> shuffleTiles(ArrayList<QwirkleTile> currBag) {
