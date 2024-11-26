@@ -309,6 +309,7 @@ public class QwirkleState extends GameState implements Serializable {
 
 		boolean sameCoordX = false;
 		boolean sameCoordY = false;
+		boolean connectingTile = false;
 		// Checks if X value of current tile matches an old coordinate
 		// and if not it adds the value to the arraylist
 		if (this.currentTilesX.size() == 0) {
@@ -345,44 +346,29 @@ public class QwirkleState extends GameState implements Serializable {
 			return false;
 		}
 
-//		// Ensure the tile is connected to at least one tile placed this turn
-//		boolean isConnected = false;
-//		for (int i = 0; i < currentTilesX.size() && i < currentTilesY.size(); i++) {
-//			int placedX = this.currentTilesX.get(i);
-//			int placedY = this.currentTilesY.get(i);
-//
-//			if ((candX == placedX && Math.abs(candY - placedY) == 1) ||
-//					(candY == placedY && Math.abs(candX - placedX) == 1)) {
-//				isConnected = true;
-//				isFirstTurnMove = false;
-//				break;
-//			}
-//		}
-//
-//		boolean isConnectedToBoard = false;
-//		if (!isFirstTurnMove) {
-//			// If the current tile is not connected to tiles placed during this turn,
-//			// check if it's connected to any tile already on the board
-//			String[] directions = {"north", "south", "east", "west"};
-//			for (String dir : directions) {
-//				int[] nextPos = takeStep(candX, candY, dir);
-//				int adjX = nextPos[0];
-//				int adjY = nextPos[1];
-//
-//				// Ensure the adjacent position is within bounds and occupied
-//				if (adjX >= 0 && adjX < ROWS && adjY >= 0 && adjY < COLUMNS && board.notEmpty(adjX, adjY)) {
-//					isConnectedToBoard = true;
-//					break;
-//				}
-//			}
-//		}
-//
-//		// If not connected, remove the last added tile and return false
-//		if (!isConnected && !isConnectedToBoard) {
-//			this.currentTilesX.remove(this.currentTilesX.size() - 1);
-//			this.currentTilesY.remove(this.currentTilesY.size() - 1);
-//			return false;
-//		}
+		if (currentTilesX.size() > 1) {
+			for (int i = 0; i < currentTilesX.size(); i++) {
+				if (candX == currentTilesX.get(i) + 1 || candX == currentTilesX.get(i) - 1) {
+					return true;
+				}
+				else {
+					return false;
+				}
+
+
+			}
+		}
+
+		if (currentTilesY.size() > 1) {
+			for (int i = 0; i < currentTilesY.size(); i++) {
+				if (candY == currentTilesY.get(i) + 1 || candY == currentTilesY.get(i) - 1) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
 
 		return true;
 	}//end of method
