@@ -309,31 +309,31 @@ public class QwirkleState extends GameState implements Serializable {
 		boolean sameCoordY = false;
 		// Checks if X value of current tile matches an old coordinate
 		// and if not it adds the value to the arraylist
-		if (currentTilesX.size() == 0) {
-			currentTilesX.add(candX);
-			currentTilesY.add(candY);
+		if (this.currentTilesX.size() == 0) {
+			this.currentTilesX.add(candX);
+			this.currentTilesY.add(candY);
 		}
 		else {
-			for (int i = 0; i < currentTilesX.size(); i++) {
-				if (currentTilesX.get(i) == candX) {
+			for (int i = 0; i < this.currentTilesX.size(); i++) {
+				if (this.currentTilesX.get(i) == candX) {
 					sameCoordX = true;
 					break;
 				}
 			}
 			if (!sameCoordX) {
-				currentTilesX.add(candX);
+				this.currentTilesX.add(candX);
 			}
 
 			// Checks if Y value of current tile matches an old coordinate
 			// and if not it adds the value to the arraylist
-			for (int i = 0; i < currentTilesY.size(); i++) {
-				if (currentTilesY.get(i) == candY) {
+			for (int i = 0; i < this.currentTilesY.size(); i++) {
+				if (this.currentTilesY.get(i) == candY) {
 					sameCoordY = true;
 					break;
 				}
 			}
 			if (!sameCoordY) {
-				currentTilesY.add(candY);
+				this.currentTilesY.add(candY);
 			}
 		}
 
@@ -346,9 +346,9 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 		 */
 
-		if (currentTilesX.size() > 1 && currentTilesY.size() > 1) {
-			currentTilesX.remove(currentTilesX.size() - 1);
-			currentTilesY.remove(currentTilesY.size() - 1);
+		if (this.currentTilesX.size() > 1 && this.currentTilesY.size() > 1) {
+			this.currentTilesX.remove(this.currentTilesX.size() - 1);
+			this.currentTilesY.remove(this.currentTilesY.size() - 1);
 			return false;
 		}
 
