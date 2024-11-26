@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import java.io.Serializable;
+
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
 
@@ -14,7 +16,7 @@ import edu.up.cs301.GameFramework.players.GamePlayer;
  *
  */
 
-public class PlaceTileAction extends GameAction {
+public class PlaceTileAction extends GameAction implements Serializable {
 
     // to satisfy Serializable interface
     private static final long serialVersionUID = 9876543210123456L;

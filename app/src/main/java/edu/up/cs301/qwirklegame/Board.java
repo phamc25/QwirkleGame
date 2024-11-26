@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import java.io.Serializable;
+
 /**
  * Board Class
  *
@@ -11,7 +13,7 @@ package edu.up.cs301.qwirklegame;
  *
  */
 
-public class Board {
+public class Board  implements Serializable {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
@@ -71,9 +73,9 @@ public class Board {
      * @param y
      * @return
      */
-    public boolean notEmpty(int x, int y) {
+    public boolean notEmpty(int x, int y, boolean offBoardRetVal) {
         if ((x < 0) || (x >= ROWS) || (y < 0) || (y >= COLUMNS)) {
-            return true;  //better to throw an exception here?
+            return offBoardRetVal;  //better to throw an exception here?
         }
 
         if (boardArray[x][y] != null) {
@@ -81,6 +83,12 @@ public class Board {
         }
         return false;
     }
+
+    public boolean notEmpty(int x, int y) {
+        return notEmpty(x, y, true);
+    }
+
+
 
     /**
      *  Getters for variables

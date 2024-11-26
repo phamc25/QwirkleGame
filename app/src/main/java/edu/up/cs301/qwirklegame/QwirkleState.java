@@ -6,6 +6,7 @@ import static edu.up.cs301.qwirklegame.Board.ROWS;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,20 +25,21 @@ import edu.up.cs301.GameFramework.infoMessage.GameState;
  *
  * @version October 5, 2024
  */
-public class QwirkleState extends GameState {
+public class QwirkleState extends GameState implements Serializable {
 
 	// to satisfy Serializable interface
 	private static final long serialVersionUID = 7737393762469851826L;
 
 	// Instance variables
-	private int pointsToAdd;    // At the end of every turn, scores is calculated to be added
-	private int currPlayer;    // An integer that represents the current player playing
-	private int drawTiles;    // The # of tiles that need to be drawn at the end of turn
-	private int currTile;    // Represents the current tile index for tilesInHands
-	private Board board;    // Board game object that contains a QwirkleTile[][]
-	private int[] playersScore;    // An array to hold player's scores
-	private ArrayList<QwirkleTile> tilesInBag;        // ArrayList of tiles in bag: 72
-	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
+	private int pointsToAdd;               // At the end of every turn, scores is calculated to be added
+	private int currPlayer;                // An integer that represents the current player playing
+	private int drawTiles;                 // The # of tiles that need to be drawn at the end of turn
+	private int currTile;                  // Represents the current tile index for tilesInHands
+	private Board board;                   // Board game object that contains a QwirkleTile[][]
+	private int[] playersScore;                           // An array to hold player's scores
+	// public for testing
+	public ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
+	public ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
 
 	private ArrayList<Integer> currentTilesX = new ArrayList<>();
@@ -51,17 +53,16 @@ public class QwirkleState extends GameState {
 	 * default constructor
 	 * inits the game to match the starting state
 	 */
-	public QwirkleState() {
-		this.numPlayers = 2;
+	public QwirkleState(int numPlayers) {
+		this.numPlayers = numPlayers;
 		this.pointsToAdd = 0;    // No points added to score yet
 		this.currPlayer = 0;    // No current player is decided yet at the beginning
 		this.drawTiles = 6;    // Each player needs to draw 6 tiles at the beginning
 		this.currTile = -1;    // Current tile selected not initialized yet
 		this.board = new Board();
-		this.playersScore = new int[2];    // Empty array of all player's scores
+		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
 		this.isFirstMove = true;
-
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
@@ -69,6 +70,7 @@ public class QwirkleState extends GameState {
 				for (int i = 0; i < 1; i++) {
 					this.tilesInBag.add(new QwirkleTile(shape, color));
 				}
+		tilesInBag = shuffleTiles(tilesInBag);
 
 		setupTileLists(this.numPlayers);
 
@@ -76,6 +78,13 @@ public class QwirkleState extends GameState {
 		for (int i = 0; i < numPlayers; i++) {
 			drawTiles(i, HAND_SIZE);
 		}
+	}
+
+	/**
+	 * Constructor for unit tests
+	 */
+	public QwirkleState() {
+		this(2);
 	}
 
 	/**
@@ -149,19 +158,20 @@ public class QwirkleState extends GameState {
 	/**
 	 * Discards tiles that were selected
 	 */
-	protected boolean discardTiles (DiscardTilesAction action, ArrayList<QwirkleTile> hand) {
-		// Gets the selected tiles from the action
-		ArrayList<QwirkleTile> selectedTiles = getSelectedTiles(hand);
+	protected boolean discardTiles (DiscardTilesAction action) {
+		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
+		tilesInBag.add(playerHand.get(currTile));
+		playerHand.set(currTile, null);
 		// No selected tiles, return
-		if (selectedTiles.isEmpty()) {
-			return false;
-		}
+//		if (selectedTiles.isEmpty()) {
+//			return false;
+//		}
 
 		// Removes the selected tiles from the current player's hand and into the bag
-		tilesInBag.addAll(selectedTiles);
-		hand.removeAll(selectedTiles);
-
+//		tilesInBag.addAll(selectedTiles);
+//		hand.removeAll(selectedTiles);
+		tilesInBag = shuffleTiles(tilesInBag);
 		return true;
 	}
 
@@ -241,6 +251,17 @@ public class QwirkleState extends GameState {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
 	}
+
+	/**
+	 * Updates the player's score based on the # of connected tiles to the one(s) they placed
+	 */
+//	public int playerScore(QwirkleTile placed, int x,  int y) {
+//		ArrayList<QwirkleTile> scoreList;
+//		String[] directions = {"north", "south", "east", "west"};
+//		for (String dir : directions) {
+//			if ()
+//		}
+//	}
 
 	/**
 	 * Helper method for isValid
@@ -412,7 +433,12 @@ public class QwirkleState extends GameState {
 					Log.d("oops!", "null tile");
 				}
 
-				boolean isColorLine = firstTile.getColor() == secondTile.getColor();
+				boolean isColorLine = false;
+				try {
+					isColorLine = firstTile.getColor() == secondTile.getColor();
+				}
+				catch (NullPointerException e) {
+				}
 
 				// Validate all tiles in the line follow the same rule
 				for (int i = 1; i < tilesInLine.size(); i++) {
@@ -431,7 +457,11 @@ public class QwirkleState extends GameState {
 						}
 					} else {
 						// In a shape line, all shapes must match and colors must be different
-						if (currTile.getShape() != firstTile.getShape()) {
+						try {
+							if (currTile.getShape() != firstTile.getShape()) {
+								return false;
+							}
+						} catch (NullPointerException e) {
 							return false;
 						}
 						// Check for duplicate colors in shape line
@@ -450,46 +480,91 @@ public class QwirkleState extends GameState {
 			return false;
 		}
 		// Add point for every tile placed
-		this.pointsToAdd++;
+		this.pointsToAdd = calcScore(candX, candY);
 		// no mismatches found, no repeated tiles, connected to another tile
 		return true;
 	}
 
 	/**
+	 * Calculates score for current player's turn
 	 * Checks if Qwirkle has been achieved (colors/shapes match up)
-	 * TODO: "Qwirkle" bonus move is not completed yet
 	 *
-	 * @param toPlace
 	 * @param candX
 	 * @param candY
 	 * @return
 	 */
-	protected boolean isQwirkle(QwirkleTile toPlace, int candX, int candY) {
+	protected int calcScore(int candX, int candY) {
+		//whether or not there is a tile adjacent in each direction
+		boolean right = true;
+		boolean left = true;
+		boolean up = true;
+		boolean down = true;
+
+		//ret value
+		int score = 1;
+
+		//iterator variables
 		int yChan = 0;
 		int xChan = 0;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 6; j++) {
-				if (i == 0) {
-					yChan = j;
-				} else if (i == 1) {
-					yChan = -j;
-				} else if (i == 2) {
-					xChan = j;
-				} else if (i == 3) {
-					xChan = -j;
-				}
-				if (!board.notEmpty(candX + xChan, candY + yChan)) {
-					return false;
 
-				}
-				yChan = 0;
-				xChan = 0;
+
+		for (int j = 0; j < 5; j++) {
+			yChan++;
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
+				score++;
+			} else {
+				up = false;
+				break;
 			}
 		}
-		return true;
+		yChan = 0;
+		for (int j = 0; j < 5; j++) {
+			yChan--;
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
+				score++;
+			} else {
+				down = false;
+				break;
+			}
+		}
+		yChan = 0;
+		for (int j = 0; j < 5; j++) {
+			xChan++;
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
+				score++;
+			} else {
+				right = false;
+				break;
+			}
+		}
+		xChan = 0;
+		for (int j = 0; j < 5; j++) {
+			xChan--;
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
+				score++;
+			} else {
+				left = false;
+				break;
+			}
+		}
+		if ((right||left)||(up||down)) {
+			score += 6;
+		}
+		return score;
 
 	}
 
+	public ArrayList<QwirkleTile> shuffleTiles(ArrayList<QwirkleTile> currBag) {
+		ArrayList<QwirkleTile> shuffledBag = new ArrayList<>(currBag); // Create a copy of the tiles in the bag
+		for (int i = 0; i < shuffledBag.size(); i++) {
+			// Swap the current tile with a random tile
+			int randomIndex = (int) (Math.random() * shuffledBag.size());
+			QwirkleTile temp = shuffledBag.get(i);
+			shuffledBag.set(i, shuffledBag.get(randomIndex));
+			shuffledBag.set(randomIndex, temp);
+		}
+		return shuffledBag;
+	}
 
 	/**
 	 * toString method that returns the current gamestate in a string

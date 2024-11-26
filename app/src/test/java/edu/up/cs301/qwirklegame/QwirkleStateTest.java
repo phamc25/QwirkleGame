@@ -4,15 +4,40 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class QwirkleStateTest {
 
+    // Talia's Unit Tests
     @Test
     public void getPlayersScore() {
         QwirkleState qwirkleState = new QwirkleState();
-        qwirkleState.setPlayersScore(0, 5);
+        int setScore = 5;
+        qwirkleState.setPlayersScore(0, setScore);
         int[] playerScore = qwirkleState.getPlayersScore();
-        assertTrue(playerScore[0] == 5);
+        assertEquals(setScore, playerScore[0]);
 
+    }
+
+    @Test
+    public void takeStep() {
+        QwirkleState state = new QwirkleState();
+        int x = 5;
+        int changedX = 4;
+        int y = 5;
+        String dir = "north";
+        state.takeStep(x, y, dir);
+        assertEquals(changedX, state.takeStep(x, y, dir)[0]);
+    }
+
+    @Test
+    public void nextPlayer() {
+        QwirkleState state = new QwirkleState();
+        state.setCurrPlayer(2);
+        int nextplayer = 3;
+        state.nextPlayer();
+        int nextActual = state.getCurrPlayer();
+        assertEquals(nextplayer, nextActual);
     }
 
     // Ryan's unit tests
@@ -37,7 +62,7 @@ public class QwirkleStateTest {
     @Test
     public void getTilesLeft() {
         QwirkleState qState = new QwirkleState();
-        int expectedAmount = 108;
+        int expectedAmount = 24;
         int actualAmount = qState.getTilesLeft();
         assertEquals(expectedAmount, actualAmount);
     }
@@ -82,9 +107,28 @@ public class QwirkleStateTest {
     @Test
     public void getPlayerHand() {
         QwirkleState q1 = new QwirkleState();
-        q1.drawTiles(0,3);
+        q1.drawTiles(0,1);
         int len = q1.getPlayerHand(0).size();
-        assertEquals(3, len);
+        assertEquals(7, len);
+    }
 
+    @Test
+    public void drawTiles() {
+        QwirkleState state = new QwirkleState();
+        state.drawTiles(0, 3);
+        int bagSize = state.getTilesLeft();
+        assertEquals(21, bagSize);
+    }
+
+    @Test
+    public void getSelectedTiles() {
+        QwirkleState state = new QwirkleState();
+        ArrayList<QwirkleTile> selected = state.getPlayerHand(0);
+        QwirkleTile one = selected.get(0);
+        one.setSelected(true);
+
+        QwirkleTile three = selected.get(2);
+        three.setSelected(true);
+        assertEquals(2, state.getSelectedTiles(selected).size());
     }
 }

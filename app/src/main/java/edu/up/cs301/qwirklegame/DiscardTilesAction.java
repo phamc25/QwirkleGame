@@ -2,6 +2,8 @@ package edu.up.cs301.qwirklegame;
 
 import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import edu.up.cs301.GameFramework.players.GamePlayer;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,30 +16,30 @@ import java.util.ArrayList;
  * @author Ryan Murray
  */
 
-public class DiscardTilesAction extends GameAction {
+public class DiscardTilesAction extends GameAction implements Serializable {
     // to satisfy Serializable interface
     private static final long serialVersionUID = 8927349827349823L;
 
     // List of tiles to discard
-    private ArrayList<QwirkleTile> tilesToDiscard;
+    private QwirkleTile tileToDiscard;
+    private int selectedTileIndex;
 
-    public DiscardTilesAction(GamePlayer player, ArrayList<QwirkleTile> tilesToDiscard) {
+    public DiscardTilesAction(GamePlayer player, QwirkleTile tileToDiscard, int selectedTileIndex) {
         super(player);
-        this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
+        this.tileToDiscard = tileToDiscard;
+        this.selectedTileIndex = selectedTileIndex;
     }
 
-    public ArrayList<QwirkleTile> getSelectedTiles() {
-        return tilesToDiscard;
+    public QwirkleTile getSelectedTile() {
+        return tileToDiscard;
+    }
+
+    public int getSelectedTileIndex() {
+        return selectedTileIndex;
     }
 
     //Sets a new list of tiles to discard
-    public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
-        this.tilesToDiscard = new ArrayList<>(tilesToDiscard);
-    }
-
-    // Checks if there are tiles to discard
-    public boolean hasTilesToDiscard() {
-        return !tilesToDiscard.isEmpty();
-    }
-
+//    public void setTilesToDiscard(ArrayList<QwirkleTile> tilesToDiscard) {
+//        this.tileToDiscard = tileToDiscard;
+//    }
 }

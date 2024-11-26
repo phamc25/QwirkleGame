@@ -9,6 +9,7 @@ import edu.up.cs301.GameFramework.actionMessage.GameAction;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 /**
  * This contains the Qwirkle Local Game. Any actions made by any players
@@ -47,9 +48,6 @@ public class QwirkleLocalGame extends LocalGame {
 	 */
 	public QwirkleLocalGame(GameState state) {
 		// initialize the game state, with the counter value starting at 0
-		if (! (state instanceof QwirkleState)) {
-			state = new QwirkleState(); //is asking for the state of the game at the start
-		}
 		this.gameState = (QwirkleState)state;
 		super.state = state;
 	}
@@ -81,11 +79,10 @@ public class QwirkleLocalGame extends LocalGame {
 			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
 			gameState.setAddPoints(0);
 			// Change the player
-			sendUpdatedStateTo(action.getPlayer());
+//			sendUpdatedStateTo(action.getPlayer());
 			gameState.nextPlayer();
 
 			// Send the state to the player
-			sendUpdatedStateTo(action.getPlayer());
 			return this.gameState.endTurn(ea);
 
 		}
@@ -98,6 +95,12 @@ public class QwirkleLocalGame extends LocalGame {
 			gameState.setCurrTile(place.getSelectedTileIndex());
 
 			return this.gameState.placeTile(place);
+		}
+		// Else if it is a DiscardTileAction
+		else if (action instanceof DiscardTilesAction) {
+			DiscardTilesAction discard = (DiscardTilesAction) action;
+			gameState.setCurrTile(discard.getSelectedTileIndex());
+			return this.gameState.discardTiles(discard);
 		}
 		else {
 			// denote that this was an illegal move
