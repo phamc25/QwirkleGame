@@ -112,6 +112,15 @@ public class QwirkleState extends GameState implements Serializable {
 		this.board = new Board(orig.board);
 		this.isFirstMove = orig.isFirstMove;
 
+		//copy the currTileInLine vars
+		for(Integer num : orig.currentTilesX) {
+			this.currentTilesX.add(num);
+		}
+		for(Integer num : orig.currentTilesY) {
+			this.currentTilesY.add(num);
+		}
+
+
 		// Deep copy for int array
 		this.playersScore = Arrays.copyOf(orig.playersScore, orig.playersScore.length);
 
