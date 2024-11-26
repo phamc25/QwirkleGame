@@ -428,16 +428,23 @@ public class QwirkleState extends GameState implements Serializable {
 	 * @return
 	 */
 	protected int calcScore(int candX, int candY) {
+		//whether or not there is a tile adjacent in each direction
 		boolean right = true;
 		boolean left = true;
 		boolean up = true;
 		boolean down = true;
+
+		//ret value
 		int score = 1;
+
+		//iterator variables
 		int yChan = 0;
 		int xChan = 0;
+
+
 		for (int j = 0; j < 5; j++) {
 			yChan++;
-			if (board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
 				score++;
 			} else {
 				up = false;
@@ -447,7 +454,7 @@ public class QwirkleState extends GameState implements Serializable {
 		yChan = 0;
 		for (int j = 0; j < 5; j++) {
 			yChan--;
-			if (board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
 				score++;
 			} else {
 				down = false;
@@ -457,7 +464,7 @@ public class QwirkleState extends GameState implements Serializable {
 		yChan = 0;
 		for (int j = 0; j < 5; j++) {
 			xChan++;
-			if (board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
 				score++;
 			} else {
 				right = false;
@@ -467,7 +474,7 @@ public class QwirkleState extends GameState implements Serializable {
 		xChan = 0;
 		for (int j = 0; j < 5; j++) {
 			xChan--;
-			if (board.notEmpty(candX + xChan, candY + yChan)) {
+			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
 				score++;
 			} else {
 				left = false;

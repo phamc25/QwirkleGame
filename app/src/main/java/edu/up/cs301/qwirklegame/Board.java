@@ -73,9 +73,9 @@ public class Board  implements Serializable {
      * @param y
      * @return
      */
-    public boolean notEmpty(int x, int y) {
+    public boolean notEmpty(int x, int y, boolean offBoardRetVal) {
         if ((x < 0) || (x >= ROWS) || (y < 0) || (y >= COLUMNS)) {
-            return true;  //better to throw an exception here?
+            return offBoardRetVal;  //better to throw an exception here?
         }
 
         if (boardArray[x][y] != null) {
@@ -83,6 +83,12 @@ public class Board  implements Serializable {
         }
         return false;
     }
+
+    public boolean notEmpty(int x, int y) {
+        return notEmpty(x, y, true);
+    }
+
+
 
     /**
      *  Getters for variables
