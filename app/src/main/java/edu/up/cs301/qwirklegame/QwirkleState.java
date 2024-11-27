@@ -40,14 +40,12 @@ public class QwirkleState extends GameState implements Serializable {
 	public ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
 	public ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
-	private boolean isFirstTurnMove;
 
-	private ArrayList<Integer> currentTilesX = new ArrayList<>();
+    private ArrayList<Integer> currentTilesX = new ArrayList<>();
 	private ArrayList<Integer> currentTilesY = new ArrayList<>();
 
 	// Static variables for common values
 	public static final int HAND_SIZE = 6;
-	public static final int MAX_PLAYERS = 4;
 
 	/**
 	 * default constructor
@@ -63,9 +61,8 @@ public class QwirkleState extends GameState implements Serializable {
 		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
 		this.tilesInBag = new ArrayList<QwirkleTile>(108); // Initial array of 72 tiles
 		this.isFirstMove = true;
-		this.isFirstTurnMove = true;
 
-		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
+        // Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
 			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
 				for (int i = 0; i < 3; i++) {
@@ -201,14 +198,6 @@ public class QwirkleState extends GameState implements Serializable {
 	}
 
 	/**
-	 * Quits the game when this action made
-	 */
-	protected boolean quitGame (QuitGameAction action) {
-		// can quit at any time
-		return true;
-	}
-
-	/**
 	 * Ends your turn when action is made
 	 */
 	protected boolean endTurn (EndTurnAction action) {
@@ -297,8 +286,7 @@ public class QwirkleState extends GameState implements Serializable {
 
 		boolean sameCoordX = false;
 		boolean sameCoordY = false;
-		boolean connectingTile = false;
-		// Checks if X value of current tile matches an old coordinate
+        // Checks if X value of current tile matches an old coordinate
 		// and if not it adds the value to the arraylist
 		if (this.currentTilesX.size() == 0) {
 			this.currentTilesX.add(candX);
