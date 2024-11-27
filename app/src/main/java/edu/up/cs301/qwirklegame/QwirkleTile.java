@@ -57,7 +57,12 @@ public class QwirkleTile implements Serializable {
         this.isSelected = orig.isSelected;
     }
 
-    // for checking if a tile is a duplicate
+    /**
+     * for checking if a tile is a duplicate
+     *
+     * @param obj must be a QwirkleTile
+     * @return true if QwirkleTiles are equal, false if otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof QwirkleTile) {
@@ -70,8 +75,7 @@ public class QwirkleTile implements Serializable {
     }
 
     /**
-     * Takes a QwirkleTile and matches the image file name to the tile from
-     * the TILE_RESOURCES array
+     * Takes a QwirkleTile and matches the image file name to the tile from the TILE_RESOURCES array
      *
      * @param tile
      * @return

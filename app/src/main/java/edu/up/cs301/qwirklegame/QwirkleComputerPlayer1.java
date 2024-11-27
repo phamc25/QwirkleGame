@@ -3,15 +3,10 @@ package edu.up.cs301.qwirklegame;
 import static edu.up.cs301.qwirklegame.Board.COLUMNS;
 import static edu.up.cs301.qwirklegame.Board.ROWS;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 import edu.up.cs301.GameFramework.players.GameComputerPlayer;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
-import edu.up.cs301.GameFramework.utilities.Tickable;
 
 /**
  * This contains logic for the Qwirkle Computer Player 1, or "Dumb AI".
@@ -100,7 +95,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 			}
 		}
 		// End turn after placing tiles or if no valid moves are found
-		game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
+		game.sendAction(new EndTurnAction(gameState, this));
 	}
 }
 
