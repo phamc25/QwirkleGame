@@ -341,8 +341,12 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 
 		if (this.currentTilesX.size() > 1 && this.currentTilesY.size() > 1) {
-			this.currentTilesX.remove(this.currentTilesX.size() - 1);
-			this.currentTilesY.remove(this.currentTilesY.size() - 1);
+			if (!sameCoordX) {
+				this.currentTilesX.remove(this.currentTilesX.size() - 1);
+			}
+			if (!sameCoordY) {
+				this.currentTilesY.remove(this.currentTilesY.size() - 1);
+			}
 			return false;
 		}
 
