@@ -61,14 +61,14 @@ public class QwirkleState extends GameState implements Serializable {
 		this.currTile = -1;    // Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(108); // Initial array of 72 tiles
 		this.isFirstMove = true;
 		this.isFirstTurnMove = true;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
 			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 3; i++) {
 					this.tilesInBag.add(new QwirkleTile(shape, color));
 				}
 		tilesInBag = shuffleTiles(tilesInBag);
@@ -329,40 +329,80 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 
 		if (this.currentTilesX.size() > 1 && this.currentTilesY.size() > 1) {
-			this.currentTilesX.remove(this.currentTilesX.size() - 1);
-			this.currentTilesY.remove(this.currentTilesY.size() - 1);
+			if (!sameCoordX) {
+				this.currentTilesX.remove(this.currentTilesX.size() - 1);
+			}
+			if (!sameCoordY) {
+				this.currentTilesY.remove(this.currentTilesY.size() - 1);
+			}
 			return false;
 		}
 
+		// Int var keeps track of when the loop doesnt find a current tile in a direction
+		int fails = 0;
 		// Check if candX connects to any of the current X coordinates
 		if (currentTilesX.size() > 1) {
-			for (int i = 0; i < currentTilesX.size(); i++) {
-				if (candX == ((currentTilesX.get(i)) + 1) || candX == ((currentTilesX.get(i)) - 1)) {
-					connectingTile = true;  // Found a valid connection
+			// searches for a matching tile in the same line and in +X direction
+			for (int i = 1; i < 6; i++) {
+				if (board.notEmpty(candX + i, candY)) {
+					if (currentTilesX.indexOf(candX + i) != -1) {
+						break;
+					}
+				}
+				else {
+					fails++;
+					break;
+				}
+			}
+			// searches for a matching tile in the same line and in -X direction
+			for (int i = 1; i < 6; i++) {
+				if (board.notEmpty(candX - i, candY)) {
+					if (currentTilesX.indexOf(candX - i) != -1) {
+						break;
+					}
+				}
+				else {
+					fails++;
 					break;
 				}
 			}
 		}
 		// Check if candY connects to any of the current Y coordinates
 		if (currentTilesY.size() > 1) {
-			for (int i = 0; i < currentTilesY.size(); i++) {
-				if (candY == ((currentTilesY.get(i)) + 1) || candY == ((currentTilesY.get(i)) - 1)) {
-					connectingTile = true;  // Found a valid connection
+			// searches for a matching tile in the same line and in +Y direction
+			for (int i = 1; i < 6; i++) {
+				if (board.notEmpty(candX, candY + i)) {
+					if (currentTilesY.indexOf(candY + i) != -1) {
+						break;
+					}
+				}
+				else {
+					fails++;
+					break;
+				}
+			}
+			// searches for a matching tile in the same line and in -Y direction
+			for (int i = 1; i < 6; i++) {
+				if (board.notEmpty(candX, candY - i)) {
+					if (currentTilesY.indexOf(candY - i) != -1) {
+						break;
+					}
+				}
+				else {
+					fails++;
 					break;
 				}
 			}
 		}
-		else if (currentTilesX.size() == 1 && currentTilesY.size() == 1) {
-			connectingTile = true;
-		}
 
-		// If no valid connection was found, return false
-		if (!connectingTile) {
+		// if the loop cant find a matching tile in the same line in either direction
+		// returns false
+		if (fails >= 2) {
 			return false;
 		}
 
 		return true;
-	}//end of method
+	}//currTilesInLine
 
 	/**
 	 * isValid

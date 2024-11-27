@@ -79,10 +79,7 @@ public class Board  implements Serializable {
             return offBoardRetVal;  //better to throw an exception here?
         }
 
-        if (boardArray[x][y] != null) {
-            return true;
-        }
-        return false;
+        return boardArray[x][y] != null;
     }
 
     public boolean notEmpty(int x, int y) {
