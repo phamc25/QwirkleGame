@@ -354,6 +354,7 @@ public class QwirkleState extends GameState implements Serializable {
 		int fails = 0;
 		// Check if candX connects to any of the current X coordinates
 		if (currentTilesX.size() > 1) {
+			// searches for a matching tile in the same line and in +X direction
 			for (int i = 1; i < 6; i++) {
 				if (board.notEmpty(candX + i, candY)) {
 					if (currentTilesX.indexOf(candX + i) != -1) {
@@ -365,6 +366,7 @@ public class QwirkleState extends GameState implements Serializable {
 					break;
 				}
 			}
+			// searches for a matching tile in the same line and in -X direction
 			for (int i = 1; i < 6; i++) {
 				if (board.notEmpty(candX - i, candY)) {
 					if (currentTilesX.indexOf(candX - i) != -1) {
@@ -379,6 +381,7 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 		// Check if candY connects to any of the current Y coordinates
 		if (currentTilesY.size() > 1) {
+			// searches for a matching tile in the same line and in +Y direction
 			for (int i = 1; i < 6; i++) {
 				if (board.notEmpty(candX, candY + i)) {
 					if (currentTilesY.indexOf(candY + i) != -1) {
@@ -390,6 +393,7 @@ public class QwirkleState extends GameState implements Serializable {
 					break;
 				}
 			}
+			// searches for a matching tile in the same line and in -Y direction
 			for (int i = 1; i < 6; i++) {
 				if (board.notEmpty(candX, candY - i)) {
 					if (currentTilesY.indexOf(candY - i) != -1) {
@@ -403,12 +407,14 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 
+		// if the loop cant find a matching tile in the same line in either direction
+		// returns false
 		if (fails >= 2) {
 			return false;
 		}
 
 		return true;
-	}//end of method
+	}//currTilesInLine
 
 	/**
 	 * isValid
