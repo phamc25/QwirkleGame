@@ -36,6 +36,7 @@ public class Board  implements Serializable {
 
     /**
      * Method for deep copying array
+     *
      * @return A QwirkleTile double array
      */
     public QwirkleTile[][] copyBoard() {
@@ -71,7 +72,7 @@ public class Board  implements Serializable {
      *
      * @param x
      * @param y
-     * @return
+     * @return true if there is tile, false if not
      */
     public boolean notEmpty(int x, int y, boolean offBoardRetVal) {
         if ((x < 0) || (x >= ROWS) || (y < 0) || (y >= COLUMNS)) {
@@ -95,9 +96,6 @@ public class Board  implements Serializable {
      */
     public QwirkleTile[][] getTiles() {
         return this.boardArray;
-    }
-    public QwirkleTile getTile(int xVal, int yVal) {
-        return this.boardArray[xVal][yVal];
     }
 }
 

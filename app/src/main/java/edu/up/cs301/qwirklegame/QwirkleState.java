@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.infoMessage.GameState;
 
 
@@ -262,17 +261,6 @@ public class QwirkleState extends GameState implements Serializable {
 		int tilesNeeded = 6 - tilesInHands[playerIndex].size();
 		drawTiles(playerIndex, tilesNeeded);
 	}
-
-	/**
-	 * Updates the player's score based on the # of connected tiles to the one(s) they placed
-	 */
-//	public int playerScore(QwirkleTile placed, int x,  int y) {
-//		ArrayList<QwirkleTile> scoreList;
-//		String[] directions = {"north", "south", "east", "west"};
-//		for (String dir : directions) {
-//			if ()
-//		}
-//	}
 
 	/**
 	 * Helper method for isValid
@@ -582,11 +570,13 @@ public class QwirkleState extends GameState implements Serializable {
 		}
 		return score;
 	}
-	// Helper function to check bounds and tile existence
-	boolean isTileValid (int x, int y) {
-		return x >= 0 && y >= 0 && x < board.getTiles().length && y < board.getTiles()[x].length && board.getTiles()[x][y] != null;
-	}
 
+	/**
+	 * Shuffles tiles placed into the bag
+	 *
+	 * @param currBag
+	 * @return
+	 */
 	public ArrayList<QwirkleTile> shuffleTiles(ArrayList<QwirkleTile> currBag) {
 		ArrayList<QwirkleTile> shuffledBag = new ArrayList<>(currBag); // Create a copy of the tiles in the bag
 		for (int i = 0; i < shuffledBag.size(); i++) {
@@ -600,7 +590,7 @@ public class QwirkleState extends GameState implements Serializable {
 	}
 
 	/**
-	 * toString method that returns the current gamestate in a string
+	 * toString method that returns the current GameState in a string
 	 * @param currState
 	 * @return
 	 */

@@ -25,13 +25,7 @@ public class EndTurnAction extends GameAction implements Serializable {
      *
      * @param player the player who created the action
      */
-    public EndTurnAction(QwirkleState state, GamePlayer player, int players) {
+    public EndTurnAction(QwirkleState state, GamePlayer player) {
         super(player);
-        int playerIndex = state.getCurrPlayer();
-    }
-
-    // can always skip turn
-    public boolean isEndTurn(){
-        return true;
     }
 }

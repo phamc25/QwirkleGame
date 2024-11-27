@@ -1,7 +1,5 @@
 package edu.up.cs301.qwirklegame;
 
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
-import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
@@ -10,8 +8,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -127,7 +123,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
 			// Create a new end turn action and then update the display
-			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
+			EndTurnAction end = new EndTurnAction(state, this);
 			game.sendAction(end); // send action to the game
 			canPlace = true;
 			canDiscard = true;
@@ -153,7 +149,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			if (selectedTile == null) {
 				return;
 			}
-			DiscardTilesAction discardAction = new DiscardTilesAction(this, selectedTile, state.getCurrTile());
+			DiscardTilesAction discardAction = new DiscardTilesAction(this, state.getCurrTile());
 			game.sendAction(discardAction);
 		}
 		else {

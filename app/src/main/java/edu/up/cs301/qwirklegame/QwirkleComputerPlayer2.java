@@ -3,14 +3,8 @@ package edu.up.cs301.qwirklegame;
 import static edu.up.cs301.qwirklegame.Board.COLUMNS;
 import static edu.up.cs301.qwirklegame.Board.ROWS;
 
-import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
 import edu.up.cs301.GameFramework.players.GameComputerPlayer;
-
-import android.app.Activity;
-import android.os.Handler;
-import android.util.Log;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -90,6 +84,6 @@ public class QwirkleComputerPlayer2 extends GameComputerPlayer {
 			}
 		}
 		// If no valid moves are found, end the turn
-		game.sendAction(new EndTurnAction(gameState, this, gameState.getNumPlayers()));
+		game.sendAction(new EndTurnAction(gameState, this));
 	}
 }

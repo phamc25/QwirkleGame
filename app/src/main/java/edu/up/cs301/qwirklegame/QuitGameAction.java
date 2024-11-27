@@ -27,7 +27,6 @@ public class QuitGameAction extends GameAction implements Serializable {
 
     // can always quit the game
     public boolean isQuitAction() {
-
         return true;
     }
     public void quitGame() {
