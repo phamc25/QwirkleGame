@@ -62,14 +62,14 @@ public class QwirkleState extends GameState implements Serializable {
 		this.currTile = -1;    // Current tile selected not initialized yet
 		this.board = new Board();
 		this.playersScore = new int[this.numPlayers];    // Empty array of all player's scores
-		this.tilesInBag = new ArrayList<QwirkleTile>(36); // Initial array of 72 tiles
+		this.tilesInBag = new ArrayList<QwirkleTile>(108); // Initial array of 72 tiles
 		this.isFirstMove = true;
 		this.isFirstTurnMove = true;
 
 		// Iterate through enums and create 2 Qwirkle Tiles of each shape and color
 		for (QwirkleTile.Color color : QwirkleTile.Color.values())
 			for (QwirkleTile.Shape shape : QwirkleTile.Shape.values())
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 3; i++) {
 					this.tilesInBag.add(new QwirkleTile(shape, color));
 				}
 		tilesInBag = shuffleTiles(tilesInBag);
