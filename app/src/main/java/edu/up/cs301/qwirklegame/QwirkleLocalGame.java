@@ -78,9 +78,9 @@ public class QwirkleLocalGame extends LocalGame {
 			// Set the score
 			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
 			gameState.setAddPoints(0);
+
+			// Change the player to next
 			sendUpdatedStateTo(action.getPlayer());
-			// Change the player
-//			sendUpdatedStateTo(action.getPlayer());
 			gameState.nextPlayer();
 
 			// Send the state to the player
@@ -94,7 +94,6 @@ public class QwirkleLocalGame extends LocalGame {
 
 			// Update the current tile so the game state knows
 			gameState.setCurrTile(place.getSelectedTileIndex());
-
 			return this.gameState.placeTile(place);
 		}
 		// Else if it is a DiscardTileAction

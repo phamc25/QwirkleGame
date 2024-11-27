@@ -69,10 +69,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// An instance of the QwirkleView (so we can add a tile to the board view)
 	private QwirkleView qwirkleView;
 
+	// A QwirkleTile of the currently selected tile
 	private QwirkleTile selectedTile;
 
+	// Can a player place or discard in this turn?
 	private boolean canPlace = true;
-	private boolean canDiscard = false;
+	private boolean canDiscard = false;		// Cannot discard on first turn
 
 	/**
 	 * constructor
@@ -132,10 +134,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			resetTileBackground();
 		}
 		else if (button.getId() == R.id.discard) {
+			// If cannot discard, flash
 			if (canDiscard == false) {
 				this.flash(0xFFFF4325, 100);
 				return;
 			}
+			// If a player discards, they cannot place tiles
 			canPlace = false;
 			// Create a new discard tile action and then update the hand and the bag
 			// Make sure a tile is selected
@@ -165,7 +169,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 					// Highlight the selected button
 					tileButtons[i].setBackgroundResource(R.drawable.tile_highlight);
-					return;  // Exit after handling tile
+					return;
 				}
 			}
 		}
@@ -216,6 +220,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		}
 	}
 
+	/**
+	 * Resets the backgrounds of the tile image buttons to transparent
+	 */
 	public void resetTileBackground() {
 		// Reset backgrounds for all buttons
 		for (ImageButton tileButton : tileButtons) {
@@ -237,7 +244,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
 
+		// Set the player scores
 		playerScore.setText(String.valueOf(state.getPlayersScore()[0]));
+		// Player 2 score
 		player2Score.setText("Player 2: " + state.getPlayersScore()[1]);
 
 		// Only update player 3 score if there are 3 or more players

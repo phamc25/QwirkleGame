@@ -36,11 +36,9 @@ public class QwirkleState extends GameState implements Serializable {
 	private int currTile;                  // Represents the current tile index for tilesInHands
 	private Board board;                   // Board game object that contains a QwirkleTile[][]
 	private int[] playersScore;                           // An array to hold player's scores
-	// public for testing
-	public ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
-	public ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
+	private ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
+	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
 	private boolean isFirstMove;
-
     private ArrayList<Integer> currentTilesX = new ArrayList<>();
 	private ArrayList<Integer> currentTilesY = new ArrayList<>();
 
@@ -166,35 +164,18 @@ public class QwirkleState extends GameState implements Serializable {
 	 * Discards tiles that were selected
 	 */
 	protected boolean discardTiles (DiscardTilesAction action) {
+		// Get the player hand
 		ArrayList<QwirkleTile> playerHand = tilesInHands[currPlayer];
 
+		// Add the current tile selected to the bag
 		tilesInBag.add(playerHand.get(currTile));
-		playerHand.set(currTile, null);
-		// No selected tiles, return
-//		if (selectedTiles.isEmpty()) {
-//			return false;
-//		}
 
-		// Removes the selected tiles from the current player's hand and into the bag
-//		tilesInBag.addAll(selectedTiles);
-//		hand.removeAll(selectedTiles);
+		// Set that current tile in the hand to null
+		playerHand.set(currTile, null);
+
+		// Shuffle the tiles and return true
 		tilesInBag = shuffleTiles(tilesInBag);
 		return true;
-	}
-
-	/**
-	 * This method returns an ArrayList of Qwirkle tile objects
-	 * that represent the selected tiles for discarding
-	 */
-	public ArrayList<QwirkleTile> getSelectedTiles(ArrayList<QwirkleTile> hand) {
-		// The ArrayList of selected tiles
-		ArrayList<QwirkleTile> selectedTiles = new ArrayList<>();
-		for (QwirkleTile tile : hand) {
-			if (tile.getSelected()) {
-				selectedTiles.add(tile);
-			}
-		}
-		return selectedTiles;
 	}
 
 	/**
@@ -388,7 +369,6 @@ public class QwirkleState extends GameState implements Serializable {
 		if (fails >= 2) {
 			return false;
 		}
-
 		return true;
 	}//currTilesInLine
 
@@ -404,10 +384,10 @@ public class QwirkleState extends GameState implements Serializable {
 			if (candX != ROWS / 2 || candY != COLUMNS / 2) {
 				return false;
 			}
-			isFirstMove = false;	// Set to false once first move is made
-			this.pointsToAdd++;		// Incrememnt points
-			currentTilesX.add(candX);
-			currentTilesY.add(candY);
+			isFirstMove = false;		// Set to false once first move is made
+			this.pointsToAdd++;			// Increment points
+			currentTilesX.add(candX);	// Add this index to currentTilesX
+			currentTilesY.add(candY);	// Add this index to currentTilesY
 			return true;
 		}
 
@@ -553,7 +533,7 @@ public class QwirkleState extends GameState implements Serializable {
 		int yChan = 0;
 		int xChan = 0;
 
-
+		// Iterate in +col direction
 		for (int j = 0; j < 5; j++) {
 			yChan++;
 			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
@@ -564,6 +544,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		yChan = 0;
+		// Iterate in -col direction
 		for (int j = 0; j < 5; j++) {
 			yChan--;
 			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
@@ -574,6 +555,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		yChan = 0;
+		// Iterate in +row direction
 		for (int j = 0; j < 5; j++) {
 			xChan++;
 			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
@@ -584,6 +566,7 @@ public class QwirkleState extends GameState implements Serializable {
 			}
 		}
 		xChan = 0;
+		// Iterate in +row direction
 		for (int j = 0; j < 5; j++) {
 			xChan--;
 			if (board.notEmpty(candX + xChan, candY + yChan, false)) {
@@ -593,6 +576,7 @@ public class QwirkleState extends GameState implements Serializable {
 				break;
 			}
 		}
+		// If a Qwirkle move -> bonus 6 points
 		if ((right||left)||(up||down)) {
 			score += 6;
 		}

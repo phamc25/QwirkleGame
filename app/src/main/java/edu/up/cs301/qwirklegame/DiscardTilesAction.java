@@ -19,14 +19,24 @@ public class DiscardTilesAction extends GameAction implements Serializable {
     // to satisfy Serializable interface
     private static final long serialVersionUID = 8927349827349823L;
 
-    private int selectedTileIndex;
+    // Instance variables
+    private int selectedTileIndex;  // keeps track of the currently selected tile index
 
+    /**
+     * Constructor for discard tiles
+     * @param player
+     * @param selectedTileIndex
+     */
     public DiscardTilesAction(GamePlayer player, int selectedTileIndex) {
         super(player);
         // List of tiles to discard
         this.selectedTileIndex = selectedTileIndex;
     }
 
+    /**
+     * Gets the selected tile index
+     * @return
+     */
     public int getSelectedTileIndex() {
         return selectedTileIndex;
     }
