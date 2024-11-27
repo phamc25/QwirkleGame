@@ -44,7 +44,6 @@ public class CalcScoreTest {
         qs.getBoard().addToBoard(blue8Star, 8,12);
         qs.getBoard().addToBoard(purple8Star, 8,13);
 
-//        qs.setCurrTile();
         int result =  qs.calcScore(8, 13);
         assertEquals(7, result);
     }

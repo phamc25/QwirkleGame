@@ -309,7 +309,7 @@ public class QwirkleState extends GameState implements Serializable {
 
 		boolean sameCoordX = false;
 		boolean sameCoordY = false;
-		boolean connectingTile = true;
+		boolean connectingTile = false;
 		// Checks if X value of current tile matches an old coordinate
 		// and if not it adds the value to the arraylist
 		if (this.currentTilesX.size() == 0) {
@@ -346,28 +346,29 @@ public class QwirkleState extends GameState implements Serializable {
 			return false;
 		}
 
-		if (currentTilesX.size() >= 1) {
+		// Check if candX connects to any of the current X coordinates
+		if (currentTilesX.size() > 1) {
 			for (int i = 0; i < currentTilesX.size(); i++) {
-				if (candX == currentTilesX.get(i) || candX == currentTilesX.get(i)) {
-					return true;
-				}
-				else {
-					connectingTile = false;
+				if (candX == ((currentTilesX.get(i)) + 1) || candX == ((currentTilesX.get(i)) - 1)) {
+					connectingTile = true;  // Found a valid connection
+					break;
 				}
 			}
 		}
-
-		if (currentTilesY.size() >= 1) {
+		// Check if candY connects to any of the current Y coordinates
+		if (currentTilesY.size() > 1) {
 			for (int i = 0; i < currentTilesY.size(); i++) {
-				if (candY == currentTilesY.get(i) + 1 || candY == currentTilesY.get(i) - 1) {
-					return true;
-				}
-				else {
-					connectingTile = false;
+				if (candY == ((currentTilesY.get(i)) + 1) || candY == ((currentTilesY.get(i)) - 1)) {
+					connectingTile = true;  // Found a valid connection
+					break;
 				}
 			}
 		}
+		else if (currentTilesX.size() == 1 && currentTilesY.size() == 1) {
+			connectingTile = true;
+		}
 
+		// If no valid connection was found, return false
 		if (!connectingTile) {
 			return false;
 		}
