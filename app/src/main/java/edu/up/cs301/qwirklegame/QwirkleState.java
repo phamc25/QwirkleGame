@@ -185,6 +185,7 @@ public class QwirkleState extends GameState implements Serializable {
 		// Update the player's score at the end of the turn
 		currentTilesX.clear();
 		currentTilesY.clear();
+		currTile = -1;
 		return true;
 	}
 

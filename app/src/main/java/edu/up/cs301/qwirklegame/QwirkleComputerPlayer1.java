@@ -62,6 +62,7 @@ public class QwirkleComputerPlayer1 extends GameComputerPlayer {
 		outerLoop:
 		for (int i = 0; i < myHand.size() && placedTiles < 1; i++) {
 			QwirkleTile toPlace = myHand.get(i);
+			gameState.setCurrTile(i);
 			if (toPlace == null) {
 				continue;  // Skip null tiles in the hand
 			}

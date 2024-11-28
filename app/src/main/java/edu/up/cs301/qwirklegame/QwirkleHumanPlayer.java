@@ -129,6 +129,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			game.sendAction(end); // send action to the game
 			canPlace = true;
 			canDiscard = true;
+			selectedTile = null;
 
 			// Reset backgrounds for all buttons
 			resetTileBackground();
@@ -139,8 +140,6 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 				this.flash(0xFFFF4325, 100);
 				return;
 			}
-			// If a player discards, they cannot place tiles
-			canPlace = false;
 			// Create a new discard tile action and then update the hand and the bag
 			// Make sure a tile is selected
 			if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
@@ -150,9 +149,11 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Get the current player's hand and selected tile
 			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
 			selectedTile = hand.get(state.getCurrTile());
-			if (selectedTile == null) {
+			if (selectedTile == null || state.getCurrTile() == -1) {
 				return;
 			}
+			// If a player discards, they cannot place tiles
+			canPlace = false;
 			DiscardTilesAction discardAction = new DiscardTilesAction(this, state.getCurrTile());
 			game.sendAction(discardAction);
 		}

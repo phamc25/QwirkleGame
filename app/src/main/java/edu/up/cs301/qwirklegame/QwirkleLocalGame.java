@@ -85,13 +85,11 @@ public class QwirkleLocalGame extends LocalGame {
 
 			// Send the state to the player
 			return this.gameState.endTurn(ea);
-
 		}
 		// Else if it is a PlaceTileAction
 		else if (action instanceof PlaceTileAction) {
 			// cast so that we Java knows it's a EndTurnAction
 			PlaceTileAction place = (PlaceTileAction) action;
-
 			// Update the current tile so the game state knows
 			gameState.setCurrTile(place.getSelectedTileIndex());
 			return this.gameState.placeTile(place);
