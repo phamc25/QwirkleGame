@@ -1,8 +1,11 @@
 package edu.up.cs301.qwirklegame;
 
+import edu.up.cs301.GameFramework.Game;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
+
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -360,6 +363,23 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			}
 		}
 	}
+
+	/**
+	 * Win sound effect
+	 */
+	public void playWin() {
+		MediaPlayer win = MediaPlayer.create(myActivity, R.raw.win);
+		win.start();
+	}
+
+	/**
+	 * Lose sound effect
+	 */
+	public void playLose() {
+		MediaPlayer win = MediaPlayer.create(myActivity, R.raw.lose);
+		win.start();
+	}
+
 }// class QwirkleHumanPlayer
 
 /**

@@ -101,14 +101,18 @@ public class QwirkleMainActivity extends GameMainActivity {
 	 */
 	@Override
 	public LocalGame createLocalGame(GameState state) {
-		// Sound test
-		MediaPlayer music = MediaPlayer.create(this, R.raw.test);
-		music.start();
-		music.setLooping(true);
+		playMusic();
 
 		int num = config.getNumPlayers();
 		if (state == null) state = new QwirkleState(num); //based on context if the state is null, it will use a default constructor to start a new game
 		return new QwirkleLocalGame(state);
 	}
 
+	/**
+	 * Plays music when game starts
+	 */
+	public void playMusic() {
+		MediaPlayer music = MediaPlayer.create(this, R.raw.test);
+		music.start();
+	}
 }
