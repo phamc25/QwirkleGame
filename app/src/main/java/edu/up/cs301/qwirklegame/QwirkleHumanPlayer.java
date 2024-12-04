@@ -141,6 +141,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// If cannot discard, flash
 			if (canDiscard == false) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
 			// Create a new discard tile action and then update the hand and the bag
@@ -202,6 +203,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		}
 		if (canPlace == false) {
 			this.flash(0xFFFF4325, 100);
+			playInvalid();
 			return;
 		}
 		// Get the current player's hand and selected tile
@@ -221,6 +223,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		} else {
 			// If invalid, flash
 			this.flash(0xFFFF4325, 100); // Flash red for invalid move
+			playInvalid();
 		}
 	}
 
@@ -334,6 +337,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			if (tile == null) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
 			// Set the selected tile
@@ -376,8 +380,13 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	 * Lose sound effect
 	 */
 	public void playLose() {
-		MediaPlayer win = MediaPlayer.create(myActivity, R.raw.lose);
-		win.start();
+		MediaPlayer lose = MediaPlayer.create(myActivity, R.raw.lose);
+		lose.start();
+	}
+
+	public void playInvalid() {
+		MediaPlayer nope = MediaPlayer.create(myActivity, R.raw.invalid);
+		nope.start();
 	}
 
 }// class QwirkleHumanPlayer
