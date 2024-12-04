@@ -112,7 +112,8 @@ public class QwirkleMainActivity extends GameMainActivity {
 	 * Plays music when game starts
 	 */
 	public void playMusic() {
-		MediaPlayer music = MediaPlayer.create(this, R.raw.test);
+		MediaPlayer music = MediaPlayer.create(this, R.raw.music);
+		music.setLooping(true);
 		music.start();
 	}
 }
