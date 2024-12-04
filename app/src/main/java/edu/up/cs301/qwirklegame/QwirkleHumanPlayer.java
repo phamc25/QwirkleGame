@@ -1,8 +1,11 @@
 package edu.up.cs301.qwirklegame;
 
+import edu.up.cs301.GameFramework.Game;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
+
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -138,6 +141,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// If cannot discard, flash
 			if (canDiscard == false) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
 			// Create a new discard tile action and then update the hand and the bag
@@ -199,6 +203,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		}
 		if (canPlace == false) {
 			this.flash(0xFFFF4325, 100);
+			playInvalid();
 			return;
 		}
 		// Get the current player's hand and selected tile
@@ -218,6 +223,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		} else {
 			// If invalid, flash
 			this.flash(0xFFFF4325, 100); // Flash red for invalid move
+			playInvalid();
 		}
 	}
 
@@ -331,6 +337,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			if (tile == null) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
 			// Set the selected tile
@@ -360,6 +367,28 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			}
 		}
 	}
+
+	/**
+	 * Win sound effect
+	 */
+	public void playWin() {
+		MediaPlayer win = MediaPlayer.create(myActivity, R.raw.win);
+		win.start();
+	}
+
+	/**
+	 * Lose sound effect
+	 */
+	public void playLose() {
+		MediaPlayer lose = MediaPlayer.create(myActivity, R.raw.lose);
+		lose.start();
+	}
+
+	public void playInvalid() {
+		MediaPlayer nope = MediaPlayer.create(myActivity, R.raw.invalid);
+		nope.start();
+	}
+
 }// class QwirkleHumanPlayer
 
 /**

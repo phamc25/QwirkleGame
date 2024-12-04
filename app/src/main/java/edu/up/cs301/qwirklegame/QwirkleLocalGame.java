@@ -148,6 +148,19 @@ public class QwirkleLocalGame extends LocalGame {
 					winningPlayer = i;
 				}
 			}
+
+			// Plays sound effect if Human Player wins
+			if (players[winningPlayer] instanceof QwirkleHumanPlayer) {
+				((QwirkleHumanPlayer) players[winningPlayer]).playWin();
+			}
+			else {
+                for (GamePlayer player : players) {
+                    if (player instanceof QwirkleHumanPlayer) {
+                        ((QwirkleHumanPlayer) player).playLose();
+                    }
+                }
+			}
+
 			// Return the winning player
 			return playerNames[winningPlayer] + " has won with a score of " + playersScore[winningPlayer] + "! ";
 		}

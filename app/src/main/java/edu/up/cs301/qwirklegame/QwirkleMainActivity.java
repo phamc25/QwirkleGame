@@ -1,5 +1,7 @@
 package edu.up.cs301.qwirklegame;
 
+import android.media.MediaPlayer;
+
 import java.util.ArrayList;
 
 import edu.up.cs301.GameFramework.GameMainActivity;
@@ -103,5 +105,4 @@ public class QwirkleMainActivity extends GameMainActivity {
 		if (state == null) state = new QwirkleState(num); //based on context if the state is null, it will use a default constructor to start a new game
 		return new QwirkleLocalGame(state);
 	}
-
 }
