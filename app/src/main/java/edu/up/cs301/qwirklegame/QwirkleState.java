@@ -264,17 +264,6 @@ public class QwirkleState extends GameState implements Serializable {
 	}
 
 	/**
-	 * Updates the player's score based on the # of connected tiles to the one(s) they placed
-	 */
-//	public int playerScore(QwirkleTile placed, int x,  int y) {
-//		ArrayList<QwirkleTile> scoreList;
-//		String[] directions = {"north", "south", "east", "west"};
-//		for (String dir : directions) {
-//			if ()
-//		}
-//	}
-
-	/**
 	 * Helper method for isValid
 	 * <p>
 	 * changes an x,y coordinate by one step in a given dir
