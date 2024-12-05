@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -78,6 +79,9 @@ public abstract class GameMainActivity extends Activity implements
     // whether the game is in the "configuration" stage, before the actual game
     // has started
     private boolean doingConfiguration = true;
+
+    // boolean to determine if this is the initial launch of the config screen or second
+    private boolean afterConfig = false;
 
     /**
      * contains the game configuration this activity will be used to initialize
@@ -155,54 +159,58 @@ public abstract class GameMainActivity extends Activity implements
      * "main" for the game framework
      */
     @Override
-    public final void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Set Context for Toast Logging
         Logger.setContext(getApplicationContext());
 
-        // Initialize the layout
-        setContentView(R.layout.game_config_main);
+        if (!afterConfig) {
+            // Initialize the layout
+            setContentView(R.layout.game_config_main);
 
-        // create the default configuration for this game
-        this.config = createDefaultConfig();
+            // create the default configuration for this game
+            this.config = createDefaultConfig();
 
-        // if there is a saved configuration, modify the default configuration accordingly
-        if (!this.config.restoreSavedConfig(saveFileName(), this)) {
-            MessageBox.popUpMessage(Resources.getSystem().getString(R.string.Config_Error_Msg),
-                    this);
-        }
+            // if there is a saved configuration, modify the default configuration accordingly
+            if (!this.config.restoreSavedConfig(saveFileName(), this)) {
+                MessageBox.popUpMessage(Resources.getSystem().getString(R.string.Config_Error_Msg),
+                        this);
+            }
 
-        if (this.config.isUserModifiable()) { // normal run: user has chance to modify configuration
+            if (this.config.isUserModifiable()) { // normal run: user has chance to modify configuration
 
-            // initialize and show the GUI that allows the user to specify the game's
-            // configuration
-            initStarterGui();
+                // initialize and show the GUI that allows the user to specify the game's
+                // configuration
+                initStarterGui();
 
-            // hide the soft keyboard, so the that user does not need to dismiss it (which
-            // he would often want to do)
-            hideSoftKeyboard();
+                // hide the soft keyboard, so the that user does not need to dismiss it (which
+                // he would often want to do)
+                hideSoftKeyboard();
 
-            // allow buttons to interact
-            justStarted = false;
-        }
-        else { // special run (during debugging?): use the given configuration, unmodified
-            String msg = launchGame(this.config, null);
-            if (msg != null) {
-                // we have an error message
-                MessageBox.popUpMessage(msg, this);
+                // allow buttons to interact
+                justStarted = false;
+            } else { // special run (during debugging?): use the given configuration, unmodified
+                String msg = launchGame(this.config, null);
+                if (msg != null) {
+                    // we have an error message
+                    MessageBox.popUpMessage(msg, this);
+                }
+            }
+
+            if (((CheckBox) findViewById(R.id.onScreenLogging)).isChecked()) {
+                Logger.setToastValue(true);
+            } else {
+                Logger.setToastValue(false);
+            }
+            if (((CheckBox) findViewById(R.id.debugLogging)).isChecked()) {
+                Logger.setDebugValue(true);
+            } else {
+                Logger.setDebugValue(false);
             }
         }
-
-        if (((CheckBox) findViewById(R.id.onScreenLogging)).isChecked()) {
-            Logger.setToastValue(true);
-        } else {
-            Logger.setToastValue(false);
-        }
-        if (((CheckBox) findViewById(R.id.debugLogging)).isChecked()){
-            Logger.setDebugValue(true);
-        }else {
-            Logger.setDebugValue(false);
+        else {
+            setContentView(R.layout.activity_how_to);
         }
     }// onCreate
 
@@ -385,7 +393,7 @@ public abstract class GameMainActivity extends Activity implements
         remoteTabSpec.setIndicator(remoteTabString());
         //Adding Settings Tab that can be customized to allow for customized rules
         TabSpec settingsTabSpec = tabHost.newTabSpec(settingsTabString());
-        settingsTabSpec.setContent(R.id.gameSettingsTab);
+        settingsTabSpec.setContent(R.id.settingsTabLayout);
         settingsTabSpec.setIndicator(settingsTabString());
         tabHost.addTab(localTabSpec);
         tabHost.addTab(remoteTabSpec);
@@ -569,64 +577,73 @@ public abstract class GameMainActivity extends Activity implements
             return;
         }
 
-        // Add Player Button
-        if (button.getId() == R.id.addPlayerButton) {
-            addPlayer();
-            this.playerTable.invalidate(); // show the user the change
-        }
+        if (!afterConfig) {
+            // Add Player Button
+            if (button.getId() == R.id.addPlayerButton) {
+                addPlayer();
+                this.playerTable.invalidate(); // show the user the change
+            }
 
-        // Delete Player Button
-        else if (button.getId() == R.id.delPlayerButton) {
-            // Search the existing players to find out which delete button got
-            // clicked
-            for (int i = 0; i < this.tableRows.size(); i++) {
-                TableRow row = tableRows.get(i);
+            // Delete Player Button
+            else if (button.getId() == R.id.delPlayerButton) {
+                // Search the existing players to find out which delete button got
+                // clicked
+                for (int i = 0; i < this.tableRows.size(); i++) {
+                    TableRow row = tableRows.get(i);
 
-                View v = row.findViewById(R.id.delPlayerButton);
-                if (v == button) {
-                    // found it! remove from the layout and the list
-                    removePlayer(row);
+                    View v = row.findViewById(R.id.delPlayerButton);
+                    if (v == button) {
+                        // found it! remove from the layout and the list
+                        removePlayer(row);
+                    }
+                }
+
+            }// else if (delete button)
+
+            //Save Config Button
+            else if (button.getId() == R.id.saveConfigButton) {
+                GameConfig configTemp = scrapeData();
+                if (configTemp.saveConfig(saveFileName(), this)) {
+                    MessageBox.popUpMessage(getString(R.string.Saved_Config_Msg), this);
+                } else {
+                    MessageBox.popUpMessage(getString(R.string.Saved_Config_Error_Msg), this);
                 }
             }
 
-        }// else if (delete button)
-
-        //Save Config Button
-        else if (button.getId() == R.id.saveConfigButton) {
-            GameConfig configTemp = scrapeData();
-            if (configTemp.saveConfig(saveFileName(), this)) {
-                MessageBox.popUpMessage(getString(R.string.Saved_Config_Msg), this);
-            }
-            else {
-                MessageBox.popUpMessage(getString(R.string.Saved_Config_Error_Msg), this);
-            }
-        }
-
-        //Start Game Button
-        else if (button.getId() == R.id.playGameButton) {
-            String msg = startGame();
-            if (msg != null) {
-                // we have an error message
-                MessageBox.popUpMessage(msg, this);
+            //Start Game Button
+            else if (button.getId() == R.id.playGameButton) {
+                //set config to true so when it runs again it doesn't get here
+                afterConfig = true;
+                Intent intent = new Intent(GameMainActivity.this, howToActivity.class);
+                startActivity(intent);
             }
 
-        }
+            //On-screen debugging checkbox
+            else if (button.getId() == R.id.onScreenLogging) {
+                if (((CheckBox) button).isChecked()) {
+                    Logger.setToastValue(true);
+                } else {
+                    Logger.setToastValue(false);
+                }
+            }
 
-        //On-screen debugging checkbox
-        else if(button.getId() == R.id.onScreenLogging){
-            if(((CheckBox)button).isChecked()){
-                Logger.setToastValue(true);
-            }else{
-                Logger.setToastValue(false);
+            //Console debugging checkbox
+            else if (button.getId() == R.id.debugLogging) {
+                if (((CheckBox) button).isChecked()) {
+                    Logger.setDebugValue(true);
+                } else {
+                    Logger.setDebugValue(false);
+                }
             }
         }
-
-        //Console debugging checkbox
-        else if(button.getId() == R.id.debugLogging){
-            if(((CheckBox)button).isChecked()){
-                Logger.setDebugValue(true);
-            }else{
-                Logger.setDebugValue(false);
+        else if (afterConfig){
+            // next time config screen shows up, only play button works and it launches the game
+            if (button.getId() == R.id.playGameButton) {
+                String msg = startGame();
+                if (msg != null) {
+                    // we have an error message
+                    MessageBox.popUpMessage(msg, this);
+                }
             }
         }
 
@@ -808,9 +825,7 @@ public abstract class GameMainActivity extends Activity implements
      *
      * @return the configuration's port number
      */
-    private int getPortNumber() {
-        return config.getPortNum();
-    }
+    private int getPortNumber() { return config.getPortNum(); }
 
     /**
      * marks the game as being over

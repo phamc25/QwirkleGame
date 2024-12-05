@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    android:background="@color/design_default_color_background"
+    tools:context="edu.up.cs301.GameFramework.howToActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/how_to_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center|top|center_vertical"
+            android:text="How to Play!"
+            android:textColor="@color/design_default_color_primary_dark"
+            android:paddingTop="40dp"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/qwirkle_iv"
+            android:layout_width="467dp"
+            android:layout_height="78dp"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:foregroundGravity="center"
+            android:paddingTop="2dp"
+            app:srcCompat="@drawable/qwirkle" />
+
+        <TextView
+            android:id="@+id/line_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Every tile has 2 attributes, being shape and color, which both have 6 types"
+            android:textColor="@color/design_default_color_primary_dark" />
+
+        <TextView
+            android:id="@+id/line_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="When playing a tile, it must share the same one attribute with every tile in the row(s) it is touching."
+            android:textColor="@color/design_default_color_primary_dark" />
+
+        <TextView
+            android:id="@+id/line_three"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="You may only play multiple tiles in one turn if you play them in a row and they must be consistent with the previous rule."
+            android:textColor="@color/design_default_color_primary_dark" />
+
+        <TextView
+            android:id="@+id/line_four"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="You get one point for every tile in a row that touches the tile(s) you played that turn."
+            android:textColor="@color/design_default_color_primary_dark" />
+
+        <TextView
+            android:id="@+id/line_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="If you complete a max size row of 6, it is called a Qwirkle and you get 12 points plus any points you get from other rows." />
+
+        <TextView
+            android:id="@+id/line_six"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Careful not to make an invalid move, else the screen will flash!"
+            android:textColor="@color/design_default_color_primary_dark" />
+
+        <Button
+            android:id="@+id/how_to_play_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:text="Continue" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="187dp"
+            android:layout_height="93dp"
+            android:layout_gravity="bottom|right"
+            android:layout_weight="0"
+            android:rotation="20"
+            android:scrollbarSize="40dp"
+            app:srcCompat="@drawable/tile_red_4star" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
