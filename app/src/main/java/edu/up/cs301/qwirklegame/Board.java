@@ -17,8 +17,8 @@ public class Board  implements Serializable {
     private QwirkleTile[][] boardArray; // Takes a double array of Qwirkle tiles
 
     // Static variables for board dimensions
-    public static final int ROWS = 11;
-    public static final int COLUMNS = 23;
+    public static final int ROWS = 13;
+    public static final int COLUMNS = 27;
 
     /**
      *  Constructor

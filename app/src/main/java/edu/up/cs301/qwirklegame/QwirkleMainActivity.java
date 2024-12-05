@@ -13,13 +13,18 @@ import edu.up.cs301.GameFramework.gameConfiguration.*;
 /**
  * This contains the QwirkleMainActivity
  *
- * Current status of 11/27/2024 Beta Release: The game is implemented to the Beta release specifications.
+ * Current status of 12/4/2024 Final Release: The game is implemented to some final release specifications.
  * Tile placements are fully checked to be valid according to game rules, full tile bag amount,
  * player score calculation, discard tiles action, fully functional GUI for all game actions,
- * a smart AI, a dumb AI, network play, and possibility for the game to be played with 2-4
- * players according to Qwirkle rules.
+ * a smart AI, a dumb AI, network play, orientation for portrait and lanscape play, and sound effects.
  *
  * Known bugs:
+ * Smart AI gets stuck in a loop of trying to place an invalid tile sometimes
+ *
+ * Halfway through a game with more than 2 players, the game gets really laggy and starts skipping
+ * frames according to its Logcat. Computer players don't make moves after a certain point which may be due
+ * to this
+ *
  * If selecting multiple players to play with. A player has to be added and then the
  * "MAKE CONFIGURATION DEFAULT" button has to be clicked, then the game has to be reloaded
  * or reran from the "Run" button on Android Studio. If not done, the number of players is

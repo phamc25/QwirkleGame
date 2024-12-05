@@ -38,7 +38,7 @@ public class QwirkleState extends GameState implements Serializable {
 	private int[] playersScore;                           // An array to hold player's scores
 	private ArrayList<QwirkleTile> tilesInBag;            // ArrayList of tiles in bag: 72
 	private ArrayList<QwirkleTile>[] tilesInHands;        // ArrayList of tiles in each player's hands
-	private boolean isFirstMove;
+	private boolean isFirstMove;						  // First move of the game
     private ArrayList<Integer> currentTilesX = new ArrayList<>();
 	private ArrayList<Integer> currentTilesY = new ArrayList<>();
 
@@ -115,7 +115,6 @@ public class QwirkleState extends GameState implements Serializable {
 		for(Integer num : orig.currentTilesY) {
 			this.currentTilesY.add(num);
 		}
-
 
 		// Deep copy for int array
 		this.playersScore = Arrays.copyOf(orig.playersScore, orig.playersScore.length);

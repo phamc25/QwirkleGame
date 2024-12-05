@@ -210,7 +210,7 @@ public class QwirkleView extends SurfaceView implements View.OnTouchListener {
             for (int col = 0; col < board.getTiles()[row].length; col++) {
                 QwirkleTile tile = board.getTiles()[row][col];
                 if (tile != null) {
-                    // Convert QwirkleTile to a BoardModel and add it to placedTiles
+                    // Create a bitmap and add the tile
                     Bitmap tileBitmap = BitmapFactory.decodeResource(getResources(), tile.getTileImageFile(tile));
                     addTile(row, col, tileBitmap);
                 }
