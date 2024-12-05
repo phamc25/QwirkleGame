@@ -1,17 +1,16 @@
 package edu.up.cs301.qwirklegame;
 
-import edu.up.cs301.GameFramework.actionMessage.GameAction;
-import edu.up.cs301.GameFramework.gameConfiguration.GameConfig;
+import edu.up.cs301.GameFramework.Game;
 import edu.up.cs301.GameFramework.players.GameHumanPlayer;
 import edu.up.cs301.GameFramework.GameMainActivity;
 import edu.up.cs301.GameFramework.infoMessage.GameInfo;
+
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -73,10 +72,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 	// An instance of the QwirkleView (so we can add a tile to the board view)
 	private QwirkleView qwirkleView;
 
+	// A QwirkleTile of the currently selected tile
 	private QwirkleTile selectedTile;
 
+	// Can a player place or discard in this turn?
 	private boolean canPlace = true;
-	private boolean canDiscard = false;
+	private boolean canDiscard = false;		// Cannot discard on first turn
 
 	/**
 	 * constructor
@@ -127,20 +128,22 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// If the button pressed is the end turn
 		if (button.getId() == R.id.end_turn) {
 			// Create a new end turn action and then update the display
-			EndTurnAction end = new EndTurnAction(state, this, state.getNumPlayers());
+			EndTurnAction end = new EndTurnAction(state, this);
 			game.sendAction(end); // send action to the game
 			canPlace = true;
 			canDiscard = true;
+			selectedTile = null;
 
 			// Reset backgrounds for all buttons
 			resetTileBackground();
 		}
 		else if (button.getId() == R.id.discard) {
+			// If cannot discard, flash
 			if (canDiscard == false) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
-			canPlace = false;
 			// Create a new discard tile action and then update the hand and the bag
 			// Make sure a tile is selected
 			if (state.getCurrTile() < 0 || state.getCurrTile() >= state.getPlayerHand(state.getCurrPlayer()).size()) {
@@ -150,10 +153,12 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			// Get the current player's hand and selected tile
 			ArrayList<QwirkleTile> hand = state.getPlayerHand(state.getCurrPlayer());
 			selectedTile = hand.get(state.getCurrTile());
-			if (selectedTile == null) {
+			if (selectedTile == null || state.getCurrTile() == -1) {
 				return;
 			}
-			DiscardTilesAction discardAction = new DiscardTilesAction(this, selectedTile, state.getCurrTile());
+			// If a player discards, they cannot place tiles
+			canPlace = false;
+			DiscardTilesAction discardAction = new DiscardTilesAction(this, state.getCurrTile());
 			game.sendAction(discardAction);
 		}
 		else {
@@ -169,7 +174,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 
 					// Highlight the selected button
 					tileButtons[i].setBackgroundResource(R.drawable.tile_highlight);
-					return;  // Exit after handling tile
+					return;
 				}
 			}
 		}
@@ -198,6 +203,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		}
 		if (canPlace == false) {
 			this.flash(0xFFFF4325, 100);
+			playInvalid();
 			return;
 		}
 		// Get the current player's hand and selected tile
@@ -217,9 +223,13 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		} else {
 			// If invalid, flash
 			this.flash(0xFFFF4325, 100); // Flash red for invalid move
+			playInvalid();
 		}
 	}
 
+	/**
+	 * Resets the backgrounds of the tile image buttons to transparent
+	 */
 	public void resetTileBackground() {
 		// Reset backgrounds for all buttons
 		for (ImageButton tileButton : tileButtons) {
@@ -241,7 +251,9 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 		// update our state; then update the display
 		this.state = (QwirkleState)info;
 
+		// Set the player scores
 		playerScore.setText(String.valueOf(state.getPlayersScore()[0]));
+		// Player 2 score
 		player2Score.setText("Player 2: " + state.getPlayersScore()[1]);
 
 		// Only update player 3 score if there are 3 or more players
@@ -325,6 +337,7 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			QwirkleTile tile = state.getPlayerHand(state.getCurrPlayer()).get(state.getCurrTile());
 			if (tile == null) {
 				this.flash(0xFFFF4325, 100);
+				playInvalid();
 				return;
 			}
 			// Set the selected tile
@@ -354,6 +367,28 @@ public class QwirkleHumanPlayer extends GameHumanPlayer implements OnClickListen
 			}
 		}
 	}
+
+	/**
+	 * Win sound effect
+	 */
+	public void playWin() {
+		MediaPlayer win = MediaPlayer.create(myActivity, R.raw.win);
+		win.start();
+	}
+
+	/**
+	 * Lose sound effect
+	 */
+	public void playLose() {
+		MediaPlayer lose = MediaPlayer.create(myActivity, R.raw.lose);
+		lose.start();
+	}
+
+	public void playInvalid() {
+		MediaPlayer nope = MediaPlayer.create(myActivity, R.raw.invalid);
+		nope.start();
+	}
+
 }// class QwirkleHumanPlayer
 
 /**

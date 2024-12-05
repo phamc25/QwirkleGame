@@ -120,15 +120,4 @@ public class QwirkleStateTest {
         assertEquals(21, bagSize);
     }
 
-    @Test
-    public void getSelectedTiles() {
-        QwirkleState state = new QwirkleState();
-        ArrayList<QwirkleTile> selected = state.getPlayerHand(0);
-        QwirkleTile one = selected.get(0);
-        one.setSelected(true);
-
-        QwirkleTile three = selected.get(2);
-        three.setSelected(true);
-        assertEquals(2, state.getSelectedTiles(selected).size());
-    }
 }

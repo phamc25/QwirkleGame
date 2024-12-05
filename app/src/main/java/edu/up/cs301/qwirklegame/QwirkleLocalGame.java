@@ -78,23 +78,20 @@ public class QwirkleLocalGame extends LocalGame {
 			// Set the score
 			gameState.setPlayersScore(gameState.getCurrPlayer(), gameState.getAddPoints() + playerScore);
 			gameState.setAddPoints(0);
+
+			// Change the player to next
 			sendUpdatedStateTo(action.getPlayer());
-			// Change the player
-//			sendUpdatedStateTo(action.getPlayer());
 			gameState.nextPlayer();
 
 			// Send the state to the player
 			return this.gameState.endTurn(ea);
-
 		}
 		// Else if it is a PlaceTileAction
 		else if (action instanceof PlaceTileAction) {
 			// cast so that we Java knows it's a EndTurnAction
 			PlaceTileAction place = (PlaceTileAction) action;
-
 			// Update the current tile so the game state knows
 			gameState.setCurrTile(place.getSelectedTileIndex());
-
 			return this.gameState.placeTile(place);
 		}
 		// Else if it is a DiscardTileAction
@@ -151,6 +148,19 @@ public class QwirkleLocalGame extends LocalGame {
 					winningPlayer = i;
 				}
 			}
+
+			// Plays sound effect if Human Player wins
+			if (players[winningPlayer] instanceof QwirkleHumanPlayer) {
+				((QwirkleHumanPlayer) players[winningPlayer]).playWin();
+			}
+			else {
+                for (GamePlayer player : players) {
+                    if (player instanceof QwirkleHumanPlayer) {
+                        ((QwirkleHumanPlayer) player).playLose();
+                    }
+                }
+			}
+
 			// Return the winning player
 			return playerNames[winningPlayer] + " has won with a score of " + playersScore[winningPlayer] + "! ";
 		}
